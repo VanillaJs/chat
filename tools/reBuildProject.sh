@@ -1,3 +1,8 @@
+set -e
+
+export PATH="/brew/bin:$PATH"
+export MANPATH="/brew/share/man:$MANPATH"
+export INFOPATH="/brew/share/info:$INFOPATH"
 cd /vjs/chat/server &&
 npm install &&
 cd /vjs/chat/web &&
