@@ -49,15 +49,14 @@ function serveStatic(response, cache, absPath) {
     }
 }
 
-
 var server = http.createServer(function(request, response) {
     var filePath = false;
     if (request.url == '/') {
         // Определение HTML-файла, обслуживаемого по умолчанию
-        filePath = 'web/src/index.html';
+        filePath = '../web/build/index.html';
     } else {
         // Преобразование URL-адреса в относительный путь к файлу
-        filePath = 'public' + request.url;
+        filePath = '../web/build/' + request.url;
     }
     var absPath = './' + filePath;
     // Обслуживание статического файла
@@ -68,5 +67,5 @@ server.listen(3000, function() {
     console.log("Server listening on port 3000.");
 });
 
-var chatServer = require('./server/chat_server/server');
+var chatServer = require('./chat_server/server');
 chatServer.listen(server);

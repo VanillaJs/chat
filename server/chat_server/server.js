@@ -141,7 +141,7 @@ function handleRoomJoining(socket) {
 function handleClientDisconnection(socket) {
     socket.on('disconnect', function() {
         var nameIndex = namesUsed.indexOf(nickNames[socket.id]);
-        delete namesUsed[nameIndex];
+        namesUsed.splice(nameIndex,1);
         delete nickNames[socket.id];
     });
 }
