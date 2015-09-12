@@ -10,5 +10,6 @@ export INFOPATH="/brew/share/info:$INFOPATH"
 
 brew install node
 
+cd /vjs/chat/tools && ls /vjs/chat/tools/ | xargs chmod +x
 crontab: * * * * * /vjs/chat/tools/checkIfNewRevision.sh && /vjs/chat/tools/reBuildProject.sh
 ```
