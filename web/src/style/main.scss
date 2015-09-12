@@ -1,8 +1,5 @@
-/*
- * third party
- */
-@import "CSS:../../bower_components/normalize.css/normalize.css";
-/*
- * my scripts
- */
-@import "partials/init";
+@import './helpers/reset';
+
+@import 'blocks/page';
+@import 'blocks/chat-input/chat-input';
+@import 'blocks/chat-window/chat-window';

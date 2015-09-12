@@ -6,12 +6,16 @@ var gulp        = require('gulp'),
     cssmin      = require('gulp-cssmin'),
     sass        = require('gulp-sass'),
     sourcemaps  = require('gulp-sourcemaps'),
+    prettify    = require('gulp-html-prettify'),
+    plumber    = require('gulp-plumber'),
     rigger      = require('gulp-rigger'),
+    jade        = require('gulp-jade'),
     imagemin    = require('gulp-imagemin'),
     pngquant    = require('imagemin-pngquant'),
     rimraf      = require('rimraf'),
     connect     = require('gulp-connect'),
-    opn         = require('opn');
+    opn         = require('opn'),
+    config      = require('./config.js');
 var path = {
     build:{
         html    : 'build/',
@@ -21,16 +25,16 @@ var path = {
         fonts   : 'build/fonts/'
     },
     src:{
-        html    : 'src/*.html',
+        html    : 'src/templates/*.jade',
         js      : 'src/js/main.js',
-        css     : 'src/style/main.scss',
+        css     : 'src/style/*.{scss,sass,css}',
         img     : 'src/img/**/*.*',
         fonts   : 'src/fonts/**/*.*'
     },
     watch:{
-        html    : 'src/**/*.html',
+        html    : 'src/**/*.jade',
         js      : 'src/js/**/*.js',
-        css     : 'src/style/**/*.scss',
+        css     : 'src/style/**/*.{scss,sass,css}',
         img     : 'src/img/**/*.*',
         fonts   : 'src/fonts/**/*.*'
     },
@@ -42,12 +46,21 @@ var server = {
 };
 gulp.task('html:build',function(){
     gulp.src(path.src.html)
-        .pipe(rigger())
+        .pipe(plumber({errorHandler: config.errorHandler}))
+        .pipe(jade())
+        .pipe(prettify({
+            brace_style: 'expand',
+            indent_size: 1,
+            indent_char: '\t',
+            indent_inner_html: true,
+            preserve_newlines: true
+        }))
         .pipe(gulp.dest(path.build.html))
         .pipe(connect.reload())
 });
 gulp.task('js:build',function(){
     gulp.src(path.src.js)
+        .pipe(plumber({errorHandler: config.errorHandler}))
         .pipe(rigger())/*
         .pipe(sourcemaps.init())
         .pipe(uglify())
@@ -57,6 +70,7 @@ gulp.task('js:build',function(){
 });
 gulp.task('style:build',function(){
     gulp.src(path.src.css)
+        .pipe(plumber({errorHandler: config.errorHandler}))
         .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(prefixer())
