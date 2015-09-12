@@ -1,0 +1,9 @@
+extends ./layouts/default
+
+block head
+	- pageTitle = 'Чатик'
+
+block content
+	.chat-wrapper
+		include ./blocks/chat-window
+		include ./blocks/chat-input

@@ -56,7 +56,7 @@ var server = http.createServer(function(request, response) {
         filePath = '../web/build/index.html';
     } else {
         // Преобразование URL-адреса в относительный путь к файлу
-        filePath = 'public' + request.url;
+        filePath = '../web/build/' + request.url;
     }
     var absPath = './' + filePath;
     // Обслуживание статического файла
