@@ -6,6 +6,7 @@
   "license": "ISC",
   "devDependencies": {
     "bower": "*",
+    "del": "^2.0.2",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "*",
     "gulp-connect": "*",
@@ -22,6 +23,7 @@
     "gulp-watch": "*",
     "imagemin-pngquant": "*",
     "opn": "*",
+    "require-dir": "^0.3.0",
     "rimraf": "*"
   }
 }
