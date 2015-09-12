@@ -10,5 +10,5 @@ export INFOPATH="/brew/share/info:$INFOPATH"
 
 brew install node
 
-crontab: * * * * * cd /vjs/chat && git rev-parse HEAD > /vjs/.githead && git pull && [[ `cat /vjs/.githead` != `git rev-parse HEAD` ]] && cd /vjs/chat/server && npm install && cd /vjs/chat/web && npm install && cd /vjs/chat/web && rm -rf build && gulp
+crontab: * * * * * /vjs/chat/tools/checkIfNewRevision.sh && /vjs/chat/tools/reBuildProject.sh
 ```
