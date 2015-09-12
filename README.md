@@ -1,19 +1,7 @@
-VM: vjs.cloudapp.net
-```
-apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev
-mkdir /brew
-git clone https://github.com/Homebrew/linuxbrew.git /brew
+## Школа  Разработки Интерфейсов Yandex 2015
 
-export PATH="/brew/bin:$PATH"
-export MANPATH="/brew/share/man:$MANPATH"
-export INFOPATH="/brew/share/info:$INFOPATH"
+### VanillaJS Team
 
-brew install node
+* address: `http://vjs.cloudapp.net/`
 
-cd /vjs/chat/tools && ls /vjs/chat/tools/ | xargs chmod +x
-```
-crontab:
-
-```
-* * * * * /vjs/chat/tools/checkIfNewRevision.sh && /vjs/chat/tools/reBuildProject.sh
-```
+* wiki: `https://github.com/VanillaJs/chat/wiki`

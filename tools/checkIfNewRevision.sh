@@ -1,3 +1,1 @@
-set -e
-
-cd /vjs/chat && git rev-parse HEAD > /vjs/.githead && git pull && [ `cat /vjs/.githead` != `git rev-parse HEAD` ]
+cd .. && git rev-parse HEAD > ../.githead && git pull && [ `cat ../.githead` != `git rev-parse HEAD` ]
