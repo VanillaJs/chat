@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "forever stopall && forever --watch --watchDirectory ./ ./server.js && forever list"
+    "start": "node app.js"
   },
   "dependencies": {
-    "socket.io":"~0.9.6",
-    "mime":"~1.2.7"
+    "forever": "^0.15.1",
+    "mime": "~1.2.7",
+    "socket.io": "~0.9.6"
   },
   "devDependencies": {}
 }
