@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ../server.js"
+    "start": "forever stopall && forever --watch --watchDirectory ./ ./server.js && forever list"
   },
   "dependencies": {
     "socket.io":"~0.9.6",
