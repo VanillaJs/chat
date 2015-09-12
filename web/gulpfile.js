@@ -27,7 +27,7 @@ var path = {
     src:{
         html    : 'src/templates/*.jade',
         js      : 'src/js/main.js',
-        css     : 'src/style/*.{scss,sass,css}',
+        css     : 'src/style/**/*.{scss,sass,css}',
         img     : 'src/img/**/*.*',
         fonts   : 'src/fonts/**/*.*'
     },
