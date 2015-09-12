@@ -54,7 +54,7 @@ var server = http.createServer(function(request, response) {
     var filePath = false;
     if (request.url == '/') {
         // Определение HTML-файла, обслуживаемого по умолчанию
-        filePath = 'web/src/index.html';
+        filePath = '../web/build/index.html';
     } else {
         // Преобразование URL-адреса в относительный путь к файлу
         filePath = 'public' + request.url;
