@@ -5,3 +5,5 @@
 * address: `http://vjs.cloudapp.net/`
 
 * wiki: `https://github.com/VanillaJs/chat/wiki`
+
+* build: `./build/sh`
