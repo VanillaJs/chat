@@ -1,0 +1,20 @@
+{
+  "name": "vjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "forever stopall && forever --watch --watchDirectory ./  start -c 'node --harmony' app.js"
+  },
+  "dependencies": {
+    "co": "*",
+    "co-body": "*",
+    "forever": "*",
+    "forever-monitor": "*",
+    "koa": "^0.18.1",
+    "koa-route": "^2.4.0",
+    "koa-serve-static": "0.0.1",
+    "koa-static": "^1.4.9",
+    "sync-request": "^2.0.1"
+  },
+  "devDependencies": {}
+}
