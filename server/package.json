@@ -1,0 +1,13 @@
+{
+  "name": "vjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "forever stopall && forever --watch --watchDirectory ./  start -c 'node --harmony' app.js"
+  },
+  "dependencies": {
+    "socket.io":"~0.9.6",
+    "mime":"~1.2.7"
+  },
+  "devDependencies": {}
+}

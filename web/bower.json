@@ -1,0 +1,16 @@
+{
+  "name": "JSTemplate",
+  "version": "0.0.1",
+  "homepage": "https://github.com/RSamokhin/",
+  "authors": [
+    "Roman Samokhin <poshliemail@googlemail.com>"
+  ],
+  "description": "NodeJS project builder template",
+  "license": "MIT",
+  "dependencies":{
+      "normalize.css":"*",
+      "jquery":"2.*",
+      "jquery-tmpl": "*",
+      "jquery-color": "*"
+  }
+}
