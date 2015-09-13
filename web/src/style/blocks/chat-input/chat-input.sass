@@ -5,7 +5,8 @@
 	background-color: #EEE
 	box-shadow: 0 0 5px #000
 	font-size: 0
-	padding: 15px
+	padding: 15px 30px 15px 15px
+	box-sizing: border-box
 	text-align: center
 
 	&__self-image
@@ -13,21 +14,25 @@
 		vertical-align: top
 
 	&__text-area
-		width: 90%
+		display: inline-block
+		width: calc(100% - 180px)
 		height: 80px
+		padding: 5px
 		border: none
 		box-sizing: border-box
 		resize: none
+		vertical-align: top
 
 		&:focus
 			outline: 0
 
 	&__send-button
 		display: inline-block
-		width: 90px
-		height: 30px
+		width: 100px
+		height: 80px
+		box-sizing: border-box
 		border: none
-		margin: 10px 0
 		cursor: pointer
 		outline: 0
 		text-transform: uppercase
+		vertical-align: top

@@ -12,6 +12,7 @@
     "gulp-connect": "*",
     "gulp-cssmin": "*",
     "gulp-html-prettify": "0.0.1",
+    "gulp-if": "^1.2.5",
     "gulp-imagemin": "*",
     "gulp-jade": "^1.1.0",
     "gulp-plumber": "^1.0.1",
@@ -24,6 +25,7 @@
     "imagemin-pngquant": "*",
     "opn": "*",
     "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.2",
     "socket.io": "~0.9.6"
   },
   "private": true

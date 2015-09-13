@@ -1,11 +1,12 @@
-var gulp        = require('gulp'),
-      connect     = require('gulp-connect');
-      server        = require('../config.js').server;
+var gulp = require('gulp');
+var connect = require('gulp-connect');
+var server = require('../config.js').server;
 
-gulp.task('webserver',function(){
-    connect.server({
-        host:server.host,
-        port:server.port,
-        livereload:true
-    });
+gulp.task('webserver',function webserverTask() {
+		connect.server({
+			host: server.host,
+			port: server.port,
+			livereload: true,
+			root: './build',
+		});
 });

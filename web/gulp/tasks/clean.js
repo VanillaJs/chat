@@ -1,7 +1,9 @@
-var gulp        = require('gulp'),
-      path        = require('../config.js').path,
-      del      = require('del');
+var gulp = require('gulp');
+var del = require('del');
+var path = require('../config.js').path;
 
-gulp.task('clean',function(cb){
-    del(path.clean,cb);
+gulp.task('clean', function cleanTask(cb) {
+	del(path.clean).then(function() {
+		cb();
+	});
 });
