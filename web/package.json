@@ -1,8 +1,8 @@
 {
-  "name": "JSTemplate",
+  "name": "chat-web",
   "version": "0.0.1",
-  "description": "NodeJS project builder template",
-  "author": "Roman Samokhin",
+  "description": "frontend",
+  "author": "VanillaJS team",
   "license": "ISC",
   "devDependencies": {
     "bower": "*",
@@ -24,6 +24,7 @@
     "imagemin-pngquant": "*",
     "opn": "*",
     "require-dir": "^0.3.0",
-    "rimraf": "*"
-  }
+    "socket.io": "~0.9.6"
+  },
+  "private": true
 }
