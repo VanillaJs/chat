@@ -1,4 +1,11 @@
 {
   "curly": true,
-  "eqeqeq": true
+  "eqeqeq": true,
+  "latedef":true,
+  "nonew":true,
+  "trailing":true,
+  "asi":true,
+  "boss":true,
+  "eqnull":true,
+  "onevar":true
 }
