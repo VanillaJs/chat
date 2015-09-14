@@ -1,5 +1,7 @@
 @import './helpers/reset';
 
 @import 'blocks/page';
+@import 'blocks/message/message';
+@import 'blocks/message-list/message-list';
 @import 'blocks/chat-input/chat-input';
 @import 'blocks/chat-window/chat-window';

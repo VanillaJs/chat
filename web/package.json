@@ -1,16 +1,18 @@
 {
-  "name": "JSTemplate",
+  "name": "chat-web",
   "version": "0.0.1",
-  "description": "NodeJS project builder template",
-  "author": "Roman Samokhin",
+  "description": "frontend",
+  "author": "VanillaJS team",
   "license": "ISC",
   "devDependencies": {
     "bower": "*",
+    "del": "^2.0.2",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "*",
     "gulp-connect": "*",
     "gulp-cssmin": "*",
     "gulp-html-prettify": "0.0.1",
+    "gulp-if": "^1.2.5",
     "gulp-imagemin": "*",
     "gulp-jade": "^1.1.0",
     "gulp-plumber": "^1.0.1",
@@ -23,6 +25,9 @@
     "imagemin-pngquant": "*",
     "opn": "*",
     "rimraf": "*",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.2",
     "socket.io": "~0.9.6"
-  }
+  },
+  "private": true
 }

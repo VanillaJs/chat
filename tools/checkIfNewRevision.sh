@@ -1,0 +1,1 @@
+cd .. && git rev-parse HEAD > ../.githead && git pull && [ `cat ../.githead` != `git rev-parse HEAD` ]

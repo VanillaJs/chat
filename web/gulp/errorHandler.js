@@ -11,4 +11,4 @@ function errorHandler(error) {
 	this.emit('end');
 }
 
-module.exports.errorHandler = errorHandler;
+module.exports = errorHandler;
