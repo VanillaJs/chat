@@ -5,6 +5,14 @@ class MessageBox extends Component {
 	constructor(props) {
 		super(props);
 		this.onClick = this.onClick.bind(this);
+		this._toggleMode = this._toggleMode.bind(this);
+		window.addEventListener('keyup', event => {
+			const keyCode = event.keyCode;
+			if (keyCode === 13 && event.ctrlKey && this.state.active) {
+				this.onClick();
+			}
+		});
+		this.state = {active: false};
 	}
 
 	onClick() {
@@ -16,11 +24,15 @@ class MessageBox extends Component {
 		}
 	}
 
+	_toggleMode() {
+		this.setState({active: !this.state.active});
+	}
+
 	render() {
 		return (
 			<div className="chat-input">
 				<div className="chat-input__self-image"></div>
-				<textarea ref="input" className="chat-input__text-area"></textarea>
+				<textarea ref="input" onFocus={this._toggleMode} onBlur={this._toggleMode} className="chat-input__text-area"></textarea>
 				<button onClick={this.onClick} className="chat-input__send-button" type="submit">Отправить</button>
 			</div>
 		);

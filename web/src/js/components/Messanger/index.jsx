@@ -1,10 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {addMessage} from '../../actions/chat';
+import {addMessage} from '../../actions';
 import MessageBox from '../MessageBox';
+import './messanger.sass';
 
 @connect(store => ({
 	messages: store.messages,
+	rooms: store.rooms,
 }))
 
 class Messanger extends Component {
@@ -14,17 +16,17 @@ class Messanger extends Component {
 	}
 
 	onMessage(text) {
-		const {dispatch} = this.props;
-		dispatch(addMessage(text));
+		const {dispatch, rooms} = this.props;
+		dispatch(addMessage({text, room: rooms.current}, true));
 	}
 
 	render() {
 		let {messages} = this.props;
 		return (
 			<div className="messanger">
-				{messages.map(message => {
+				{messages.map((message, i) => {
 					return (
-						<div key={message.id}>{message}</div>
+						<div className="messanger__message" key={i}>{message}</div>
 					);
 				})}
 				<MessageBox onMessage={this.onMessage} />
