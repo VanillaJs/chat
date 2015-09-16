@@ -3,22 +3,23 @@ import React, {Component} from 'react';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import * as reducers from './stores';
-import Messanger from './components/Messanger';
+import App from './App';
+
 
 const app = combineReducers(reducers);
 const store = createStore(app);
 socket.init(store.dispatch);
 
-class App extends Component {
+class AppWrap extends Component {
 	render() {
 		return (
 			<Provider store={store}>
-				{ () => <Messanger />}
+				{ () => <App />}
 			</Provider>
 		);
 	}
 }
 
 React.render(
-	<App />,
+	<AppWrap />,
 	document.getElementById('app'));

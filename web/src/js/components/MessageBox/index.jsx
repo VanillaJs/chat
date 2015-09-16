@@ -31,7 +31,9 @@ class MessageBox extends Component {
 	render() {
 		return (
 			<div className="chat-input">
-				<div className="chat-input__self-image"></div>
+				<div className="chat-input__self-image">
+					<img src={this.props.avatar} width="80" height="80" alt=""/>
+				</div>
 				<textarea ref="input" onFocus={this._toggleMode} onBlur={this._toggleMode} className="chat-input__text-area"></textarea>
 				<button onClick={this.onClick} className="chat-input__send-button" type="submit">Отправить</button>
 			</div>
