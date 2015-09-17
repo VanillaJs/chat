@@ -1,60 +1,71 @@
 var socketio = require('socket.io');
+
 var io;
-var guestNumber = 1;
-var nickNames = {};
-var namesUsed = [];
+var defaultRoom = 'Lobby';
+var idIndex = 1;
+var users = {};
 var currentRoom = {};
 
 exports.listen = function(server) {
 	io = socketio.listen(server);
 	io.sockets.on('connection', function (socket) {
-		guestNumber = assignGuestName(socket, guestNumber, nickNames, namesUsed);
-		joinRoom(socket, 'Lobby');
-		handleMessageBroadcasting(socket, nickNames);
-		socket.on('rooms', function() {
-			socket.emit('rooms', io.nsps['/'].adapter.rooms);
+		assignUserToRoom(socket);
+
+		joinRoom(socket, defaultRoom);
+
+		handleMessageBroadcasting(socket);
+
+		socket.on('contact.get_list', function(room) {
+			sendContactList(socket, room);
+		});
+
+		socket.on('rooms.get_list', function() {
+			socket.emit('rooms.list', io.nsps['/'].adapter.rooms);
 		});
 	});
 }
 
-function assignGuestName(socket, guestNumber, nickNames, namesUsed) {
-  var name = 'Guest' + guestNumber;
-  nickNames[socket.id] = name;
-  socket.emit('nameResult', {
+function assignUserToRoom(socket) {
+  var userId = idIndex++;
+  var userName = 'Guest ' + userId;
+  users[socket.id] = {
+  	name: userName,
+  	id: userId
+  };
+  socket.emit('user.record', {
     success: true,
-    name: name
+    name: userName,
+  	id: userId
   });
-  namesUsed.push(name);
-  return guestNumber + 1;
 };
 
 function joinRoom(socket, room) {
 	socket.join(room);
 	currentRoom[socket.id] = room;
-	socket.emit('joinResult', {room: room});
-	socket.broadcast.to(room).emit('message', {
-		text: nickNames[socket.id] + ' has joined ' + room + '.'
-	});
+	socket.emit('room.join', {room: room});
+	socket.broadcast.to(room).emit('contact.join', {id: users[socket.id].id, name: users[socket.id].name});
+}
 
+function sendContactList(socket, room) {
 	var usersInRoom = io.nsps['/'].adapter.rooms[room];
 	var ids = Object.keys(usersInRoom);
 
 	if (ids.length > 1) {
-		var usersInRoomSummary = 'Users currently in ' + room + ': ';
-		for (var id in ids) {
+		var roomUsers = [];
+		ids.forEach(function(id) {
 			if (id != socket.id) {
-				usersInRoomSummary += ' ' + id;
+				roomUsers.push({id: users[id].id, name: users[id].name});
 			}
-		}
-		usersInRoomSummary += '.';
-		socket.emit('users.list', {text: usersInRoomSummary});
+		});
+		socket.emit('contact.list', roomUsers);
 	}
 }
 
 function handleMessageBroadcasting(socket) {
-	socket.on('message', function (message) {
-			socket.broadcast.to(message.room).emit('message', {
-					text: nickNames[socket.id] + ': ' + message.text
+	socket.on('room.send_message', function (data) {
+			socket.broadcast.to(data.room).emit('room.message', {
+					userId: users[socket.id].id,
+					message: data.message
 			});
 	});
 }

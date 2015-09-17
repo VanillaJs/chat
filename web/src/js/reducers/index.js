@@ -1,19 +1,11 @@
 import assign from 'object-assign';
 import actionTypes from '../constants';
-
-const defaults = {
-	messages: [{id: 2321312, message: 'dsdasdsa'}],
-	user: {avatar: 'http://lorempixel.com/80/80/'},
-};
-
-export function channels(state = []) {
-	return state;
-}
+import defaults from './defaults';
 
 export function rooms(state = {}, action) {
 	switch (action.type) {
 	case actionTypes.SET_ROOM:
-		return {current: action.name};
+		return assign({}, {current: action.room});
 	default:
 		return state;
 	}
@@ -27,15 +19,26 @@ export function messages(state = defaults.messages, action) {
 	default:
 		return state;
 	}
-	return state;
 }
 
 export function user(state = defaults.user, action) {
 	switch (action.type) {
 	case actionTypes.SET_NAME:
 		return assign({}, state, {name: action.name});
+	case actionTypes.UPDATE_PROFILE:
+		return assign({}, state, {id: action.name, name: action.name});
 	default:
 		return state;
 	}
-	return state;
+}
+
+export function contacts(state = [], action) {
+	switch (action.type) {
+	case actionTypes.SET_CONTACT_LIST:
+		return [...action.users];
+	case actionTypes.CONTACT_JOIN:
+		return [...state, {id: action.id, name: action.name}];
+	default:
+		return state;
+	}
 }

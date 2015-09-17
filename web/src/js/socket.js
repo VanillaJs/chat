@@ -1,31 +1,13 @@
 import io from 'socket.io-client';
-import * as actions from './actions';
+import store from './store';
+import * as actions from './actions/server';
 
-let socket = null;
+export const socket = io.connect({transports: ['websocket', 'polling']});
 
-const app = {
-	init: function init(dispatch) {
-		if (socket) {
-			return;
-		}
-		if (!dispatch && typeof dispatch !== 'function') {
-			throw new Error(`Socket init wait dispatch function as first argument; sended ${typeof dispatch}`);
-		}
-		socket = io.connect({transports: ['websocket', 'polling']});
-		app.dispatch = dispatch;
-		app.bindActions();
-	},
-
-	bindActions: function bindActions() {
-		socket.on('joinResult', data => { app.dispatch(actions.setRoom(data.room)); });
-		socket.on('nameResult', data => { app.dispatch(actions.setName(data.room)); });
-		socket.on('message', data => { app.dispatch(actions.addRemoteMessage(data.text)); });
-	},
-
-	send: function send(event, data) {
-		console.log('socket emit', event, data)
-		socket.emit(event, data);
-	},
-};
-
-export default app;
+export function bindActionsToSocketEvents() {
+	socket.on('room.message', data => { store.dispatch(actions.addRemoteMessage(data.userId, data.message)); });
+	socket.on('room.join', data => { store.dispatch(actions.setRoom(data.room)); });
+	socket.on('user.record', data => { store.dispatch(actions.updateProfile(data.id, data.name)); });
+	socket.on('contact.typing', data => { store.dispatch(actions.contactTyping(data.id)); });
+	socket.on('contact.join', data => { store.dispatch(actions.contactJoin(data.id, data.name)); });
+}

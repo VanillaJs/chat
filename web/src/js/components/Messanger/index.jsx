@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {addSelfMessage} from '../../actions';
+import {addSelfMessage} from '../../actions/client';
 import MessageBox from '../MessageBox';
 import './messanger.sass';
 

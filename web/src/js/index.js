@@ -1,14 +1,10 @@
-import socket from './socket';
 import React, {Component} from 'react';
-import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
-import * as reducers from './stores';
+import {bindActionsToSocketEvents} from './socket';
+import store from './store';
 import App from './App';
 
-
-const app = combineReducers(reducers);
-const store = createStore(app);
-socket.init(store.dispatch);
+bindActionsToSocketEvents();
 
 class AppWrap extends Component {
 	render() {
