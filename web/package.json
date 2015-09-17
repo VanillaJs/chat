@@ -24,10 +24,11 @@
     "gulp-watch": "*",
     "imagemin-pngquant": "*",
     "opn": "*",
-    "rimraf": "*",
     "require-dir": "^0.3.0",
+    "rimraf": "*",
     "run-sequence": "^1.1.2",
-    "socket.io": "~0.9.6"
+    "socket.io": "^1.3.6",
+    "socket.io-client": "^1.3.6"
   },
   "private": true
 }
