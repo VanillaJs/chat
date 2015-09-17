@@ -42,9 +42,20 @@ module.exports = function (server) {
 
     var secret = config.get('session:secret');
     var sessionKey = config.get('session:key');
+	var ioc = require('socket.io-client');
     var io = require('socket.io').listen(server);
 
+    var disconnectRoom = function (name) {
+        name = '/' + name;
 
+        var users = io.manager.rooms[name];
+
+        for (var i = 0; i < users.length; i++) {
+            io.sockets.socket(users[i]).disconnect();
+        }
+
+        return this;
+    };
 
     io.set('origins', config.get('app:socketOrigin'));
     io.set('logger', log);
@@ -171,25 +182,24 @@ module.exports = function (server) {
 		});
 		// Идентификация других пользователей, находящихся в той же
 // комнате, что и пользователь
-//		console.log(io.of('/'));
-//		var usersInRoom = io.of('/').clients(room);
-//// Если другие пользователи присутствуют в данной
-//// комнате чата, просуммировать их
-//		if (usersInRoom.length > 1) {
-//			var usersInRoomSummary = 'Users currently in ' + room + ': ';
-//			for (var index in usersInRoom) {
-//				var userSocketId = usersInRoom[index].id;
-//				if (userSocketId != socket.id) {
-//					if (index > 0) {
-//						usersInRoomSummary += ', ';
-//					}
-//					usersInRoomSummary += nickNames[userSocketId];
-//				}
-//			}
-//			usersInRoomSummary += '.';
-//			// Вывод отчета о других пользователях, находящихся в комнате
-//			socket.emit('message', {text: usersInRoomSummary});
-//		}
+		var usersInRoom = io.sockets.clients(room);
+// Если другие пользователи присутствуют в данной
+// комнате чата, просуммировать их
+		if (usersInRoom.length > 1) {
+			var usersInRoomSummary = 'Users currently in ' + room + ': ';
+			for (var index in usersInRoom) {
+				var userSocketId = usersInRoom[index].id;
+				if (userSocketId != socket.id) {
+					if (index > 0) {
+						usersInRoomSummary += ', ';
+					}
+					usersInRoomSummary += nickNames[userSocketId];
+				}
+			}
+			usersInRoomSummary += '.';
+			// Вывод отчета о других пользователях, находящихся в комнате
+			socket.emit('message', {text: usersInRoomSummary});
+		}
 	}
 
 	function handleNameChangeAttempts(socket, nickNames, namesUsed) {
