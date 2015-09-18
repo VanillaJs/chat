@@ -1,17 +1,16 @@
-include ./blocks/helpers/mixins.jade
+include ./blocks/avatar/avatar.jade
 
 doctype html
 html(lang='en')
 
 block head
-	include ./blocks/head/head.jade
-	- pageTitle = 'Чатик'
+  include ./blocks/head/head.jade
+  - pageTitle = 'Чатик'
 
 body
-	include ./blocks/rooms/rooms.jade
-	include ./blocks/chat-window/chat-window.jade
-	include ./blocks/chat-input/chat-input.jade
+  include ./blocks/chat-window/chat-window.jade
+  include ./blocks/chat-input/chat-input.jade
 
-	script(src="http://yastatic.net/jquery/2.1.4/jquery.min.js")
-	script(src="socket.io/socket.io.js")
-	script(src="./main.js")
+  script(src="http://yastatic.net/jquery/2.1.4/jquery.min.js")
+  script(src="socket.io/socket.io.js")
+  script(src="./js/main.js")

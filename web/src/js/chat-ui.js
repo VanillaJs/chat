@@ -1,25 +1,29 @@
-function divEscapedContentElement(message) {
-    return $('<li class="message"></li>').text(message);
+function divEscapedContentElement(messageText) {
+    // return $('<div class="message__text"></div>').text(messageText);
+    return $('<li class="message">').append(($('<div class="message__content">')).append($('<div class="message__text"></div>').text(messageText)));
 }
-function divSystemContentElement(message) {
-    return $('<li class="systemMessage"></li>').html('<i>' + message + '</i>');
+function divSystemContentElement(messageText) {
+    return $('<li class="systemMessage"></li>').html('<i>' + messageText + '</i>');
 }
 
 
 function processUserInput(chatApp, socket) {
-  var message = $('.chat-input__textarea').val();
+  var messageText = $('.chat-input__textarea').val();
+      // newChatMessage = $('<li/>').attr('class', 'message').append($('<div/>').attr('class', 'message__content').append(divEscapedContentElement(messageText));
+
+
     var systemMessage;
     // Начинающиеся со слеша данные, вводимые пользователем,
     // трактуются как команды
-    if (message.charAt(0) == '/') {
-        systemMessage = chatApp.processCommand(message);
+    if (messageText.charAt(0) == '/') {
+        systemMessage = chatApp.processCommand(messageText);
         if (systemMessage) {
             $('.chat-window__messages').append(divSystemContentElement(systemMessage));
         }
     } else {
         // Трансляция вводимых пользователем данных другим пользователям
-        chatApp.sendMessage($('.rooms__item').text(), message);
-        $('.chat-window__messages').append(divEscapedContentElement(message));
+        chatApp.sendMessage($('.rooms__item').text(), messageText);
+        $('.chat-window__messages').append(divEscapedContentElement(messageText));
         $('.chat-window__messages').scrollTop($('#messages').prop('scrollHeight'));
     }
     $('.chat-input__textarea').val('');
@@ -32,14 +36,14 @@ $(document).ready(function() {
 
 // Вывод результатов попытки изменения имени
     socket.on('nameResult', function(result) {
-        var message;
+        var messageText;
 
         if (result.success) {
-            message = 'You are now known as ' + result.name + '.';
+            messageText = 'You are now known as ' + result.name + '.';
         } else {
-            message = result.message;
+            messageText = result.messageText;
         }
-        $('.chat-window__messages').append(divSystemContentElement(message));
+        $('.chat-window__messages').append(divSystemContentElement(messageText));
     });
 
 // Вывод результатов изменения комнаты
@@ -48,8 +52,8 @@ $(document).ready(function() {
         $('.chat-window__messages').append(divSystemContentElement('Room changed.'));
     });
     // Вывод полученных сообщений
-    socket.on('message', function (message) {
-        var newElement = $('<li></li>').text(message.text);
+    socket.on('message', function (messageText) {
+        var newElement = $('<li></li>').text(messageText.text);
         $('.chat-window__messages').append(newElement);
     });
 
@@ -59,7 +63,7 @@ $(document).ready(function() {
         for(var room in rooms) {
             room = room.substring(1, room.length);
             if (room != '') {
-                $('.rooms__list').append(divEscapedContentElement(room));
+                $('.rooms__list').append($('<div/>').text(room));
             }
         }
 
