@@ -7,22 +7,22 @@ function divSystemContentElement(message) {
 
 
 function processUserInput(chatApp, socket) {
-  var message = $('.chat-input textarea').val();
+  var message = $('.chat-input__textarea').val();
     var systemMessage;
-    // Начинающиеся со слеша данные, вводимые пользователем, 
+    // Начинающиеся со слеша данные, вводимые пользователем,
     // трактуются как команды
     if (message.charAt(0) == '/') {
         systemMessage = chatApp.processCommand(message);
         if (systemMessage) {
-            $('.message-list').append(divSystemContentElement(systemMessage));
+            $('.chat-window__messages').append(divSystemContentElement(systemMessage));
         }
     } else {
-        // Трансляция вводимых пользователем данных другим пользователям 
-        chatApp.sendMessage($('.chat-room').text(), message);
-        $('.message-list').append(divEscapedContentElement(message));
-        $('.message-list').scrollTop($('#messages').prop('scrollHeight'));
+        // Трансляция вводимых пользователем данных другим пользователям
+        chatApp.sendMessage($('.rooms__item').text(), message);
+        $('.chat-window__messages').append(divEscapedContentElement(message));
+        $('.chat-window__messages').scrollTop($('#messages').prop('scrollHeight'));
     }
-    $('.chat-input textarea').val('');
+    $('.chat-input__textarea').val('');
 }
 
 var socket = io.connect();
@@ -39,44 +39,44 @@ $(document).ready(function() {
         } else {
             message = result.message;
         }
-        $('.message-list').append(divSystemContentElement(message));
+        $('.chat-window__messages').append(divSystemContentElement(message));
     });
 
 // Вывод результатов изменения комнаты
     socket.on('joinResult', function(result) {
-        $('.chat-room').text(result.room);
-        $('.message-list').append(divSystemContentElement('Room changed.'));
+        $('.rooms__item').text(result.room);
+        $('.chat-window__messages').append(divSystemContentElement('Room changed.'));
     });
     // Вывод полученных сообщений
     socket.on('message', function (message) {
-        var newElement = $('<div></div>').text(message.text);
-        $('.message-list').append(newElement);
+        var newElement = $('<li></li>').text(message.text);
+        $('.chat-window__messages').append(newElement);
     });
 
 // Вывод списка доступных комнат
     socket.on('rooms', function(rooms) {
-        $('.room-list').empty();
+        $('.rooms__list').empty();
         for(var room in rooms) {
             room = room.substring(1, room.length);
             if (room != '') {
-                $('.room-list').append(divEscapedContentElement(room));
+                $('.rooms__list').append(divEscapedContentElement(room));
             }
         }
 
         // Разрешено щелкнуть на имени комнаты, чтобы изменить ее
-        $('.room-list div').click(function() {
+        $('.rooms__item').click(function() {
             chatApp.processCommand('/join ' + $(this).text());
-            $('.chat-input textarea').focus();
+            $('.chat-input__textarea').focus();
         });
     });
 
     // Запрос списка поочередно доступных комнат чата
     setInterval(function() {
-        socket.emit('chat-rooms');
+        socket.emit('rooms');
     }, 1000);
-    $('.chat-input textarea').focus();
+    $('.chat-input__textarea').focus();
     // Отправка сообщений чата с помощью формы
-    $('.chat-input__send-button').on('click', function() {
+    $('.chat-input__send-btn').on('click', function() {
         processUserInput(chatApp, socket);
         return false;
     });
