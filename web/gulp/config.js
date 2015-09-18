@@ -8,18 +8,18 @@ module.exports = {
 			fonts: 'build/fonts/'
 		},
 		src: {
-			html: 'src/templates/*.jade',
-			js: 'src/js/main.js',
-			css: 'src/style/*.{scss,sass,css}',
-			img: 'src/img/**/*.*',
-			fonts: 'src/fonts/**/*.*'
+			html: 'src/index.jade',
+			js: 'src/main.js',
+			css: 'src/main.scss',
+			img: 'src/blocks/**/*.{jpeg,jpg,png,svg}',
+			fonts: 'src/blocks/helpers/fonts.*'
 		},
 		watch: {
-			html: 'src/**/*.jade',
-			js: 'src/js/**/*.js',
-			css: 'src/style/**/*.{scss,sass,css}',
-			img: 'src/img/**/*.*',
-			fonts: 'src/fonts/**/*.*'
+			html: 'src/blocks/**/*.jade',
+			js: 'src/js/*.js',
+			css: 'src/blocks/**/*.{scss,sass,css}',
+			img: 'src/blocks/**/*.{jpeg,jpg,png,svg}',
+			fonts: 'src/blocks/helpers/fonts.*'
 		},
 		clean: 'build'
 	},
