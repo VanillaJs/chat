@@ -22,6 +22,10 @@ exports.listen = function(server) {
 		socket.on('rooms.get_list', function() {
 			socket.emit('rooms.list', io.nsps['/'].adapter.rooms);
 		});
+
+		socket.on('disconnect', function () {
+	    socket.broadcast.to(currentRoom[socket.id]).emit('contact.disconnected', users[socket.id].id);
+	  });
 	});
 }
 

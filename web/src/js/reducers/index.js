@@ -15,7 +15,7 @@ export function messages(state = defaults.messages, action) {
 	switch (action.type) {
 	case actionTypes.ADD_SELF_MESSAGE:
 	case actionTypes.ADD_REMOTE_MESSAGE:
-		return [...state, action.text];
+		return [...state, action.message];
 	default:
 		return state;
 	}
@@ -38,6 +38,8 @@ export function contacts(state = [], action) {
 		return [...action.users];
 	case actionTypes.CONTACT_JOIN:
 		return [...state, {id: action.id, name: action.name}];
+	case actionTypes.CONTACT_REMOVE:
+		return state.filter(contact => action.id !== contact.id);
 	default:
 		return state;
 	}

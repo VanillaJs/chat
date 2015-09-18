@@ -38,6 +38,13 @@ export function contactJoin(userId, name) {
 	};
 }
 
+export function removeContact(userId) {
+	return {
+		type: actionTypes.CONTACT_REMOVE,
+		userId,
+	};
+}
+
 export function setContactList(users) {
 	return {
 		type: actionTypes.SET_CONTACT_LIST,

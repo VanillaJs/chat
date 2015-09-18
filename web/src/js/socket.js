@@ -10,4 +10,5 @@ export function bindActionsToSocketEvents() {
 	socket.on('user.record', data => { store.dispatch(actions.updateProfile(data.id, data.name)); });
 	socket.on('contact.typing', data => { store.dispatch(actions.contactTyping(data.id)); });
 	socket.on('contact.join', data => { store.dispatch(actions.contactJoin(data.id, data.name)); });
+	socket.on('contact.disconnected', id => { store.dispatch(actions.removeContact(id)); });
 }

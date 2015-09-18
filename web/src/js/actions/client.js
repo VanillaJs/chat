@@ -1,12 +1,12 @@
 import actionTypes from '../constants';
 import {socket} from '../socket';
 
-export function addSelfMessage(text, room) {
-	socket.emit('room.send_message', {text, room});
+export function addSelfMessage(message, room) {
+	socket.emit('room.send_message', {message, room});
 
 	return {
 		type: actionTypes.ADD_SELF_MESSAGE,
-		text,
+		message,
 	};
 }
 
