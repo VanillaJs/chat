@@ -1,5 +1,5 @@
 #!/bin/sh
-
+JSHINT=./server/node_modules/.bin/jshint
 files=$(git diff --cached --name-only --diff-filter=ACM | grep ".js$")
 if [ "$files" = "" ]; then
     exit 0
@@ -10,7 +10,7 @@ pass=true
 echo "\nValidating JavaScript:\n"
 
 for file in ${files}; do
-    result=$(jshint ${file} | awk '{print $0}')
+    result=$($JSHINT ${file} | awk '{print $0}')
     if [ "$result" != "" ]; then
         echo "\t\033[31mJSHint Failed: $result\033[0m"
         pass=false

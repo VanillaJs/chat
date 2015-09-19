@@ -7,5 +7,6 @@
   "asi":true,
   "boss":true,
   "eqnull":true,
-  "onevar":true
+  "onevar":true,
+  "esnext": true
 }

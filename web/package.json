@@ -48,6 +48,7 @@
   },
   "private": true,
   "dependencies": {
+    "jshint": "^2.8.0",
     "object-assign": "^4.0.1",
     "react-redux": "^2.1.2",
     "redux": "^3.0.0",
