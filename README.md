@@ -2,8 +2,8 @@
 
 ### VanillaJS Team
 
-* address: `http://vjs.cloudapp.net/`
+* address: http://vjs.cloudapp.net/
 
-* wiki: `https://github.com/VanillaJs/chat/wiki`
+* wiki: https://github.com/VanillaJs/chat/wiki
 
-* build: `./build/sh` -> `http://localhost:3000/`
+* build: `./build/sh` -> http://localhost:3000/

@@ -1,1 +1,5 @@
-cd .. && git rev-parse HEAD > ../.githead && git pull && [ `cat ../.githead` != `git rev-parse HEAD` ]
+#!/usr/bin/env bash
+
+git rev-parse HEAD > /tmp/.githead
+git pull
+ [[ `cat /tmp/.githead` != `git rev-parse HEAD` ]] || [[ -z $(pgrep "node") ]]
