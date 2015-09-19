@@ -30,7 +30,7 @@ class Messenger extends Component {
 
 	onMessage(message) {
 		const {dispatch, rooms} = this.props;
-		dispatch(addSelfMessage(message, rooms.current));
+		dispatch(addSelfMessage('text', message, rooms.current));
 	}
 
 	render() {

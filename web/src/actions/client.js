@@ -1,8 +1,8 @@
 import actionTypes from '../constants';
 import {socket} from '../socket';
 
-export function addSelfMessage(message, room) {
-	socket.emit('room.send_message', {message, room});
+export function addSelfMessage(type, message, room) {
+	socket.emit('c.room.send_message', {message_type: type, text: message, room_id: room});
 
 	return {
 		type: actionTypes.ADD_SELF_MESSAGE,
