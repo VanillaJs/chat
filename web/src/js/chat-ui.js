@@ -1,3 +1,4 @@
+
 function divEscapedContentElement(message) {
     return $('<li class="message"></li>').text(message);
 }
@@ -9,7 +10,7 @@ function divSystemContentElement(message) {
 function processUserInput(chatApp, socket) {
   var message = $('.chat-input textarea').val();
     var systemMessage;
-    // Начинающиеся со слеша данные, вводимые пользователем, 
+    // Начинающиеся со слеша данные, вводимые пользователем,
     // трактуются как команды
     if (message.charAt(0) == '/') {
         systemMessage = chatApp.processCommand(message);
@@ -17,7 +18,7 @@ function processUserInput(chatApp, socket) {
             $('.message-list').append(divSystemContentElement(systemMessage));
         }
     } else {
-        // Трансляция вводимых пользователем данных другим пользователям 
+        // Трансляция вводимых пользователем данных другим пользователям
         chatApp.sendMessage($('.chat-room').text(), message);
         $('.message-list').append(divEscapedContentElement(message));
         $('.message-list').scrollTop($('#messages').prop('scrollHeight'));
@@ -25,7 +26,7 @@ function processUserInput(chatApp, socket) {
     $('.chat-input textarea').val('');
 }
 
-var socket = io.connect();
+var socket = io.connect('http://localhost:3001');
 
 $(document).ready(function() {
     var chatApp = new Chat(socket);
@@ -52,6 +53,9 @@ $(document).ready(function() {
         var newElement = $('<div></div>').text(message.text);
         $('.message-list').append(newElement);
     });
+	socket.on('logout', function () {
+		window.location.href = "/login";
+	});
 
 // Вывод списка доступных комнат
     socket.on('rooms', function(rooms) {
