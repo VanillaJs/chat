@@ -9,14 +9,14 @@ module.exports = {
 		},
 		src: {
 			html: 'src/templates/*.jade',
-			js: 'src/js/index.js',
+			js: 'src/index.js',
 			css: 'src/style/*.{scss,sass,css}',
 			img: 'src/img/**/*.*',
 			fonts: 'src/fonts/**/*.*'
 		},
 		watch: {
 			html: 'src/**/*.jade',
-			js: 'src/js/**/*.{js,sass,jsx}',
+			js: 'src/**/*.{js,sass,jsx}',
 			css: 'src/style/**/*.{scss,sass,css}',
 			img: 'src/img/**/*.*',
 			fonts: 'src/fonts/**/*.*'

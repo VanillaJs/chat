@@ -22,7 +22,7 @@ var config = {
 	],
 
 	resolve: {
-		modulesDirectories: ['node_modules', 'src/js'],
+		modulesDirectories: ['node_modules', 'src'],
 		extensions: ['', '.js', '.jsx'],
 	},
 
@@ -31,7 +31,7 @@ var config = {
 			{
 				test: JS_REGEX,
 				exclude: /node_modules/,
-				include: path.join(__dirname, 'src/js'),
+				include: path.join(__dirname, 'src'),
 				loader: 'babel'
 			},
 			{
