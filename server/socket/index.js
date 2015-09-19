@@ -129,8 +129,9 @@ module.exports = function (server) {
 
     io.on('connection', function (socket) {
 
-		var userRoom = "user:room:" + socket.handshake.user.username;
-		// Помещение подключившегося пользователя в комнату Lobby
+		//var userRoom = "user:room:" + socket.handshake.user.username;\
+		var userRoom = "Lobby"
+		//Помещение подключившегося пользователя в комнату Lobby
 		require('./types/start')(socket, userRoom);
 		//генерирую событие списка комнат getContsctsList
 		// Обработка пользовательских событий

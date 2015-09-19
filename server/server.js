@@ -25,31 +25,40 @@ app.set('view engine', 'html');
 //Установка вьюшек для отображения
 app.set('views', __dirname + path.sep + '../web/build/');
 
-function serveStatic(response, cache, absPath) {
-    // Проверка факта кэширования файла в памяти
-    if (cache[absPath]) {
-        // Обслуживание файла, находящегося в памяти
-        sendFile(response, absPath, cache[absPath]);
-    } else {
-        // Проверка факта существования файла
-        fs.exists(absPath, function(exists) {
-            if (exists) {
-                // Считывание файла с диска
-                fs.readFile(absPath, function(err, data) {
-                    if (err) {
-                        send404(response);
-                    } else {
-                        cache[absPath] = data;
-                        // Обслуживание файла, считанного с диска
-                        sendFile(response, absPath, data);
+
+app.use(morgan()); //логгер
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser(config.get('session:secret')));
+
+app.use(session({
+    secret: config.get('session:secret'),
+    key: config.get('session:key'),
+    resave: false,
+    cookie: config.get('session:cookie'),
+    store: require('./lib/database/sessionStore'),
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/loadUser'));
+
+// роуты приложения
+require('./routes')(app);
+app.use(express.static(path.join(__dirname, '/../web/build/')));
+//passport init
+
+//"обработчик ошибок"
+app.use(function (err, req, res, next) {
+
+	console.log(err.name);
+    if (typeof err == 'number') {
+        err = new HttpError(err);
                     }
-                });
-            } else {
-                // Отсылка HTTP-ответа 404
-                send404(response);
-            }
-        });
-    }
 
 	if (err.name == 'MongoError') {
 		err = new HttpError(403, err.message);
@@ -67,9 +76,6 @@ function serveStatic(response, cache, absPath) {
             res.sendHttpError(err);
         }
     }
-    var absPath = './' + filePath;
-    // Обслуживание статического файла
-    serveStatic(response, cache, absPath);
 });
 
 var server = http.createServer(app);
@@ -77,5 +83,6 @@ server.listen(config.get('port'), function () {
     log.info('Express server listening on port ' + config.get('port'));
 });
 
-var chatServer = require('./chat_server/server');
-chatServer.listen(server);
+
+var io = require('./socket')(server);
+app.set('io', io);

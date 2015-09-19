@@ -1,8 +1,8 @@
 {
-  "port": 3001,
+  "port": 3000,
   "app":{
-    "serverUrl":"http://localhost:3001",
-    "socketOrigin":"http://localhost:3001"
+    "serverUrl":"http://localhost:3000",
+    "socketOrigin":"http://localhost:3000"
   },
   "mongoose": {
     "uri": "mongodb://127.0.0.1:27017",
