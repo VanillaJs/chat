@@ -29,23 +29,23 @@ function serveStatic(response, cache, absPath) {
         sendFile(response, absPath, cache[absPath]);
     } else {
         // Проверка факта существования файла
-        fs.exists(absPath, function(exists) {
-            if (exists) {
-                // Считывание файла с диска
-                fs.readFile(absPath, function(err, data) {
-                    if (err) {
-                        send404(response);
-                    } else {
-                        cache[absPath] = data;
-                        // Обслуживание файла, считанного с диска
-                        sendFile(response, absPath, data);
-                    }
-                });
-            } else {
-                // Отсылка HTTP-ответа 404
-                send404(response);
-            }
-        });
+	    fs.exists(absPath, function(exists) {
+	        if (exists) {
+	            // Считывание файла с диска
+	            fs.readFile(absPath, function(err, data) {
+	                if (err) {
+	                    send404(response);
+	                } else {
+	                    cache[absPath] = data;
+	                    // Обслуживание файла, считанного с диска
+	                    sendFile(response, absPath, data);
+	                }
+	            });
+	        } else {
+	            // Отсылка HTTP-ответа 404
+	            send404(response);
+	        }
+	    });
     }
 }
 
@@ -60,7 +60,7 @@ var server = http.createServer(function(request, response) {
     }
     var absPath = './' + filePath;
     // Обслуживание статического файла
-    serveStatic(response, cache, absPath);
+    serveStatic(response, {}, absPath);
 });
 
 server.listen(3000, function() {

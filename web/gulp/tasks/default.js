@@ -14,7 +14,7 @@ gulp.task('build', function buildTask(cb) {
 		'clean',
 		'fonts',
 		'images',
-		'styles',
+		// 'styles',
 		'scripts',
 		'templates',
 		cb
