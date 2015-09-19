@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {addSelfMessage} from '../../actions/client';
 import MessageBox from '../MessageBox';
 import Message from '../Message';
-import './messanger.sass';
+import './messenger.sass';
 
 @connect(store => ({
 	messages: store.messages,
@@ -11,7 +11,7 @@ import './messanger.sass';
 	user: store.user,
 }))
 
-class Messanger extends Component {
+class Messenger extends Component {
 	static propTypes = {
 		messages: PropTypes.arrayOf(PropTypes.object),
 		user: PropTypes.object,
@@ -50,4 +50,4 @@ class Messanger extends Component {
 	}
 }
 
-export default Messanger;
+export default Messenger;

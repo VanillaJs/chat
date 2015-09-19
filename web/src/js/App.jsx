@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Messanger from './components/Messanger';
+import Messenger from './components/Messenger';
 import ContactList from './components/ContactList';
 import './components/page.sass';
 
@@ -8,7 +8,7 @@ export default class App extends Component {
 		return (
 			<div className="application">
 				<ContactList />
-				<Messanger />
+				<Messenger />
 			</div>
 		);
 	}
