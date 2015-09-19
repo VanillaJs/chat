@@ -2,5 +2,8 @@
   .chat-input__wrapper
     .chat-input__self-img
       +avatar
-    textarea.chat-input__textarea
+    div(contentEditable="true").chat-input__textarea
     button(type="submit").chat-input__send-btn Отправить
+    .chat-input__emoticons-main
+    ul.chat-input__emoticons
+      include ../emoticon/emoticon.jade
