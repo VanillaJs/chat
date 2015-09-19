@@ -3,11 +3,11 @@ module.exports = function (socket, room) {
 	socket.join(room);
 	// Обнаружение пользователя в данной комнате
 	// Оповещение пользователя о том, что он находится в новой комнате
-	socket.emit('joinResult', {room: room});
+	socket.emit('room.join', {room: room});
 	socket.handshake.user.room = room;
 	// Оповещение других пользователей о появлении нового
 	// пользователя в комнате чата
-	socket.broadcast.to(room).emit('message', {
+	socket.broadcast.to(room).emit('room.message', {
 		text: socket.handshake.user.username + ' has joined ' + room + '.'
 	});
 };
