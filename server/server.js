@@ -14,7 +14,7 @@ var HttpError = require('./error').HttpError;
 var errorhandler = require('errorhandler');
 
 
-function logger(req, res, next) {
+function logger(req, res, next) {
     console.log('%s %s', req.method, req.url);
     next();
 };
@@ -24,7 +24,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 //Установка вьюшек для отображения
 app.set('views', __dirname + path.sep + '../web/build/');
-app.use(express.static(path.join(__dirname, '/../web/build/')));
+
 
 app.use(morgan()); //логгер
 
@@ -49,17 +49,23 @@ app.use(require('./middleware/loadUser'));
 
 // роуты приложения
 require('./routes')(app);
-
+app.use(express.static(path.join(__dirname, '/../web/build/')));
 //passport init
 
 //"обработчик ошибок"
 app.use(function (err, req, res, next) {
 
+	console.log(err.name);
     if (typeof err == 'number') {
         err = new HttpError(err);
     }
 
-    if (err instanceof HttpError) {
+	if (err.name == 'MongoError') {
+		err = new HttpError(403, err.message);
+		res.sendHttpError(err);
+	}
+
+	if (err instanceof HttpError) {
         res.sendHttpError(err);
     } else {
         if (app.get('env') == 'development') {
@@ -81,4 +87,3 @@ server.listen(config.get('port'), function () {
 
 var io = require('./socket')(server);
 app.set('io', io);
-

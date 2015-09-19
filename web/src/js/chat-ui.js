@@ -26,7 +26,7 @@ function processUserInput(chatApp, socket) {
     $('.chat-input textarea').val('');
 }
 
-var socket = io.connect('http://127.0.0.1:3001');
+var socket = io.connect('http://localhost:3001');
 
 $(document).ready(function() {
     var chatApp = new Chat(socket);
@@ -53,6 +53,9 @@ $(document).ready(function() {
         var newElement = $('<div></div>').text(message.text);
         $('.message-list').append(newElement);
     });
+	socket.on('logout', function () {
+		window.location.href = "/login";
+	});
 
 // Вывод списка доступных комнат
     socket.on('rooms', function(rooms) {

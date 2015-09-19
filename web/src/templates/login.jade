@@ -20,6 +20,7 @@ block content
 					button.btn.btn-primary(type='submit', data-loading-text='Отправляю...') Войти
 					span.help-block.error
 		a(href='/login-fb') Facebook login
+		a(href='/login-vk') Login VK
 		script.
 			$(document.forms['login-form']).on('submit', function (e) {
 				e.preventDefault();
@@ -30,7 +31,7 @@ block content
 					method: 'post',
 					data: form.serialize(),
 					complete: function () {
-						$(':submit', form).button('reset');
+						//$(':submit', form).button('reset');
 					},
 					statusCode: {
 						200: function () {

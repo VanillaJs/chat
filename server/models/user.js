@@ -10,8 +10,19 @@ var schema = new Schema({
     username: {
         type: String,
         unique: true,
+		index: true,
         required: true
     },
+	avatar: {
+		type: String,
+		required: false
+	},
+	email: {
+		type: String,
+		unique: true,
+		index: true,
+		required: false
+	},
     hashedPassword: {
         type: String,
         required: true
@@ -23,7 +34,24 @@ var schema = new Schema({
     created: {
         type: Date,
         default: Date.now
-    }
+    },
+	lastActivity: {
+		type: Date,
+		default: Date.now
+	},
+	authType: {
+		type:[{
+			name:{
+				type: String,
+				required: true
+			},
+			idType:{
+				type: String,
+				required: true
+			}
+		}]
+	}
+
 });
 
 schema.methods.encryptPassword = function (password) {
@@ -43,6 +71,51 @@ schema.virtual('password')
 schema.methods.checkPassword = function (password) {
     return this.encryptPassword(password) === this.hashedPassword;
 };
+schema.methods.checkIsSocialExist = function (type) {
+	var ret = false;
+	this.authType.forEach(function(aType){
+		if(aType.name == type)
+		{
+			ret = true;
+			return;
+		}
+	});
+	return ret;
+};
+
+schema.statics.authorizeSocial = function (userData, callback) {
+	var User = this;
+
+	/**
+	 * 1. Получить пользователя с таким username из базы данных
+	 * 2. Такой пользователь найден?
+	 *      Да - сверить был ли он уже авторизован через сервис
+	 *      Нет - создаем нового
+	 * 3. Авторизация успешна
+	 */
+	async.waterfall([
+		function (callback) {
+			User.findOne({email: userData.email}, callback);
+		},
+		function (user, callback) {
+			if (user) {
+				if (user.checkIsSocialExist(userData.authType.name)) {
+					callback(null, user)
+				} else {
+					user.authType.push(userData.authType);
+					user.save();
+				}
+			}else {
+				var new_user = new User(userData);
+				new_user.save(function (err) {
+				    if (err) return callback(err);
+				    callback(null, new_user);
+				});
+			}
+
+		}
+	], callback);
+}
 
 schema.statics.authorize = function (username, password, callback) {
 
@@ -50,11 +123,9 @@ schema.statics.authorize = function (username, password, callback) {
      * 1. Получить пользователя с таким username из базы данных
      * 2. Такой пользователь найден?
      *      Да - сверить пароль вызовом user.checkPassword
-     *      Нет - создать нового пользователя
+     *      Нет - ответ ошибки
      * 3. Авторизация успешна?
-     *      Да - сохранить _id посетителя в сессию session.user = user._id и ответить 200
-     *      Нет - вывести ошибку (403 или другую)
-     */
+	*/
 
     var User = this;
 
@@ -70,11 +141,7 @@ schema.statics.authorize = function (username, password, callback) {
                     callback(new AuthError('Пароль не верен'));
                 }
             } else {
-                var new_user = new User({username: username, password: password});
-                new_user.save(function (err) {
-                    if (err) return callback(err);
-                    callback(null, new_user);
-                });
+				callback(new AuthError('Пароль или логин не верен'));
             }
         }
     ], callback);

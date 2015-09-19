@@ -1,8 +1,8 @@
 {
   "port": 3001,
   "app":{
-    "serverUrl":"http://127.0.0.1:3001",
-    "socketOrigin":"http://127.0.0.1:3001"
+    "serverUrl":"http://localhost:3001",
+    "socketOrigin":"http://localhost:3001"
   },
   "mongoose": {
     "uri": "mongodb://127.0.0.1:27017",
@@ -27,6 +27,10 @@
     "facebook":{
       "clientID":"979294728833437",
       "clientSecret":"7da8a5f730b0c3da1cee8c18d100facd"
-    }
+    },
+	"vk":{
+	  "app_id":"5074435",
+	  "secret":"BqGmOxgmsagZNNryT1TC"
+	}
   }
 }

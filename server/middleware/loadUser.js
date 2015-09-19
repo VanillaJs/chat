@@ -1,9 +1,7 @@
 var User = require('./../models/user').User;
 
 module.exports = function (req, res, next) {
-
     req.user = res.locals.user = null;
-
 
     if (req.session.passport === undefined || !req.session.passport.user.user_id) return next();
 
