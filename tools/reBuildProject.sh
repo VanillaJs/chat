@@ -15,4 +15,4 @@ cd ../server
 ps -ax | grep 'mongod' | grep -v grep | awk '{print $1}' | xargs kill -9
 mongod --dbpath db/ &
 ps -ax | grep 'node' | grep -v grep | awk '{print $1}' | xargs kill -9
-cd ../server && node app.js &
+cd ../server && node app.js
