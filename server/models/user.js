@@ -83,6 +83,8 @@ schema.methods.checkIsSocialExist = function (type) {
 	return ret;
 };
 
+
+
 schema.statics.authorizeSocial = function (userData, callback) {
 	var User = this;
 

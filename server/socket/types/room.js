@@ -5,6 +5,12 @@ module.exports = function (socket, room) {
 	// Оповещение пользователя о том, что он находится в новой комнате
 	socket.emit('s.room.join', {room: room});
 	socket.handshake.user.room = room;
+
+	socket.on('c.room.join', function(room) {
+		socket.leave(socket.handshake.user.room);
+		socket.handshake.user.room = room.contact_id;
+		socket.join(room.contact_id);
+	});
 	//// Оповещение других пользователей о появлении нового
 	//// пользователя в комнате чата
 	//socket.broadcast.to(room).emit('c.room.message', {

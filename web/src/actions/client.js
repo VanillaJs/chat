@@ -2,7 +2,7 @@ import actionTypes from '../constants';
 import {socket} from '../socket';
 
 export function addSelfMessage(type, message, room) {
-	socket.emit('c.room.send_message', {message_type: type, text: message, room_id: room});
+	socket.emit('c.user.send_message', {message_type: type, text: message, room_id: room});
 
 	return {
 		type: actionTypes.ADD_SELF_MESSAGE,
@@ -24,5 +24,6 @@ export function getContactList(room) {
 			socket.removeEventListener('contact.list', dispatchList);
 		});
 		socket.emit('contact.get_list', room);
+		socket.emit('c.user.get_data', {});
 	};
 }

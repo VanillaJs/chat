@@ -41,18 +41,6 @@ module.exports = function (server) {
     var sessionKey = config.get('session:key');
     var io = require('socket.io').listen(server);
 	io.Users = Users;
-    var disconnectRoom = function (name) {
-        name = '/' + name;
-
-        var users = io.manager.rooms[name];
-
-        for (var i = 0; i < users.length; i++) {
-            io.sockets.socket(users[i]).disconnect();
-        }
-
-        return this;
-    };
-
     io.set('origins', config.get('app:socketOrigin'));
     io.set('logger', log);
     io.use(function (socket, next) {
@@ -109,7 +97,6 @@ module.exports = function (server) {
                 }
                 //добавляем текущее соединение
                 Users[user._id].soketData.push(socket);
-                console.log(Users[user._id].soketData.length);
             }
             else
             {
@@ -128,16 +115,13 @@ module.exports = function (server) {
 
 
     io.on('connection', function (socket) {
-
-		//var userRoom = "user:room:" + socket.handshake.user.username;\
-		var userRoom = "Lobby"
+		var userRoom = "55fd8e8109e5f39099e8931c";
 		//Помещение подключившегося пользователя в комнату Lobby
-		require('./types/start')(socket, userRoom);
+		require('./types/room')(socket, userRoom);
 		//генерирую событие списка комнат getContsctsList
 		// Обработка пользовательских событий
-		require('./types/message')(socket);
-		require('./types/joinroom')(socket);
-		require('./types/contacts')(socket);
+		require('./types/user')(socket);
+		require('./types/contact')(socket);
 		require('./types/disconnect')(socket);
     });
 

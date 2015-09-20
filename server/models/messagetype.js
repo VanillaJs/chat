@@ -13,4 +13,4 @@ var schema = new Schema({
 	}
 });
 
-exports.Channel = mongoose.model('MessageType', schema);
+exports.MessageType = mongoose.model('MessageType', schema);
