@@ -1,6 +1,7 @@
 import actionTypes from '../constants';
 
 export function addRemoteMessage(userId, message) {
+	console.log(message);
 	return {
 		type: actionTypes.ADD_REMOTE_MESSAGE,
 		userId,

@@ -7,6 +7,7 @@ module.exports = function (socket) {
 		socket.broadcast.to(room_id).emit('s.user.send_message', {
 			status:true,
 			room_id:room_id,
+			userId:room_id,
 			message: message
 		});
 	}
