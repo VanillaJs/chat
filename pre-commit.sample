@@ -22,7 +22,7 @@ done
 echo "\nJavaScript validation complete\n"
 
 if ! $pass; then
-    echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass JSLint but do not. Please fix the JSLi$
+    echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass JSHint"
     exit 1
 else
     echo "\033[42mCOMMIT SUCCEEDED\033[0m\n"
