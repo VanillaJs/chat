@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {getContactList} from '../../actions/client';
+import {changeChannel} from '../../actions/channel';
 
 import './contactlist.sass';
 
@@ -10,21 +10,9 @@ import './contactlist.sass';
 }))
 
 class ContactList extends Component {
-	componentDidMount() {
-		if(this.props.rooms.current) {
-			this.fetchContactList();
-		}
-	}
-
-	componentWillReceiveProps(nextProps, prevProps) {
-		if (nextProps.rooms.current !== this.props.rooms.current) {
-			this.fetchContactList(nextProps.rooms.current);
-		}
-	}
-
-	fetchContactList(room) {
-		let {dispatch, rooms} = this.props;
-		dispatch(getContactList(room));
+	changeChannel(event) {
+		const id = event.target.getAttribute('data-id');
+		this.props.dispatch(changeChannel(id));
 	}
 
 	render() {
@@ -33,7 +21,10 @@ class ContactList extends Component {
 			<div className="contactlist">
 				{contacts.map((contact, i) => {
 					return (
-						<div className="contactlist__contact" key={i}>{contact.name}</div>
+						<div data-id={contact.id} onClick={this.changeChannel.bind(this)} className="contactlist__contact" key={i}>
+							<img src={contact.avatar} />
+							{contact.username}
+						</div>
 					);
 				})}
 			</div>

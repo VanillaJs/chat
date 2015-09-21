@@ -123,6 +123,18 @@ module.exports = function (server) {
 		require('./types/user')(socket);
 		require('./types/contact')(socket);
 		require('./types/disconnect')(socket);
+		socket.on('c.user.get_data', function() {
+			var user = socket.handshake.user;
+			socket.emit('s.user.set_data', {id: user._id, username: user.username});
+		});
+
+		socket.on('c.user.get_contact_list', function() {
+			socket.emit('s.user.set_contact_list', [
+				{id: 'sdfj324hj', username: 'Test User 1', avatar: 'http://lorempixel.com/80/80/'},
+				{id: 'fsd34bvhg', username: 'Test User 1', avatar: 'http://lorempixel.com/80/80/'},
+				{id: 'axxcxo8u3kj', username: 'Test User 3', avatar: 'http://lorempixel.com/80/80/'},
+			]);
+		});
     });
 
     return io;
