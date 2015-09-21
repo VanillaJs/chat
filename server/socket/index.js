@@ -115,7 +115,7 @@ module.exports = function (server) {
 
 
     io.on('connection', function (socket) {
-		var userRoom = "55fd8e8109e5f39099e8931c";
+		var userRoom = "Lobby";
 		//Помещение подключившегося пользователя в комнату Lobby
 		require('./types/room')(socket, userRoom);
 		//генерирую событие списка комнат getContsctsList

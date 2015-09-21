@@ -17,11 +17,22 @@ function setContactList(users) {
 	};
 }
 
+function updateProfile(id, name, avatar) {
+	return {
+		type: actionTypes.UPDATE_PROFILE,
+		id,
+		name,
+		avatar,
+
+	};
+}
+
 export function getContactList(room) {
 	return dispatch => {
-		socket.on('contact.list', function dispatchList(users) {
-			dispatch(setContactList(users));
-			socket.removeEventListener('contact.list', dispatchList);
+		socket.on('s.user.set_data', function dispatchList(data) {
+			dispatch(setContactList(data.contacts));
+			dispatch(updateProfile(data.data._id, data.data.username,data.data.avatar));
+			socket.removeEventListener('s.user.set_data', dispatchList);
 		});
 		socket.emit('contact.get_list', room);
 		socket.emit('c.user.get_data', {});

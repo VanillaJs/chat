@@ -26,7 +26,7 @@ export function user(state = defaults.user, action) {
 	case actionTypes.SET_NAME:
 		return assign({}, state, {name: action.name});
 	case actionTypes.UPDATE_PROFILE:
-		return assign({}, state, {id: action.name, name: action.name});
+		return assign({}, state, {id: action.id, name: action.name, avatar:action.avatar});
 	default:
 		return state;
 	}
