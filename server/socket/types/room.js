@@ -11,9 +11,4 @@ module.exports = function (socket, room) {
 		socket.handshake.user.room = room.contact_id;
 		socket.join(room.contact_id);
 	});
-	//// Оповещение других пользователей о появлении нового
-	//// пользователя в комнате чата
-	//socket.broadcast.to(room).emit('c.room.message', {
-	//	text: socket.handshake.user.username + ' has joined ' + room + '.'
-	//});
 };

@@ -30,7 +30,28 @@ var schema = new Schema({
 		type: Date,
 		default: Date.now
 	}
-})
+});
+
+schema.statics.getListByParams = function (channel_id, page_num, callback) {
+	var Message = this;
+	var limit = 10;
+	var skip = limit*page_num - limit;
+	if(page_num > 1) {
+
+	}
+	async.waterfall([
+		function (callback) {
+			if(skip > 0) {
+				Message.find({channelId:channel_id}, callback).sort({created: 1}).skip(skip);
+			} else {
+				Message.find({channelId:channel_id}, callback).sort({created: 1}).limit(limit);
+			}
+		},
+		function (messages, callback) {
+			callback(null, messages);
+		}
+	], callback);
+};
 
 schema.statics.addNew = function(message, callback) {
 	var Message = this;
@@ -43,7 +64,7 @@ schema.statics.addNew = function(message, callback) {
 			if(!message_type) {
 				var new_message_type = new MessageType({name:message.message_type, type:message.message_type});
 				new_message_type.save(function (err) {
-					if (err) return callback(err);
+					if (err) { return callback(err) }
 					callback(null, new_message_type);
 				});
 			}
@@ -61,7 +82,7 @@ schema.statics.addNew = function(message, callback) {
 				};
 				var new_message = new Message(new_message_obj);
 				new_message.save(function (err) {
-					if (err) return callback(err);
+					if (err) { return callback(err) }
 					callback(null, new_message);
 				});
 			}

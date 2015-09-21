@@ -34,7 +34,7 @@ export function getContactList(room) {
 			dispatch(updateProfile(data.data._id, data.data.username,data.data.avatar));
 			socket.removeEventListener('s.user.set_data', dispatchList);
 		});
- 
+
 		socket.emit('contact.get_list', room);
 		socket.emit('c.user.get_data', {});
 	};

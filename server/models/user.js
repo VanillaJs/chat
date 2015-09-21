@@ -74,7 +74,7 @@ schema.methods.checkPassword = function (password) {
 schema.methods.checkIsSocialExist = function (type) {
 	var ret = false;
 	this.authType.forEach(function(aType){
-		if(aType.name == type)
+		if(aType.name === type)
 		{
 			ret = true;
 			return;
@@ -132,7 +132,7 @@ schema.statics.authorizeSocial = function (userData, callback) {
 			}else {
 				var new_user = new User(userData);
 				new_user.save(function (err) {
-				    if (err) return callback(err);
+				    if (err) { return callback(err) }
 				    callback(null, new_user);
 				});
 			}
@@ -175,16 +175,16 @@ exports.User = mongoose.model('User', schema);
 
 
 //<editor-fold desc="ошибка авторизации">
-function AuthError(message) {
+function AuthErrorF(message) {
     Error.apply(this, arguments);
     Error.captureStackTrace(this, AuthError);
 
     this.message = message;
 }
 
-util.inherits(AuthError, Error);
+util.inherits(AuthErrorF, Error);
 
-AuthError.prototype.name = 'AuthError';
+AuthErrorF.prototype.name = 'AuthError';
 
-exports.AuthError = AuthError;
+exports.AuthError = AuthErrorF;
 //</editor-fold>

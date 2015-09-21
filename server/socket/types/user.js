@@ -43,7 +43,15 @@ module.exports = function (socket) {
 
 			});
 		}
+	});
 
-
+	socket.on('c.user.get_message_by_room', function(data) {
+		//data.room_id
+		//data.page
+		Message.getListByParams(data.room_id, data.page, function(err, messages) {
+			if(!err) {
+				socket.emit('s.user.message_by_room', {data:messages});
+			}
+		});
 	});
 };

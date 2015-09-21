@@ -36,7 +36,7 @@ schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callb
 				};
 				var new_channel = new Channel(new_channel_obj);
 				new_channel.save(function (err) {
-					if (err) return callback(err);
+					if (err) { return callback(err) }
 					callback(null, new_channel);
 				});
 			}
