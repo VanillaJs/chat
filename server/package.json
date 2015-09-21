@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "postinstall" : "./jshint-install.sh"
   },
   "dependencies": {
     "async": "^1.4.2",
