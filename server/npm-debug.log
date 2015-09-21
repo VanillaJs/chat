@@ -1,0 +1,220 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'install' ]
+2 info using npm@2.14.2
+3 info using node@v4.0.0
+4 verbose readDependencies loading dependencies from /Users/timofey/WebstormProjects/vanillajs/chat/server/package.json
+5 verbose install where, deps [ '/Users/timofey/WebstormProjects/vanillajs/chat/server',
+5 verbose install   [ 'async',
+5 verbose install     'body-parser',
+5 verbose install     'config',
+5 verbose install     'connect-mongo',
+5 verbose install     'connect-mongodb',
+5 verbose install     'cookie-parser',
+5 verbose install     'debug',
+5 verbose install     'ejs',
+5 verbose install     'errorhandler',
+5 verbose install     'express',
+5 verbose install     'express-session',
+5 verbose install     'forever',
+5 verbose install     'jshint',
+5 verbose install     'jslint',
+5 verbose install     'mime',
+5 verbose install     'mongoose',
+5 verbose install     'morgan',
+5 verbose install     'nconf',
+5 verbose install     'passport',
+5 verbose install     'passport-facebook',
+5 verbose install     'passport-local',
+5 verbose install     'passport-vkontakte',
+5 verbose install     'serve-favicon',
+5 verbose install     'socket.io',
+5 verbose install     'socket.io-client',
+5 verbose install     'socket.io-handshake',
+5 verbose install     'static-favicon',
+5 verbose install     'winston' ] ]
+6 verbose install where, peers [ '/Users/timofey/WebstormProjects/vanillajs/chat/server', [] ]
+7 verbose installManyTop reading for lifecycle /Users/timofey/WebstormProjects/vanillajs/chat/server/package.json
+8 info preinstall vjs@0.1.0
+9 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/async/package.json
+10 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/body-parser/package.json
+11 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/config/package.json
+12 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/connect-mongo/package.json
+13 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/connect-mongodb/package.json
+14 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/cookie-parser/package.json
+15 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/debug/package.json
+16 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/ejs/package.json
+17 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/ejs-locals/package.json
+18 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/errorhandler/package.json
+19 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/express/package.json
+20 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/express-session/package.json
+21 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/forever/package.json
+22 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/jshint/package.json
+23 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/jslint/package.json
+24 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/mime/package.json
+25 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/mongoose/package.json
+26 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/morgan/package.json
+27 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/nconf/package.json
+28 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport/package.json
+29 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport-facebook/package.json
+30 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport-local/package.json
+31 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport-vkontakte/package.json
+32 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/serve-favicon/package.json
+33 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/socket.io/package.json
+34 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/socket.io-client/package.json
+35 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/socket.io-handshake/package.json
+36 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/static-favicon/package.json
+37 verbose installManyTop reading scoped package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/winston/package.json
+38 info package.json cookie-parser@1.0.1 No license field.
+39 info package.json debug@0.7.4 No license field.
+40 info package.json connect-mongodb@1.1.5 No license field.
+41 info package.json ejs@0.8.8 No license field.
+42 info package.json ejs-locals@1.0.2 No license field.
+43 info package.json jslint@0.9.3 No license field.
+44 info package.json mime@1.2.11 No license field.
+45 info package.json connect-mongo@0.8.2 No license field.
+46 info package.json nconf@0.7.2 No license field.
+47 info package.json passport-local@1.0.0 No license field.
+48 info package.json passport-vkontakte@0.4.0 No license field.
+49 info package.json passport-facebook@2.0.0 No license field.
+50 info package.json static-favicon@1.0.2 No license field.
+51 info package.json socket.io@1.3.6 No license field.
+52 verbose readDependencies loading dependencies from /Users/timofey/WebstormProjects/vanillajs/chat/server/package.json
+53 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/async/package.json
+54 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/body-parser/package.json
+55 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/config/package.json
+56 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/connect-mongo/package.json
+57 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/connect-mongodb/package.json
+58 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/cookie-parser/package.json
+59 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/debug/package.json
+60 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/ejs/package.json
+61 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/ejs-locals/package.json
+62 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/errorhandler/package.json
+63 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/express/package.json
+64 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/express-session/package.json
+65 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/forever/package.json
+66 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/jshint/package.json
+67 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/jslint/package.json
+68 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/mime/package.json
+69 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/mongoose/package.json
+70 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/morgan/package.json
+71 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/nconf/package.json
+72 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport/package.json
+73 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport-facebook/package.json
+74 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport-local/package.json
+75 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/passport-vkontakte/package.json
+76 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/serve-favicon/package.json
+77 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/socket.io/package.json
+78 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/socket.io-client/package.json
+79 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/socket.io-handshake/package.json
+80 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/static-favicon/package.json
+81 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/winston/package.json
+82 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/.bin/forever/package.json
+83 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/.bin/jshint/package.json
+84 verbose targetResolver reading package data from /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/.bin/jslint/package.json
+85 verbose already installed skipping jslint@^0.9.3 /Users/timofey/WebstormProjects/vanillajs/chat/server
+86 verbose already installed skipping mime@~1.2.7   /Users/timofey/WebstormProjects/vanillajs/chat/server
+87 verbose already installed skipping mongoose@^4.1.7 /Users/timofey/WebstormProjects/vanillajs/chat/server
+88 verbose already installed skipping morgan@^1.0.1 /Users/timofey/WebstormProjects/vanillajs/chat/server
+89 verbose already installed skipping nconf@^0.7.2 /Users/timofey/WebstormProjects/vanillajs/chat/server
+90 verbose already installed skipping passport@^0.3.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+91 verbose already installed skipping passport-facebook@^2.0.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+92 verbose already installed skipping passport-local@^1.0.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+93 verbose already installed skipping passport-vkontakte@^0.4.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+94 verbose already installed skipping serve-favicon@^2.3.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+95 verbose already installed skipping socket.io@^1.3.6 /Users/timofey/WebstormProjects/vanillajs/chat/server
+96 verbose already installed skipping socket.io-client@^1.3.6 /Users/timofey/WebstormProjects/vanillajs/chat/server
+97 verbose already installed skipping socket.io-handshake@0.0.10 /Users/timofey/WebstormProjects/vanillajs/chat/server
+98 verbose already installed skipping static-favicon@~1.0.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+99 verbose already installed skipping winston@^1.0.1 /Users/timofey/WebstormProjects/vanillajs/chat/server
+100 verbose already installed skipping async@^1.4.2 /Users/timofey/WebstormProjects/vanillajs/chat/server
+101 verbose already installed skipping body-parser@^1.0.2 /Users/timofey/WebstormProjects/vanillajs/chat/server
+102 verbose already installed skipping config@^1.16.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+103 verbose already installed skipping connect-mongo@^0.8.2 /Users/timofey/WebstormProjects/vanillajs/chat/server
+104 verbose already installed skipping connect-mongodb@^1.1.5 /Users/timofey/WebstormProjects/vanillajs/chat/server
+105 verbose already installed skipping cookie-parser@^1.0.1 /Users/timofey/WebstormProjects/vanillajs/chat/server
+106 verbose already installed skipping debug@~0.7.4 /Users/timofey/WebstormProjects/vanillajs/chat/server
+107 verbose already installed skipping ejs@^0.8.8 /Users/timofey/WebstormProjects/vanillajs/chat/server
+108 verbose already installed skipping errorhandler@^1.4.2 /Users/timofey/WebstormProjects/vanillajs/chat/server
+109 verbose already installed skipping express@~4.0.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+110 verbose already installed skipping express-session@^1.11.3 /Users/timofey/WebstormProjects/vanillajs/chat/server
+111 verbose already installed skipping forever@^0.15.1 /Users/timofey/WebstormProjects/vanillajs/chat/server
+112 verbose already installed skipping jshint@^2.8.0 /Users/timofey/WebstormProjects/vanillajs/chat/server
+113 silly install resolved []
+114 info build /Users/timofey/WebstormProjects/vanillajs/chat/server
+115 info linkStuff vjs@0.1.0
+116 silly linkStuff vjs@0.1.0 has /Users/timofey/WebstormProjects/vanillajs/chat as its parent node_modules
+117 verbose linkBins vjs@0.1.0
+118 verbose linkMans vjs@0.1.0
+119 verbose rebuildBundles vjs@0.1.0
+120 verbose rebuildBundles [ '.bin',
+120 verbose rebuildBundles   'async',
+120 verbose rebuildBundles   'body-parser',
+120 verbose rebuildBundles   'config',
+120 verbose rebuildBundles   'connect-mongo',
+120 verbose rebuildBundles   'connect-mongodb',
+120 verbose rebuildBundles   'cookie-parser',
+120 verbose rebuildBundles   'debug',
+120 verbose rebuildBundles   'ejs',
+120 verbose rebuildBundles   'ejs-locals',
+120 verbose rebuildBundles   'errorhandler',
+120 verbose rebuildBundles   'express',
+120 verbose rebuildBundles   'express-session',
+120 verbose rebuildBundles   'forever',
+120 verbose rebuildBundles   'jshint',
+120 verbose rebuildBundles   'jslint',
+120 verbose rebuildBundles   'mime',
+120 verbose rebuildBundles   'mongoose',
+120 verbose rebuildBundles   'morgan',
+120 verbose rebuildBundles   'nconf',
+120 verbose rebuildBundles   'passport',
+120 verbose rebuildBundles   'passport-facebook',
+120 verbose rebuildBundles   'passport-local',
+120 verbose rebuildBundles   'passport-vkontakte',
+120 verbose rebuildBundles   'serve-favicon',
+120 verbose rebuildBundles   'socket.io',
+120 verbose rebuildBundles   'socket.io-client',
+120 verbose rebuildBundles   'socket.io-handshake',
+120 verbose rebuildBundles   'static-favicon',
+120 verbose rebuildBundles   'winston' ]
+121 verbose rebuild bundle /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/ejs-locals
+122 info build /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules/ejs-locals
+123 info preinstall ejs-locals@1.0.2
+124 info linkStuff ejs-locals@1.0.2
+125 silly linkStuff ejs-locals@1.0.2 has /Users/timofey/WebstormProjects/vanillajs/chat/server/node_modules as its parent node_modules
+126 verbose linkBins ejs-locals@1.0.2
+127 verbose linkMans ejs-locals@1.0.2
+128 verbose rebuildBundles ejs-locals@1.0.2
+129 info install ejs-locals@1.0.2
+130 info postinstall ejs-locals@1.0.2
+131 info install vjs@0.1.0
+132 info postinstall vjs@0.1.0
+133 verbose unsafe-perm in lifecycle true
+134 info vjs@0.1.0 Failed to exec postinstall script
+135 verbose stack Error: vjs@0.1.0 postinstall: `./jshint-install.sh`
+135 verbose stack Exit status 1
+135 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
+135 verbose stack     at emitTwo (events.js:87:13)
+135 verbose stack     at EventEmitter.emit (events.js:172:7)
+135 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+135 verbose stack     at emitTwo (events.js:87:13)
+135 verbose stack     at ChildProcess.emit (events.js:172:7)
+135 verbose stack     at maybeClose (internal/child_process.js:817:16)
+135 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+136 verbose pkgid vjs@0.1.0
+137 verbose cwd /Users/timofey/WebstormProjects/vanillajs/chat/server
+138 error Darwin 14.5.0
+139 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install"
+140 error node v4.0.0
+141 error npm  v2.14.2
+142 error code ELIFECYCLE
+143 error vjs@0.1.0 postinstall: `./jshint-install.sh`
+143 error Exit status 1
+144 error Failed at the vjs@0.1.0 postinstall script './jshint-install.sh'.
+144 error This is most likely a problem with the vjs package,
+144 error not with npm itself.
+144 error Tell the author that this fails on your system:
+144 error     ./jshint-install.sh
+144 error You can get their info via:
+144 error     npm owner ls vjs
+144 error There is likely additional logging output above.
+145 verbose exit [ 1, true ]
