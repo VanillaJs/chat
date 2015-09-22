@@ -22,13 +22,15 @@ class ContactList extends Component {
 	}
 
 	render() {
-		let {contacts} = this.props;
+		let {contacts, channels} = this.props;
 		return (
 			<div className="contactlist">
 				<ContactAdd onContactAdd={this.handleContactAdd.bind(this)} />
 				{contacts.map((contact, i) => {
+					const cls = `contactlist__contact ${contact._id === channels.current ? 'is-active' : ''}`;
+
 					return (
-						<div data-id={contact._id} onClick={this.changeChannel.bind(this)} className="contactlist__contact" key={i}>
+						<div data-id={contact._id} onClick={this.changeChannel.bind(this)} className={cls} key={i}>
 							{contact.name}
 						</div>
 					);

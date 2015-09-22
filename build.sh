@@ -1,7 +1,5 @@
 echo "Start build" &&
 
-cd  ./tools/ &&
-
-./reBuildProject.sh &&
+./tools/reBuildProject.sh &&
 
 echo "Build finished"

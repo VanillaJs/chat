@@ -1,7 +1,7 @@
 var forever = require('forever'),
     fs = require('fs'),
     child = new(forever.Monitor)('./server/server.js', {
-        'silent': false,
+        'silent': process.env.NODE_ENV !== 'develop',
         'pidFile': 'server/pids/app.pid',
         'watch': true,
         'watchDirectory': './',
