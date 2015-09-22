@@ -1,8 +1,11 @@
-export function messages(state = defaults.messages, action) {
+import types from '../constants/messages';
+
+export function messages(state = [], action) {
 	switch (action.type) {
-	case actionTypes.ADD_SELF_MESSAGE:
-	case actionTypes.ADD_REMOTE_MESSAGE:
+	case types.ADD_MESSAGE:
 		return [...state, action.message];
+	case types.ADD_REMOTE_MESSAGE:
+		return [...state, action.message.message];
 	default:
 		return state;
 	}

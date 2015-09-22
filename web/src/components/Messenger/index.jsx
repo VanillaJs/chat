@@ -1,13 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {addSelfMessage} from '../../actions/client';
+import {addMessage} from '../../actions/messages';
 import MessageBox from '../MessageBox';
 import Message from '../Message';
 import './messenger.sass';
 
 @connect(store => ({
 	messages: store.messages,
-	rooms: store.rooms,
+	channels: store.channels,
 	user: store.user,
 }))
 
@@ -29,8 +29,8 @@ class Messenger extends Component {
 	}
 
 	onMessage(message) {
-		const {dispatch, rooms} = this.props;
-		dispatch(addSelfMessage('text', message, rooms.current));
+		const {dispatch, channels} = this.props;
+		dispatch(addMessage('text', message, channels.current));
 	}
 
 	render() {

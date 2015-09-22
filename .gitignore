@@ -5,3 +5,4 @@ bower_components
 */build
 server/logs
 db
+node-debug.log

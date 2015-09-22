@@ -10,19 +10,19 @@ pass=true
 echo "\nValidating JavaScript:\n"
 
 for file in ${files}; do
-    result=$(jshint ${file} | awk '{print $0}')
+    result=$(eslint ${file} | awk '{print $0}')
     if [ "$result" != "" ]; then
-        echo "\t\033[31mJSHint Failed: $result\033[0m"
+        echo "\t\033[31mESLint Failed: $result\033[0m"
         pass=false
     else
-        echo "\t\033[32mJSHint Passed: ${file}\033[0m"
+        echo "\t\033[32mESLint Passed: ${file}\033[0m"
     fi
 done
 
 echo "\nJavaScript validation complete\n"
 
 if ! $pass; then
-    echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass JSLint but do not. Please fix the JSLi$
+    echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass ESLint but do not. Please fix the JSLi$
     exit 1
 else
     echo "\033[42mCOMMIT SUCCEEDED\033[0m\n"

@@ -1,6 +1,6 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import * as reducers from './reducers';
+import reducers from './reducers';
 
 function logger() {
 	return next => action => {
@@ -9,8 +9,7 @@ function logger() {
 	};
 }
 
-const app = combineReducers(reducers);
 const createStoreWithMiddleware = applyMiddleware(logger, thunkMiddleware)(createStore);
-const store = createStoreWithMiddleware(app);
+const store = createStoreWithMiddleware(reducers);
 
 export default store;

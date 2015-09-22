@@ -1,4 +1,3 @@
-// import contactActionType from '../constants/contacts';
 import userActionType from '../constants/user';
 
 export function contacts(state = [], action) {

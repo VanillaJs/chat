@@ -1,7 +1,10 @@
+import assign from 'object-assign';
+import channelActionType from '../constants/channels';
+
 export function channels(state = {}, action) {
 	switch (action.type) {
-	case actionTypes.SET_ROOM:
-		return assign({}, {current: action.room});
+	case channelActionType.SET_ACTIVE_CHANNEL:
+		return assign({}, state, {current: action.id});
 	default:
 		return state;
 	}
