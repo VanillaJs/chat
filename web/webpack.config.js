@@ -32,11 +32,11 @@ var config = {
 				test: JS_REGEX,
 				exclude: /node_modules/,
 				include: path.join(__dirname, 'src'),
-				loader: 'babel'
+				loader: 'babel',
 			},
 			{
 				test: /\.sass$/,
-				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax')
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax'),
 			},
 		],
 
