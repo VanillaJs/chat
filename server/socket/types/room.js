@@ -8,7 +8,8 @@ module.exports = function (socket, room) {
 
 	socket.on('c.room.join', function(room) {
 		socket.leave(socket.handshake.user.room);
-		socket.handshake.user.room = room.contact_id;
-		socket.join(room.contact_id);
+		socket.handshake.user.room = room.id;
+		socket.join(room.id);
+		socket.emit('s.room.join', {room: room.id});
 	});
 };

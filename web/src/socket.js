@@ -1,10 +1,12 @@
 import io from 'socket.io-client';
-import store from './store';
-import * as actions from './actions/server';
+import {dispatch} from './store';
+import {addRemoteMessage} from './actions/messages';
+import {setActiveChannel} from './actions/channels';
 
 export const socket = io.connect({transports: ['websocket', 'polling']});
 
 export function bindActionsToSocketEvents() {
-	socket.on('s.room.join', data => { store.dispatch(actions.setRoom(data.room)); });
-	socket.on('s.user.send_message', data => { store.dispatch(actions.addRemoteMessage(data.userId, data.message.text)); });
+	socket.on('s.room.join', data => { dispatch(setActiveChannel(data.room)); });
+	socket.on('s.user.send_message', data => { dispatch(addRemoteMessage(data)); });
 }
+

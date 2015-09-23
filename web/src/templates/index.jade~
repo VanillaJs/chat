@@ -1,6 +1,0 @@
-extends ./layouts/default
-block head
-	- pageTitle = 'Чатик'
-block content
-	#app
-	script(src="app.js")
