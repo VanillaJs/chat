@@ -4,7 +4,6 @@
   "main": "app.js",
   "scripts": {
     "prebuild": "npm run clean -s",
-    "postinstall": "./hook-install.sh",
     "start": "NODE_ENV=develop node app.js",
     "server-dev": "NODE_ENV=develop node app.js",
     "server-prod": "NODE_ENV=production node app.js",
