@@ -8,6 +8,6 @@ npm install
 npm run clean
 npm run build
 ps -ax | grep 'mongod' | grep -v grep | awk '{print $1}' | xargs kill -9
-mongod --dbpath db/ &
+mongod --dbpath ./server/db/ &
 ps -ax | grep 'node' | grep -v grep | awk '{print $1}' | xargs kill -9
 npm start
