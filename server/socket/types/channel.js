@@ -22,7 +22,7 @@ module.exports = function (socket, Users) {
 	//Добавление контактов логика еще не готова
 	socket.on('c.channel.add', function(user) {
 		var send_data = null;
-		User.findByParams(user.username, user.email, function(err, user) {
+		User.findByParams(user.username, user.username, function(err, user) {
 			if(user)
 			{
 				if(!err)

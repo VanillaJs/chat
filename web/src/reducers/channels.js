@@ -7,8 +7,11 @@ export function channels(state = {current:null, contacts:[]}, action) {
 	case channelActionType.SET_ACTIVE_CHANNEL:
 		return assign({}, state, {current: action.id});
 	case channelActionType.CHANNEL_REMOVE:
-		state.contacts.splice(action.num, 1);
-		return assign({}, state, {current: state.contacts});
+		if(action.is_delete) {
+			state.contacts.splice(action.num, 1);
+			return assign({}, state, {current: state.contacts});
+		}
+		return state;
 	case userActionType.SET_USER_DATA:
 		return assign({}, state, {contacts: [...action.contacts]});
 	default:
