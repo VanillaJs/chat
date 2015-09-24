@@ -18,6 +18,7 @@ class MessageBox extends Component {
 	onClick() {
 		const input = this.refs.input.getDOMNode();
 		const text = input.value.trim();
+
 		if (this.props.onMessage && text) {
 			this.props.onMessage(text);
 			input.value = '';

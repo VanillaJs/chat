@@ -27,6 +27,41 @@ export function fetchChannelList() {
 
 export function changeChannel(id) {
 	return () => {
-		socket.emit('c.room.join', {id});
+		socket.emit('c.channel.join', {id});
 	};
 }
+
+export function setContactList(contacts) {
+	return {
+		type: contactActionType.SET_CHANNEL_LIST,
+		contacts,
+	};
+}
+
+export function addContact(contact) {
+	return {
+		type: contactActionType.ADD_CHANNEL,
+		contact,
+	};
+}
+
+export function sendAddContact(username) {
+	return dispatch => {
+		socket.emit('c.channel.add', {username});
+		socket.on('s.channel.add', function handler(data) {
+			dispatch(addContact(data));
+			socket.removeEventListener('s.channel.add', handler);
+		});
+	};
+}
+
+export function fetchContactList() {
+	return dispatch => {
+		socket.emit('c.user.get_contact_list');
+		socket.on('s.user.SET_CHANNEL_LIST', function handler(contacts) {
+			dispatch(setContactList(contacts));
+			socket.removeEventListener(handler);
+		});
+	};
+}
+
