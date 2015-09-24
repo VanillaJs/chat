@@ -1,6 +1,6 @@
 var async = require('async');
 var util = require('util');
-
+var User = require('./user').User;
 var mongoose = require('./../lib/database/mongoose'),
 	Schema = mongoose.Schema;
 
@@ -20,12 +20,15 @@ var schema = new Schema({
 
 schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callback) {
 	var Channel = this;
+	//если пользоваетель хочет добавить сама себя
+	if(user_create_id === user_add_id) {
+		return callback("Alredy Exist!");
+	}
 
 	Channel.findOne( { $and: [ { users: { $in: [user_create_id] }  }, { users: { $in: [user_add_id] } }, {type:type} ] }, function(err, channel) {
 
 		if (!err)
 		{
-			console.log(channel);
 			if(channel) {
 				callback("Alredy Exist!",null);
 			} else {
@@ -55,6 +58,25 @@ schema.statics.getContactsByUserID = function(id, callback) {
 	Channel.find({ users: { $in: [id] } },function (err, channelsData) {
 		if (!err)
 		{
+			if(channelsData.length > 0) {
+				//Говнокодик
+				//проходим по всем каналам
+				channelsData.forEach(function(channel, index) {
+					if(channel.type === "user") {
+						channel.users.splice(channel.users.indexOf(id), 1);
+						channelsData[index].users = channel.users;
+						if(channel.users.length > 0) {
+							var channelID = channel.users[0];
+							User.getUserByID(channelID, function(err, user) {
+								channelsData[index].name = user.username;
+								//channelsData[index].avatar = user.avatar;
+							});
+						}
+					} else {
+						//channelsData[index].avatar = "";
+					}
+				});
+			}
 			callback(null,channelsData);
 		}
 		else

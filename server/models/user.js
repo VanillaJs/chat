@@ -141,6 +141,25 @@ schema.statics.authorizeSocial = function (userData, callback) {
 	], callback);
 }
 
+schema.statics.getUserByID = function(id, callback)
+{
+	var User = this;
+
+
+	async.waterfall([
+		function (callback) {
+			User.findById(id, callback);
+		},
+		function (user, callback) {
+			if (user) {
+				callback(null, user)
+			} else {
+				callback("User is not fined!");
+			}
+		}
+	], callback);
+}
+
 schema.statics.authorize = function (username, password, callback) {
 
     /**

@@ -1,7 +1,7 @@
 var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
 
-module.exports = function (socket) {
+module.exports = function (socket, data) {
 
 	var sendMessage = function(status, room_id, message) {
 		socket.broadcast.to(room_id).emit('s.user.send_message', {
@@ -13,9 +13,7 @@ module.exports = function (socket) {
 	}
 	//Добавление контактов логика еще не готова
 	socket.on('c.user.get_data', function(obj) {
-		Channel.getContactsByUserID(socket.handshake.user._id, function(err, contacts){
-			socket.emit('s.user.set_data', {data:socket.handshake.user, contacts:contacts});
-		});
+			socket.emit('s.user.set_data', {data:data.userData, contacts:data.contacts});
 
 	});
 	//отправление письма
@@ -32,7 +30,6 @@ module.exports = function (socket) {
 			message.user_id = socket.handshake.user._id;
 			//пишем в базу
 			Message.addNew(message, function(err, message_new){
-				console.log(err);
 				if(err)
 				{
 					status = false;

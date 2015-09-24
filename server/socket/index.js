@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var sessionStore = require('./../lib/database/sessionStore');
 var HttpError = require('./../error').HttpError;
 var User = require('./../models/user').User;
+var Channel = require('./../models/channel').Channel;
 var Users = {}; //Глобальный объект с пользователями и подключенными сокетами
 var currentRoom = {};
 
@@ -30,7 +31,6 @@ function loadUser(session, callback) {
         if (!user) {
             return callback(null, null);
         }
-
         callback(null, user);
     })
 }
@@ -40,7 +40,7 @@ module.exports = function (server) {
     var secret = config.get('session:secret');
     var sessionKey = config.get('session:key');
     var io = require('socket.io').listen(server);
-	io.Users = Users;
+
     io.set('origins', config.get('app:socketOrigin'));
     io.set('logger', log);
     io.use(function (socket, next) {
@@ -103,11 +103,16 @@ module.exports = function (server) {
                 //Если пользователя нет , то добавляем его
                 var sockets = [];
                 sockets.push(socket);
-                var putData = {userData: user, soketData:sockets};
+                var putData = {userData: user, soketData:sockets, room:"Lobby"};
                 Users[user._id] = putData;
             }
 
-            next();
+			Channel.getContactsByUserID(user._id, function(err, contacts){
+				Users[user._id].contacts = contacts;
+				next(err);
+			});
+
+
 
         });
 
@@ -115,15 +120,15 @@ module.exports = function (server) {
 
 
     io.on('connection', function (socket) {
-		var userRoom = "Lobby";
-		//Помещение подключившегося пользователя в комнату Lobby
-		require('./types/room')(socket, userRoom);
+		var data = Users[socket.handshake.user._id];
+		require('./types/channel')(socket, Users);
 		//генерирую событие списка комнат getContsctsList
 		// Обработка пользовательских событий
-		require('./types/user')(socket);
-		require('./types/contact')(socket);
+		require('./types/user')(socket, data);
 		require('./types/disconnect')(socket);
     });
+
+	io.Users = Users;
 
     return io;
 };
