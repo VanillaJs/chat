@@ -31,15 +31,19 @@ module.exports = function (socket, Users) {
 					Channel.findOrCreate("user", socket.handshake.user._id, user._id, function(err , channel) {
 						if(!err)
 						{
-							send_data = channel;
+							send_data = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
 						}
+						//Таймаут для того что данные по пользователю приходят асинхронно
+						setTimeout(function () {
+							socket.emit('s.channel.add', send_data);
+						}, 50)
 
-						socket.emit('s.channel.add', {data: send_data});
+
 					});
 				}
 			} else {
 				//пользователь не найден
-				socket.emit('s.channel.add', {data: send_data});
+				socket.emit('s.channel.add', send_data);
 			}
 
 		});

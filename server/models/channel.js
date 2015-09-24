@@ -52,6 +52,28 @@ schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callb
 	});
 }
 
+schema.statics.prepareChannel = function(id, channel, Users) {
+	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", users:[]};
+	if(channel.type === "user") {
+		channel.users.splice(channel.users.indexOf(id), 1);
+		customObject.users = channel.users;
+		if(channel.users.length > 0) {
+			var userID = channel.users[0];
+			//Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
+			customObject.is_online = Users.hasOwnProperty(userID);
+			//нужно будет очень сильно подумать ) асинхронно могут данные и не подтянуться =)
+			User.getUserByID(userID, function(err, user) {
+				customObject.name = user.username;
+				customObject.avatar = user.avatar;
+			});
+		}
+	} else {
+		customObject.avatar = "";
+	}
+
+	return customObject;
+}
+
 schema.statics.getContactsByUserID = function(id, Users, callback) {
 	var Channel = this;
 
@@ -63,26 +85,7 @@ schema.statics.getContactsByUserID = function(id, Users, callback) {
 				//Говнокодик
 				//проходим по всем каналам
 				channelsData.forEach(function(channel, index) {
-					var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", users:[]};
-					if(channel.type === "user") {
-						channel.users.splice(channel.users.indexOf(id), 1);
-						customObject.users = channel.users;
-						if(channel.users.length > 0) {
-							var userID = channel.users[0];
-							//Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
-							customObject.is_online = Users.hasOwnProperty(userID);
-							//нужно будет очень сильно подумать ) асинхронно могут данные и не подтянуться =)
-							User.getUserByID(userID, function(err, user) {
-								customObject.name = user.username;
-								customObject.avatar = user.avatar;
-							});
-						}
-					} else {
-						customObject.avatar = "";
-					}
-
-
-					channels[index] = customObject;
+					channels[index] = Channel.prepareChannel(id, channel, Users);
 				});
 			}
 			callback(null,channels);
