@@ -103,7 +103,7 @@ module.exports = function (server) {
                 //Если пользователя нет , то добавляем его
                 var sockets = [];
                 sockets.push(socket);
-                var putData = {userData: user, soketData:sockets, room:"Lobby"};
+                var putData = {userData: user, soketData:sockets, channel:"Lobby"};
                 Users[user._id] = putData;
             }
 

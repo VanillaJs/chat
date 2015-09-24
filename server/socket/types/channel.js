@@ -6,6 +6,7 @@ module.exports = function (socket, Users) {
 	var userData = Users[socket.handshake.user._id],
 		channel = userData.channel;
 
+
 	socket.join(channel);
 	// Обнаружение пользователя в данной комнате
 	// Оповещение пользователя о том, что он находится в новой комнате
@@ -14,7 +15,7 @@ module.exports = function (socket, Users) {
 
 	socket.on('c.channel.join', function(channel) {
 		socket.leave(userData.room);
-		Users[socket.handshake.user._id].room = channel.id;
+		Users[socket.handshake.user._id].channel = channel.id;
 		socket.join(channel.id);
 		socket.emit('s.channel.join', {channel: channel.id});
 	});
