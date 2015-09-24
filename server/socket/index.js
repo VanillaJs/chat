@@ -103,11 +103,11 @@ module.exports = function (server) {
                 //Если пользователя нет , то добавляем его
                 var sockets = [];
                 sockets.push(socket);
-                var putData = {userData: user, soketData:sockets, room:"Lobby"};
+                var putData = {userData: user, soketData:sockets, channel:"Lobby"};
                 Users[user._id] = putData;
             }
 
-			Channel.getContactsByUserID(user._id, function(err, contacts){
+			Channel.getContactsByUserID(user._id, Users, function(err, contacts){
 				Users[user._id].contacts = contacts;
 				next(err);
 			});
