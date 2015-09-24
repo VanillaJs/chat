@@ -51,6 +51,12 @@ module.exports = function (socket, Users) {
 	socket.on('c.channel.delete', function(channel) {
 		Channel.findOne({_id:channel.id}).remove(function(err, mess) {
 			var sendObject = {id:channel.id, is_delete :mess.result.n === 1};
+
+			/*
+			* Нужно добавить удалений сообщения по каналу
+			* а также выод из канала 2-го пользователя из контакта
+			* и отправить ему, что канал удален ну или как-то так
+			 */
 			socket.emit('s.channel.delete', sendObject);
 		});
 	});
