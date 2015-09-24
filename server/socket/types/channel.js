@@ -34,12 +34,10 @@ module.exports = function (socket, Users) {
 						{
 							send_data = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
 						}
-						//Таймаут для того что данные по пользователю приходят асинхронно
+						//Таймаут для того, что данные по пользователю приходят асинхронно
 						setTimeout(function () {
 							socket.emit('s.channel.add', send_data);
-						}, 50)
-
-
+						}, 50);
 					});
 				}
 			} else {
@@ -52,7 +50,7 @@ module.exports = function (socket, Users) {
 
 	socket.on('c.channel.delete', function(channel) {
 		Channel.findOne({_id:channel.id}).remove(function(err, mess) {
-			var sendObject = {num:channel.num, is_delete :mess.result.n === 1};
+			var sendObject = {id:channel.id, is_delete :mess.result.n === 1};
 			socket.emit('s.channel.delete', sendObject);
 		});
 	});

@@ -80,12 +80,12 @@ schema.statics.getContactsByUserID = function(id, Users, callback) {
 	Channel.find({ users: { $in: [id] } },function (err, channelsData) {
 		if (!err)
 		{
-			var channels = [];
+			var channels = {};
 			if(channelsData.length > 0) {
 				//Говнокодик
 				//проходим по всем каналам
 				channelsData.forEach(function(channel, index) {
-					channels[index] = Channel.prepareChannel(id, channel, Users);
+					channels[channel._id] = Channel.prepareChannel(id, channel, Users);
 				});
 			}
 			callback(null,channels);

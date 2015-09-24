@@ -41,7 +41,7 @@ export function setContactList(contacts) {
 export function removeFromChannelList(data) {
 	return {
 		type: channelActionType.CHANNEL_REMOVE,
-		num:data.num,
+		id:data.id,
 		is_delete:data.is_delete
 	};
 }

@@ -30,15 +30,15 @@ class ContactList extends Component {
 		return (
 			<div className="contactlist">
 				<ContactAdd onContactAdd={this.handleContactAdd.bind(this)} />
-				{channels.contacts.map((contact, i) => {
-					const cls = `contactlist__contact ${contact._id === channels.current ? 'is-active' : ''}`;
+				{Object.keys(channels.contacts).map((key, i) => {
+					const cls = `contactlist__contact ${channels.contacts[key]._id === channels.current ? 'is-active' : ''}`;
 
 					return (
 						<div className={cls}>
-							<div data-id={contact._id} onClick={this.changeChannel.bind(this)} key={i}>
-								{contact.name}
+							<div data-id={channels.contacts[key]._id} onClick={this.changeChannel.bind(this)} key={i}>
+								{channels.contacts[key].name}
 							</div>
-							<span data-id={contact._id} data-num={i} onClick={this.deleteChannel.bind(this)}>x(del)</span>
+							<span data-id={channels.contacts[key]._id} data-num={i} onClick={this.deleteChannel.bind(this)}>x(del)</span>
 						</div>
 					);
 				})}
