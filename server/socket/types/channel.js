@@ -4,19 +4,19 @@ var Channel = require('../../models/channel').Channel;
 module.exports = function (socket, Users) {
 	// Вход пользователя в комнату чата
 	var userData = Users[socket.handshake.user._id],
-		room = userData.room;
+		channel = userData.channel;
 
-	socket.join(room);
+	socket.join(channel);
 	// Обнаружение пользователя в данной комнате
 	// Оповещение пользователя о том, что он находится в новой комнате
 
-	socket.emit('s.channel.join', {room: room});
+	socket.emit('s.channel.join', {channel: channel});
 
-	socket.on('c.channel.join', function(room) {
+	socket.on('c.channel.join', function(channel) {
 		socket.leave(userData.room);
-		Users[socket.handshake.user._id].room = room.id;
-		socket.join(room.id);
-		socket.emit('s.channel.join', {room: room.id});
+		Users[socket.handshake.user._id].room = channel.id;
+		socket.join(channel.id);
+		socket.emit('s.channel.join', {channel: channel.id});
 	});
 
 	//Добавление контактов логика еще не готова
@@ -42,6 +42,13 @@ module.exports = function (socket, Users) {
 				socket.emit('s.channel.add', {data: send_data});
 			}
 
+		});
+	});
+
+	socket.on('c.channel.delete', function(channel) {
+		Channel.findOne({_id:channel.id}).remove(function(err, mess) {
+			var sendObject = {num:channel.num, is_delete :mess.result.n === 1};
+			socket.emit('s.channel.delete', sendObject);
 		});
 	});
 };

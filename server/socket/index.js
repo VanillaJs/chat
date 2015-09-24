@@ -107,7 +107,7 @@ module.exports = function (server) {
                 Users[user._id] = putData;
             }
 
-			Channel.getContactsByUserID(user._id, function(err, contacts){
+			Channel.getContactsByUserID(user._id, Users, function(err, contacts){
 				Users[user._id].contacts = contacts;
 				next(err);
 			});
