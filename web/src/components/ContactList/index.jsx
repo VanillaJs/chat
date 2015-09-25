@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {changeChannel,deleteChannel,sendAddContact} from '../../actions/channels';
-import ContactAdd from '../ContactAdd';
+import ContactSearch from '../contact-search';
 
 import './contactlist.sass';
 

@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import './header.sass';
 
-
 class Header extends Component {
 
   constructor(props) {
@@ -15,10 +14,10 @@ class Header extends Component {
   }
 
   render() {
-    const dialog = this.state.active ? 
+    const dialog = this.state.active ?
     <div className="header__settings">
-      <span>Hello</span>
-    </div> 
+      <span>User settings modal window</span>
+    </div>
     : '';
 
     return (
@@ -32,6 +31,5 @@ class Header extends Component {
     );
   }
 }
-
 
 export default Header;
