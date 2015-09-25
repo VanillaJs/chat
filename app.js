@@ -1,4 +1,4 @@
-var forever = require('forever'),
+const forever = require('forever'),
     fs = require('fs'),
     child = new(forever.Monitor)('./server/server.js', {
         'silent': process.env.NODE_ENV !== 'develop',
