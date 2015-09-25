@@ -1,9 +1,6 @@
-module.exports = function (socket) {
+var sendStatus = require('../../lib/channelstatus');
+module.exports = function (socket, Users) {
 	socket.on('disconnect', function() {
-		socket.broadcast.to(socket.handshake.user.room).emit('s.user.send_messsage', {
-			status:true,
-			room_id:socket.handshake.user.room,
-			text: socket.handshake.user.username + ' has left ' + socket.handshake.user.room + '.'
-		});
+		sendStatus(socket.handshake.user._id, Users, "offline");
 	});
 };
