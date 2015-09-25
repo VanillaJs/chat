@@ -33,15 +33,33 @@ export function changeChannel(id) {
 
 export function setContactList(contacts) {
 	return {
-		type: contactActionType.SET_CHANNEL_LIST,
+		type: channelActionType.SET_CHANNEL_LIST,
 		contacts,
+	};
+}
+
+export function removeFromChannelList(data) {
+	return {
+		type: channelActionType.CHANNEL_REMOVE,
+		id:data.id,
+		is_delete:data.is_delete
 	};
 }
 
 export function addContact(contact) {
 	return {
-		type: contactActionType.ADD_CHANNEL,
+		type: channelActionType.ADD_CHANNEL,
 		contact,
+	};
+}
+
+export function deleteChannel(id, num) {
+	return dispatch  => {
+		socket.emit('c.channel.delete', {id, num});
+		socket.on('s.channel.delete', function handler(data) {
+			dispatch(removeFromChannelList(data));
+			socket.removeEventListener('s.channel.delete', handler);
+		});
 	};
 }
 

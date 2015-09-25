@@ -52,32 +52,43 @@ schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callb
 	});
 }
 
-schema.statics.getContactsByUserID = function(id, callback) {
+schema.statics.prepareChannel = function(id, channel, Users) {
+	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", users:[]};
+	if(channel.type === "user") {
+		channel.users.splice(channel.users.indexOf(id), 1);
+		customObject.users = channel.users;
+		if(channel.users.length > 0) {
+			var userID = channel.users[0];
+			//Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
+			customObject.is_online = Users.hasOwnProperty(userID);
+			//нужно будет очень сильно подумать ) асинхронно могут данные и не подтянуться =)
+			User.getUserByID(userID, function(err, user) {
+				customObject.name = user.username;
+				customObject.avatar = user.avatar;
+			});
+		}
+	} else {
+		customObject.avatar = "";
+	}
+
+	return customObject;
+}
+
+schema.statics.getContactsByUserID = function(id, Users, callback) {
 	var Channel = this;
 
 	Channel.find({ users: { $in: [id] } },function (err, channelsData) {
 		if (!err)
 		{
+			var channels = {};
 			if(channelsData.length > 0) {
 				//Говнокодик
 				//проходим по всем каналам
 				channelsData.forEach(function(channel, index) {
-					if(channel.type === "user") {
-						channel.users.splice(channel.users.indexOf(id), 1);
-						channelsData[index].users = channel.users;
-						if(channel.users.length > 0) {
-							var channelID = channel.users[0];
-							User.getUserByID(channelID, function(err, user) {
-								channelsData[index].name = user.username;
-								//channelsData[index].avatar = user.avatar;
-							});
-						}
-					} else {
-						//channelsData[index].avatar = "";
-					}
+					channels[channel._id] = Channel.prepareChannel(id, channel, Users);
 				});
 			}
-			callback(null,channelsData);
+			callback(null,channels);
 		}
 		else
 		{

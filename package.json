@@ -9,7 +9,7 @@
     "server-prod": "NODE_ENV=production node app.js",
     "clean": "rm -rf web/build",
     "build": "npm run clean && gulp --gulpfile web/gulpfile.js build",
-    "lint": "eslint web/src/*.{js,jsx}",
+    "lint": "eslint *.{js,jsx} --ignore-path .gitignore",
     "gulp": "gulp --gulpfile web/gulpfile.js",
     "gulp:watch": "gulp --gulpfile web/gulpfile.js watch"
   },

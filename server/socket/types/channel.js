@@ -4,25 +4,26 @@ var Channel = require('../../models/channel').Channel;
 module.exports = function (socket, Users) {
 	// Вход пользователя в комнату чата
 	var userData = Users[socket.handshake.user._id],
-		room = userData.room;
+		channel = userData.channel;
 
-	socket.join(room);
+
+	socket.join(channel);
 	// Обнаружение пользователя в данной комнате
 	// Оповещение пользователя о том, что он находится в новой комнате
 
-	socket.emit('s.channel.join', {room: room});
+	socket.emit('s.channel.join', {channel: channel});
 
-	socket.on('c.channel.join', function(room) {
+	socket.on('c.channel.join', function(channel) {
 		socket.leave(userData.room);
-		Users[socket.handshake.user._id].room = room.id;
-		socket.join(room.id);
-		socket.emit('s.channel.join', {room: room.id});
+		Users[socket.handshake.user._id].channel = channel.id;
+		socket.join(channel.id);
+		socket.emit('s.channel.join', {channel: channel.id});
 	});
 
 	//Добавление контактов логика еще не готова
 	socket.on('c.channel.add', function(user) {
 		var send_data = null;
-		User.findByParams(user.username, user.email, function(err, user) {
+		User.findByParams(user.username, user.username, function(err, user) {
 			if(user)
 			{
 				if(!err)
@@ -31,17 +32,32 @@ module.exports = function (socket, Users) {
 					Channel.findOrCreate("user", socket.handshake.user._id, user._id, function(err , channel) {
 						if(!err)
 						{
-							send_data = channel;
+							send_data = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
 						}
-
-						socket.emit('s.channel.add', {data: send_data});
+						//Таймаут для того, что данные по пользователю приходят асинхронно
+						setTimeout(function () {
+							socket.emit('s.channel.add', send_data);
+						}, 50);
 					});
 				}
 			} else {
 				//пользователь не найден
-				socket.emit('s.channel.add', {data: send_data});
+				socket.emit('s.channel.add', send_data);
 			}
 
+		});
+	});
+
+	socket.on('c.channel.delete', function(channel) {
+		Channel.findOne({_id:channel.id}).remove(function(err, mess) {
+			var sendObject = {id:channel.id, is_delete :mess.result.n === 1};
+
+			/*
+			* Нужно добавить удалений сообщения по каналу
+			* а также выод из канала 2-го пользователя из контакта
+			* и отправить ему, что канал удален ну или как-то так
+			 */
+			socket.emit('s.channel.delete', sendObject);
 		});
 	});
 };
