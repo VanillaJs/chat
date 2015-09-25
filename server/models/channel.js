@@ -53,10 +53,10 @@ schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callb
 }
 
 schema.statics.prepareChannel = function(id, channel, Users) {
-	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", users:[]};
+	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", user:null};
 	if(channel.type === "user") {
 		channel.users.splice(channel.users.indexOf(id), 1);
-		customObject.users = channel.users;
+		customObject.user = channel.users[0];
 		if(channel.users.length > 0) {
 			var userID = channel.users[0];
 			//Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь

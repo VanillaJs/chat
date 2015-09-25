@@ -113,7 +113,7 @@ module.exports = function(server) {
 		// генерирую событие списка комнат getContsctsList
 		// Обработка пользовательских событий
 		require('./types/user')(socket, data);
-		require('./types/disconnect')(socket);
+		require('./types/disconnect')(socket, Users);
 	});
 
 	io.Users = Users;

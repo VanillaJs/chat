@@ -1,11 +1,14 @@
 var User = require('../../models/user').User;
 var Channel = require('../../models/channel').Channel;
+var sendStatus = require('../../lib/channelstatus');
 
 module.exports = function (socket, Users) {
+
 	// Вход пользователя в комнату чата
 	var userData = Users[socket.handshake.user._id],
 		channel = userData.channel;
 
+	sendStatus(socket.handshake.user._id, Users, "online");
 
 	socket.join(channel);
 	// Обнаружение пользователя в данной комнате
