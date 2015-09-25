@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {changeChannel} from '../../actions/channels';
-import ContactAdd from '../ContactAdd';
+import ContactSearch from '../contact-search';
 
 import './contactlist.sass';
 
@@ -15,7 +15,7 @@ class ContactList extends Component {
 		this.props.dispatch(changeChannel(id));
 	}
 
-	handleContactAdd(username) {
+	handleContactSearch(username) {
 		this.props.dispatch(sendAddContact(username));
 	}
 
@@ -23,7 +23,10 @@ class ContactList extends Component {
 		let {channels} = this.props;
 		return (
 			<div className="contactlist">
-				<ContactAdd onContactAdd={this.handleContactAdd.bind(this)} />
+				<ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
+
+
+
 				{channels.contacts.map((contact, i) => {
 					const cls = `contactlist__contact ${contact._id === channels.current ? 'is-active' : ''}`;
 
