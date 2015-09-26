@@ -24,7 +24,6 @@ module.exports = function (socket, Users) {
 	}
 	//Добавление контактов логика еще не готова
 	socket.on('c.user.get_data', function(obj) {
-		console.log(data.contacts);
 			socket.emit('s.user.set_data', {data:data.userData, contacts:data.contacts});
 
 	});

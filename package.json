@@ -13,7 +13,9 @@
     "gulp": "gulp --gulpfile web/gulpfile.js",
     "gulp:watch": "gulp --gulpfile web/gulpfile.js watch"
   },
-  "pre-commit": ["lint"],
+  "pre-commit": [
+    "lint"
+  ],
   "homepage": "http://vjs.cloudapp.net/",
   "dependencies": {
     "async": "^1.4.2",
@@ -28,6 +30,7 @@
     "express": "~4.0.0",
     "express-session": "^1.11.3",
     "forever": "^0.15.1",
+    "jade": "^1.11.0",
     "mime": "~1.2.7  ",
     "mongoose": "^4.1.7",
     "morgan": "^1.0.1",
@@ -67,7 +70,6 @@
     "gulp-html-prettify": "0.0.1",
     "gulp-if": "^1.2.5",
     "gulp-imagemin": "*",
-    "gulp-jade": "^1.1.0",
     "gulp-plumber": "^1.0.1",
     "gulp-rigger": "*",
     "gulp-sass": "*",

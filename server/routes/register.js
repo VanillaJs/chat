@@ -5,9 +5,12 @@ var passport = require('./../lib/passport');
 
 exports.post = function(req, res, next) {
 	var colors = ['31b0c3', 'fdc689', 'f8a232', 'f8a232', 'f6a4c9', '8c6239', '39b54a'];
-	var num = Math.floor((Math.random() * colors.length) + 1) -1;
-	var color = colors[num];
-	var user = new User({ username: req.body.username, password: req.body.password, email: req.body.email, color:color});
+	var avatars = ["/avatar/1.svg", "/avatar/2.svg", "/avatar/3.svg"];
+	var numC = Math.floor((Math.random() * colors.length) + 1) -1;
+	var numA = Math.floor((Math.random() * avatars.length) + 1) -1;
+	var color = colors[numC];
+	var avatar = avatars[numA];
+	var user = new User({ username: req.body.username, password: req.body.password, email: req.body.email, color:color, avatar:avatar});
 	user.save(function(err) {
 		return err
 			? next(err)
