@@ -7,3 +7,4 @@ server/logs
 db
 node-debug.log
 layout
+*.iml
