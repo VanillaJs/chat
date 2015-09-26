@@ -44,7 +44,7 @@ module.exports = function (socket, Users) {
 							Users[socket.handshake.user._id].contacts[send_data._id] = send_data;
 							var toUser = send_data;
 							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, send_data);
-							socket.emit('s.channel.add', send_data);
+							socket.emit('s.channel.add', {channel:send_data._id, custom:send_data});
 						}, 50);
 					});
 				}
