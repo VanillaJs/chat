@@ -10,7 +10,7 @@ module.exports = {
 		src: {
 			html: 'src/templates/*.jade',
 			js: 'src/index.js',
-			css: 'src/style/*.{scss,sass,css}',
+			css: 'src/**/*.{scss,sass,css}',
 			img: 'src/img/**/*.*',
 			fonts: 'src/fonts/**/*.*'
 		},
