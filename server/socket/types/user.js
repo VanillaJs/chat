@@ -5,9 +5,9 @@ module.exports = function (socket, Users) {
 	var data = Users[socket.handshake.user._id];
 
 	var sendMessage = function(status, room_id, message) {
-		var toUser = data.contacts[room_id].user;
+		var toUser = data.contacts[room_id];
 		//Проверяем пользователь онлайн или нет
-		if(Users.hasOwnProperty(toUser)) {
+		if(Users.hasOwnProperty(toUser.user)) {
 			//проверяем, что он не находится в этом канале
 			if(Users[toUser].channel !== room_id) {
 				//отправляем ему сообщение

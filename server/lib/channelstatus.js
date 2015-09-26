@@ -1,4 +1,4 @@
-function sendStatus(id, Users, event_name, to, additionalData) {
+function sendStatus(id, Users, event_name, toChannel, additionalData) {
 	var userData = Users[id],
 	keysChannels = Object.keys(userData.contacts);
 	if(to === "all" || to === undefined) {
@@ -10,27 +10,27 @@ function sendStatus(id, Users, event_name, to, additionalData) {
 					var userId = userData.contacts[key].user;
 					//проверяем если пользоваетель онлайн
 					if(Users.hasOwnProperty(userId)) {
-						emmitEvent(Users[userId], additionalData,event_name);
+						emmitEvent(Users[userId], key, additionalData,event_name);
 					}
 				}
 
 			});
 		}
 	} else {
-		if(Users.hasOwnProperty(to)) {
+		if(Users.hasOwnProperty(toChannel.user)) {
 			//проверяем если пользоваетель онлайн
-			emmitEvent(Users[to], additionalData,event_name);
+			emmitEvent(Users[toChannel.user],toChannel._id, additionalData,event_name);
 		}
 	}
 
 }
 
-function emmitEvent(user, additionalData,event_name) {
+function emmitEvent(user, channelId, additionalData,event_name) {
 	//если есть активные сокеты
 	if(user.soketData !== undefined && user.soketData.length) {
 		user.soketData.map(function socketsHandler (socketObj) {
 			//отправляем данному пользователю на все соединения, что контакт находится в данном статусе
-			var sendData = {channel: key};
+			var sendData = {channel: channelId};
 
 			if(additionalData) {
 				sendData.custom = additionalData;

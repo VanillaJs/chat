@@ -19,6 +19,7 @@ class Sidebar extends Component {
 
   render() {
     let {channels} = this.props;
+
     return (
       <aside className="sidebar">
         <UserInfo/>

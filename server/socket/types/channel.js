@@ -42,7 +42,7 @@ module.exports = function (socket, Users) {
 						//Таймаут для того, что данные по пользователю приходят асинхронно
 						setTimeout(function () {
 							Users[socket.handshake.user._id].contacts[send_data._id] = send_data;
-							var toUser = send_data.user;
+							var toUser = send_data;
 							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, send_data);
 							socket.emit('s.channel.add', send_data);
 						}, 50);
@@ -61,7 +61,7 @@ module.exports = function (socket, Users) {
 			var sendObject = {id:channel.id, is_delete :mess.result.n === 1};
 			//Удаление сообщений по каналу
 			Message.find({ channelId: { $in: [channel.id] }  }).remove();
-			var toUser = userData.contacts[channel.id].user;
+			var toUser = userData.contacts[channel.id];
 			sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
 			//И удаляем из глобального объекта пользователя данный контакт
 			Users[socket.handshake.user._id].contacts[channel.id];
