@@ -1,15 +1,10 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, {Component} from 'react';
 import UserInfo from '../user-info';
 import UserDetail from '../user-detail';
 import ContactSearch from '../contact-search';
 import ChannelAdd from '../channel-add';
 import ChannelList from '../channel-list';
 import './sidebar.sass';
-
-@connect(store => ({
-  channels: store.channels,
-}))
 
 class Sidebar extends Component {
 
@@ -18,8 +13,6 @@ class Sidebar extends Component {
   }
 
   render() {
-    let {channels} = this.props;
-
     return (
       <aside className="sidebar">
         <UserInfo/>
