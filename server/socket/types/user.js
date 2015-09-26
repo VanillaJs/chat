@@ -1,9 +1,20 @@
 var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
-
-module.exports = function (socket, data) {
+var sendStatus = require('../../lib/channelstatus');
+module.exports = function (socket, Users) {
+	var data = Users[socket.handshake.user._id];
 
 	var sendMessage = function(status, room_id, message) {
+		var toUser = data.contacts[room_id].user;
+		//Проверяем пользователь онлайн или нет
+		if(Users.hasOwnProperty(toUser)) {
+			//проверяем, что он не находится в этом канале
+			if(Users[toUser].channel !== room_id) {
+				//отправляем ему сообщение
+				sendStatus(socket.handshake.user._id, Users, 's.user.send_private', toUser, {message_count: 1});
+			}
+		}
+
 		socket.broadcast.to(room_id).emit('s.user.send_message', {
 			status:true,
 			room_id:room_id,
@@ -13,6 +24,7 @@ module.exports = function (socket, data) {
 	}
 	//Добавление контактов логика еще не готова
 	socket.on('c.user.get_data', function(obj) {
+		console.log(data.contacts);
 			socket.emit('s.user.set_data', {data:data.userData, contacts:data.contacts});
 
 	});
@@ -30,14 +42,11 @@ module.exports = function (socket, data) {
 			message.user_id = socket.handshake.user._id;
 			//пишем в базу
 			Message.addNew(message, function(err, message_new){
-				if(err)
+				if(!err)
 				{
-					status = false;
+					status = true;
 				}
-				else
-				{
-					sendMessage(true, message.room_id, message_new)
-				}
+				sendMessage(true, message.room_id, message_new);
 
 			});
 		}

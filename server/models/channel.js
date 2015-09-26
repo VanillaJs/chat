@@ -1,6 +1,7 @@
 var async = require('async');
 var util = require('util');
 var User = require('./user').User;
+var Message = require('./message').Message;
 var mongoose = require('./../lib/database/mongoose'),
 	Schema = mongoose.Schema;
 
@@ -53,7 +54,7 @@ schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callb
 }
 
 schema.statics.prepareChannel = function(id, channel, Users) {
-	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", user:null};
+	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", user:null, message_count:0, color:"black"};
 	if(channel.type === "user") {
 		channel.users.splice(channel.users.indexOf(id), 1);
 		customObject.user = channel.users[0];
@@ -62,6 +63,13 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 			//Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
 			customObject.is_online = Users.hasOwnProperty(userID);
 			//нужно будет очень сильно подумать ) асинхронно могут данные и не подтянуться =)
+
+
+			Message.getUnreadMessagesByChannel(channel._id, id, function messagesCallback(err, length) {
+				if (!err) {
+					customObject.message_count = length;
+				}
+			});
 			User.getUserByID(userID, function(err, user) {
 				customObject.name = user.username;
 				customObject.avatar = user.avatar;
@@ -84,7 +92,7 @@ schema.statics.getContactsByUserID = function(id, Users, callback) {
 			if(channelsData.length > 0) {
 				//Говнокодик
 				//проходим по всем каналам
-				channelsData.forEach(function(channel, index) {
+				channelsData.forEach(function(channel) {
 					channels[channel._id] = Channel.prepareChannel(id, channel, Users);
 				});
 			}

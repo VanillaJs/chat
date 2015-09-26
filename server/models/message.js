@@ -10,6 +10,7 @@ var schema = new Schema({
 	channelId: {
 		type:mongoose.Schema.Types.ObjectId,
 		ref:'Channel',
+		index: true,
 		required: true
 	},
 	userId: {
@@ -26,6 +27,7 @@ var schema = new Schema({
 		type: String,
 		required: true
 	},
+	read:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
 	created: {
 		type: Date,
 		default: Date.now
@@ -49,6 +51,19 @@ schema.statics.getListByParams = function (channel_id, page_num, callback) {
 		},
 		function (messages, callback) {
 			callback(null, messages);
+		}
+	], callback);
+};
+
+schema.statics.getUnreadMessagesByChannel= function (channelId, userId, callback) {
+//будет логика запросв
+	var Message = this;
+	async.waterfall([
+		function (callback) {
+			Message.find({$and:[ {read: { $nin: [userId] }}, {channelId : channelId} ]},callback);
+		},
+		function(messages, callback) {
+			callback(null, messages.length);
 		}
 	], callback);
 };
@@ -78,7 +93,8 @@ schema.statics.addNew = function(message, callback) {
 					channelId:message.room_id,
 					userId:message.user_id,
 					messageTypeId:message_type.id,
-					message:message.text
+					message:message.text,
+					read:[message.user_id]
 				};
 				var new_message = new Message(new_message_obj);
 				new_message.save(function (err) {
