@@ -54,7 +54,7 @@ schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callb
 }
 
 schema.statics.prepareChannel = function(id, channel, Users) {
-	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", user:null, message_count:0, color:"black"};
+	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", user:null, message_count:0, color:"000	"};
 	if(channel.type === "user") {
 		channel.users.splice(channel.users.indexOf(id), 1);
 		customObject.user = channel.users[0];

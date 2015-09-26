@@ -4,7 +4,10 @@ var HttpError = require('./../error').HttpError;
 var passport = require('./../lib/passport');
 
 exports.post = function(req, res, next) {
-	var user = new User({ username: req.body.username, password: req.body.password, email: req.body.email});
+	var colors = ['31b0c3', 'fdc689', 'f8a232', 'f8a232', 'f6a4c9', '8c6239', '39b54a'];
+	var num = Math.floor((Math.random() * colors.length) + 1) -1;
+	var color = colors[num];
+	var user = new User({ username: req.body.username, password: req.body.password, email: req.body.email, color:color});
 	user.save(function(err) {
 		return err
 			? next(err)
