@@ -8,19 +8,12 @@ class Channel extends Component {
 	}
 	constructor(props) {
 		super(props);
-		this.state = {active: false};
 	}
 
 	changeChannel() {
 		this.props.changeChannel(this.props.channel._id);
 	}
 
-	showSettings(event) {
-		event.preventDefault();
-		if (!this.state.active) {
-			this.setState({active: true});
-		}
-	}
 
 	render() {
 		console.log(this.props.channel);
@@ -29,7 +22,7 @@ class Channel extends Component {
 
 		return (
 			<li className="channel-wrap" onClick={this.changeChannel.bind(this)}>
-				<a href="#" className="channel" onClick={this.showSettings.bind(this)}>
+				<a href="#" className="channel">
 					{activeTab}
 					<div className="channel__image-wrap"><img src="http://bit.ly/1R3jddn" alt="" className="channel__image"></img></div>
 					<div className="channel__message">
