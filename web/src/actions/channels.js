@@ -56,20 +56,12 @@ export function addContact(contact) {
 export function deleteChannel(id, num) {
 	return dispatch  => {
 		socket.emit('c.channel.delete', {id, num});
-		socket.on('s.channel.delete', function handler(data) {
-			dispatch(removeFromChannelList(data));
-			socket.removeEventListener('s.channel.delete', handler);
-		});
 	};
 }
 
 export function sendAddContact(username) {
-	return dispatch => {
+	return () => {
 		socket.emit('c.channel.add', {username});
-		socket.on('s.channel.add', function handler(data) {
-			dispatch(addContact(data));
-			socket.removeEventListener('s.channel.add', handler);
-		});
 	};
 }
 
