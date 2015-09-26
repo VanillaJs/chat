@@ -25,7 +25,7 @@ class Channel extends Component {
 	render() {
 		console.log(this.props.channel);
 
-		const activeTab = this.state.active ? <div className="channel__active-label"></div> : '';
+		const activeTab = this.props.active ? <div className="channel__active-label"></div> : '';
 
 		return (
 			<li className="channel-wrap" onClick={this.changeChannel.bind(this)}>

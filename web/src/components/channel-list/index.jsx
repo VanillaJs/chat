@@ -17,7 +17,7 @@ class ChannelList extends Component {
 		return (
 			<ul className="channels__add">
 				{Object.keys(contacts).map(key => {
-					return <Channel channel={contacts[key]} {...boundActionCreators} />;
+					return <Channel active={contacts[key]._id === this.props.channels.current} channel={contacts[key]} {...boundActionCreators} />;
 				})}
 			</ul>
 		);
