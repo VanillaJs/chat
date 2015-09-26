@@ -13,10 +13,9 @@ var HttpError = require('./error').HttpError;
 var app = express();
 
 app.set('main_path', __dirname + path.sep);
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+app.set('view engine', 'jade');
 // Установка вьюшек для отображения
-app.set('views', __dirname + path.sep + '../web/build/');
+app.set('views', __dirname + path.sep + 'templates');
 
 
 app.use(morgan()); // логгер

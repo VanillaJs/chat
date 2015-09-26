@@ -69,6 +69,11 @@ module.exports = function (socket, Users) {
 			socket.emit('s.channel.delete', sendObject);
 		});
 	});
+
+	socket.on('disconnect', function() {
+		sendStatus(socket.handshake.user._id, Users, "s.channel.offline");
+	});
+
 };
 
 
