@@ -6,3 +6,4 @@ bower_components
 server/logs
 db
 node-debug.log
+layout

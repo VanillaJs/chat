@@ -3,30 +3,13 @@ import './header.sass';
 
 class Header extends Component {
 
-  constructor(props) {
-    super();
-    this.state = {active: false};
-  }
-
-  showSettings(event) {
-    event.preventDefault();
-    this.setState({active: true});
-  }
-
   render() {
-    const dialog = this.state.active ?
-    <div className="header__settings">
-      <span>User settings modal window</span>
-    </div>
-    : '';
-
     return (
       <header className="header">
-        {dialog}
         <div className="header__logo">
           <img src="" alt="Vanilla Chat"/>
         </div>
-        <a className="header__settings-link" href="" onClick={this.showSettings.bind(this)}>Settings</a>
+          <a className="header__settings-link" href="#">Settings</a>
       </header>
     );
   }
