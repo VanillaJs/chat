@@ -47,7 +47,8 @@ app.use(express.static(path.join(__dirname, '/../web/build/')));
 
 // "обработчик ошибок"
 app.use(function httpErrorHandler(err, req, res, next) {
-	var error = err;
+	'use strict';
+	let error = err;
 	if (typeof error === 'number') {
 		error = new HttpError(error);
 	}

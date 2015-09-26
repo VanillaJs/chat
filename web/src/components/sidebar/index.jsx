@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import UserInfo from '../user-info';
 import UserDetail from '../user-detail';
 import ContactSearch from '../contact-search';
-import ContactAdd from '../contact-add';
+import ChannelAdd from '../channel-add';
+import ChannelList from '../channel-list';
 import './sidebar.sass';
 
 @connect(store => ({
@@ -23,7 +24,8 @@ class Sidebar extends Component {
         <UserInfo/>
         <UserDetail/>
         <ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
-        <ContactAdd/>
+        <ChannelAdd/>
+        <ChannelList/>
       </aside>
     );
   }
