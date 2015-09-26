@@ -1,5 +1,6 @@
 var User = require('../../models/user').User;
 var Channel = require('../../models/channel').Channel;
+var Message = require('../../models/message').Message;
 var sendStatus = require('../../lib/channelstatus');
 
 module.exports = function (socket, Users) {
@@ -8,7 +9,8 @@ module.exports = function (socket, Users) {
 	var userData = Users[socket.handshake.user._id],
 		channel = userData.channel;
 
-	sendStatus(socket.handshake.user._id, Users, "online");
+
+	sendStatus(socket.handshake.user._id, Users, "s.channel.online");
 
 	socket.join(channel);
 	// Обнаружение пользователя в данной комнате
@@ -39,6 +41,9 @@ module.exports = function (socket, Users) {
 						}
 						//Таймаут для того, что данные по пользователю приходят асинхронно
 						setTimeout(function () {
+							Users[socket.handshake.user._id].contacts[send_data._id] = send_data;
+							var toUser = send_data.user;
+							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, send_data);
 							socket.emit('s.channel.add', send_data);
 						}, 50);
 					});
@@ -54,12 +59,13 @@ module.exports = function (socket, Users) {
 	socket.on('c.channel.delete', function(channel) {
 		Channel.findOne({_id:channel.id}).remove(function(err, mess) {
 			var sendObject = {id:channel.id, is_delete :mess.result.n === 1};
+			//Удаление сообщений по каналу
+			Message.find({ channelId: { $in: [channel.id] }  }).remove();
+			var toUser = userData.contacts[channel.id].user;
+			sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
+			//И удаляем из глобального объекта пользователя данный контакт
+			Users[socket.handshake.user._id].contacts[channel.id];
 
-			/*
-			* Нужно добавить удалений сообщения по каналу
-			* а также выод из канала 2-го пользователя из контакта
-			* и отправить ему, что канал удален ну или как-то так
-			 */
 			socket.emit('s.channel.delete', sendObject);
 		});
 	});

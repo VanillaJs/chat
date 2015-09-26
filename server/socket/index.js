@@ -98,7 +98,6 @@ module.exports = function(server) {
 				const putData = {userData: user, soketData: sockets, channel: 'Lobby'};
 				Users[user._id] = putData;
 			}
-
 			Channel.getContactsByUserID(user._id, Users, function getContactsByUserIDCallback(channelError, contacts) {
 				Users[user._id].contacts = contacts;
 				next(channelError);
@@ -108,11 +107,10 @@ module.exports = function(server) {
 
 
 	io.on('connection', function socketConnectionHandler(socket) {
-		var data = Users[socket.handshake.user._id];
 		require('./types/channel')(socket, Users);
 		// генерирую событие списка комнат getContsctsList
 		// Обработка пользовательских событий
-		require('./types/user')(socket, data);
+		require('./types/user')(socket, Users);
 		require('./types/disconnect')(socket, Users);
 	});
 
