@@ -31,6 +31,10 @@ var schema = new Schema({
         type: String,
         required: true
     },
+	color: {
+		type: String,
+		required: false
+	},
     created: {
         type: Date,
         default: Date.now

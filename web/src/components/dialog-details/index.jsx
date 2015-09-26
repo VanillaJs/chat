@@ -13,7 +13,6 @@ class DialogDetails extends Component {
             online
           </p>
         </div>
-          <a className="dialog-details__menu" href="#">Menu</a>
       </div>
     );
   }

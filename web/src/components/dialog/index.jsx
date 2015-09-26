@@ -9,7 +9,8 @@ class Dialog extends Component {
     return (
       <div className="dialog">
         <DialogDetails/>
-        <DialogMessage/>
+          <DialogMessage/>
+          <DialogMessage short="true"/>
       </div>
     );
   }
