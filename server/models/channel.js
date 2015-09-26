@@ -73,7 +73,7 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 			User.getUserByID(userID, function(err, user) {
 				customObject.name = user.username;
 				customObject.avatar = user.avatar
-				customObject.avatar = user.color;
+				customObject.color = user.color;
 			});
 		}
 	} else {
