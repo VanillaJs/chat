@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import Channel from '../channel';
 import './index.sass';
 
-class ContactAdd extends Component {
+@connect(store => ({
+	channels: store.channels,
+}))
 
-  render() {
-    return (
-      <div className="channels__add">
-      </div>
-    );
-  }
+class ChannelList extends Component {
+	render() {
+		console.log(this.props);
+		return (
+			<div className="channels__add">
+			</div>
+		);
+	}
 }
 
-export default ContactAdd;
+export default ChannelList;
