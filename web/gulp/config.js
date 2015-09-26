@@ -8,7 +8,6 @@ module.exports = {
 			fonts: 'build/fonts/'
 		},
 		src: {
-			html: 'src/templates/*.jade',
 			js: 'src/index.js',
 			css: 'src/**/*.{scss,sass,css}',
 			img: 'src/img/**/*.*',

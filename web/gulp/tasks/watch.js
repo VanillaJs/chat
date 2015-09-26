@@ -4,9 +4,6 @@ var path = require('../config.js').path;
 
 gulp.task('watch', function watchTask() {
 	global.watch = true;
-	watch([path.watch.html], function(event,cb) {
-		gulp.start('templates');
-	});
 	watch([path.watch.js], function(event,cb) {
 		gulp.start('scripts');
 	});
