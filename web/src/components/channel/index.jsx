@@ -17,9 +17,7 @@ class Channel extends Component {
 
 	showSettings(event) {
 		event.preventDefault();
-		if (this.state.active) {
-			this.setState({active: false});
-		} else {
+		if (!this.state.active) {
 			this.setState({active: true});
 		}
 	}
@@ -27,7 +25,7 @@ class Channel extends Component {
 	render() {
 		console.log(this.props.channel);
 
-		const activeTab = this.state.active ? <div className="room__active-label"></div> : '';
+		const activeTab = this.state.active ? <div className="channel__active-label"></div> : '';
 
 		return (
 			<li className="channel-wrap" onClick={this.changeChannel.bind(this)}>
