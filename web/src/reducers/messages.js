@@ -5,7 +5,7 @@ export function messages(state = [], action) {
 	case types.ADD_MESSAGE:
 		return [...state, action.message];
 	case types.ADD_REMOTE_MESSAGE:
-		return [...state, action.message.message];
+		return [...state, action.message.text];
 	default:
 		return state;
 	}

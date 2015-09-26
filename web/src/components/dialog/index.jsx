@@ -5,15 +5,17 @@ import './dialog.sass';
 
 class Dialog extends Component {
 
-  render() {
-    return (
-      <div className="dialog">
-        <DialogDetails/>
-          <DialogMessage/>
-          <DialogMessage short="true"/>
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div className="dialog">
+				<DialogDetails/>
+					<ul className="messages-container">
+						<DialogMessage/>
+						<DialogMessage short="true"/>
+					</ul>
+			</div>
+		);
+	}
 }
 
 export default Dialog;
