@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import Channel from '../channel';
+import {changeChannel} from '../../actions/channels';
 import './index.sass';
 
 @connect(store => ({
@@ -9,10 +11,16 @@ import './index.sass';
 
 class ChannelList extends Component {
 	render() {
-		console.log(this.props);
+		const {channels: {contacts}, dispatch} = this.props;
+		const boundActionCreators = bindActionCreators({changeChannel}, dispatch);
+
 		return (
-			<div className="channels__add">
-			</div>
+			<ul className="channels__add">
+				{Object.keys(contacts).map(key => {
+					console.log(contacts[key])
+					return <Channel channel={contacts[key]} {...boundActionCreators} />;
+				})}
+			</ul>
 		);
 	}
 }
