@@ -1,11 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import './index.sass';
 
 class Channel extends Component {
-  constructor(props) {
-    super();
-    this.state = {active: false};
-  }
+	static propTypes = {
+		channel: PropTypes.object,
+		changeChannel: PropTypes.func,
+	}
+	constructor(props) {
+		super(props);
+		this.state = {active: false};
+	}
 
 	changeChannel() {
 		this.props.changeChannel(this.props.channel._id);
@@ -21,6 +25,8 @@ class Channel extends Component {
 	}
 
 	render() {
+		console.log(this.props.channel);
+
 		const activeTab = this.state.active ? <div className="room__active-label"></div> : '';
 
 		return (
@@ -29,7 +35,7 @@ class Channel extends Component {
 					{activeTab}
 					<div className="channel__image-wrap"><img src="http://bit.ly/1R3jddn" alt="" className="channel__image"></img></div>
 					<div className="channel__message">
-						<div className="channel__message-header"><span>Vladimir Putin</span></div>
+						<div className="channel__message-header"><span>{this.props.channel.name}</span></div>
 						<div className="channel__message-content"><span>Первое сообщение, приём, т...</span></div>
 					</div>
 					<div className="channel__time"><span>10:10</span></div>
