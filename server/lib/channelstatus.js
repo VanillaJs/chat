@@ -1,7 +1,7 @@
 function sendStatus(id, Users, event_name, toChannel, additionalData) {
 	var userData = Users[id],
 	keysChannels = Object.keys(userData.contacts);
-	if(to === "all" || to === undefined) {
+	if(toChannel === undefined) {
 		//будем отправлять другим пользователям , что пользователь появился
 		if(keysChannels.length) {
 			keysChannels.map(function channelsHandler (key) {

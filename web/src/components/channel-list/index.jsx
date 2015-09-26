@@ -18,6 +18,7 @@ class ChannelList extends Component {
 			<ul className="channels__add">
 				{Object.keys(contacts).map(key => {
 					console.log(contacts[key])
+
 					return <Channel channel={contacts[key]} {...boundActionCreators} />;
 				})}
 			</ul>
