@@ -54,7 +54,7 @@ schema.statics.findOrCreate = function(type , user_create_id, user_add_id, callb
 }
 
 schema.statics.prepareChannel = function(id, channel, Users) {
-	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", user:null, message_count:0, color:"000	"};
+	var customObject = {_id:channel._id, name: channel.name, is_online:false, type:channel.type, avatar:"", user:null, message_count:0, color:"000"};;
 	if(channel.type === "user") {
 		channel.users.splice(channel.users.indexOf(id), 1);
 		customObject.user = channel.users[0];
@@ -63,19 +63,19 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 			//Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
 			customObject.is_online = Users.hasOwnProperty(userID);
 			//нужно будет очень сильно подумать ) асинхронно могут данные и не подтянуться =)
-
-
+			User.getUserByID(userID, function(err, user) {
+				customObject.name = user.username;
+				customObject.avatar = user.avatar;
+				customObject.color = user.color;
+			});
 			Message.getUnreadMessagesByChannel(channel._id, id, function messagesCallback(err, length) {
 				if (!err) {
 					customObject.message_count = length;
 				}
 			});
-			User.getUserByID(userID, function(err, user) {
-				customObject.name = user.username;
-				customObject.avatar = user.avatar
-				customObject.color = user.color;
-			});
+
 		}
+		channel.users.push(id);
 	} else {
 		customObject.avatar = "";
 	}

@@ -38,12 +38,15 @@ module.exports = function (socket, Users) {
 						if(!err)
 						{
 							send_data = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
+							Users[socket.handshake.user._id].contacts[send_data._id] = send_data;
+							Users[user._id].contacts[send_data._id] = Channel.prepareChannel(user._id, channel, Users);
 						}
 						//Таймаут для того, что данные по пользователю приходят асинхронно
 						setTimeout(function () {
 							Users[socket.handshake.user._id].contacts[send_data._id] = send_data;
 							var toUser = send_data;
-							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, send_data);
+							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[send_data._id]);
+
 							socket.emit('s.channel.add', {channel:send_data._id, custom:send_data});
 						}, 50);
 					});
