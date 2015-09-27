@@ -1,59 +1,58 @@
 .channel
-	position: relative
-	width: 100%
-	margin-bottom: 7px
-	padding: 10px 15px
-	background: #eee
+	display: flex
+	padding: 10px 30px
 	text-decoration: none
-	cursor: pointer
-	text-align: left
+
+	&-wrap
+		position: relative
+		list-style: none
+		background: #eee
+
+	&-wrap--active
+		list-style: none
+		position: relative
+		background: #ddd
+
+	&-wrap--active:before
+		content: ""
+		height: 100%
+		width: 7px
+		position: absolute
+		z-index: 10
+		top: 0
+		left: 0
+		width: 7px
+		background: #ff494b
 
 	&__image-wrap
-		display: inline-block
 		width: 50px
 		height: 50px
-		margin-right: 10px
+		margin-right: 20px
 		background: #ff494b
-		vertical-align: top
 
 	&__image
-		display: block
 		width: 50px
 		height: 50px
 		background: #ff494b
 
+
 	&__message
-		display: inline-block
+		margin-top: 5px
 		width: 220px
 		overflow: hidden
-		vertical-align: top
 
 		&-header
+			margin-top: 2px
 			color: #333
 			font-weight: bold
 			text-align: left
 
 		&-content
-			width: 100%
 			margin-top: 5px
-			font-size: 0.8rem
+			font-size: 13px
 			color: #555
-			overflow: hidden
-			text-overflow: ellipsis
+			text-align: left
 
 	&__time
-		position: absolute
-		top: 5px
-		right: 5px
 		color: #888
 		font-size: 12px
-		vertical-align: top
-
-	&__active-label
-		position: absolute
-		top: 0
-		left: 0
-		z-index: 10
-		width: 7px
-		height: 100%
-		background: #ff494b
