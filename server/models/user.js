@@ -75,6 +75,7 @@ schema.virtual('password')
 schema.methods.checkPassword = function(password) {
 	return this.encryptPassword(password) === this.hashedPassword;
 };
+
 schema.methods.checkIsSocialExist = function(type) {
 	var ret = false;
 	this.authType.forEach(function(aType) {
@@ -132,9 +133,9 @@ schema.statics.authorizeSocial = function(userData, callback) {
 					user.authType.push(userData.authType);
 					user.save();
 				}
-			}else {
+			} else {
 				newUser = new User(userData);
-				new_user.save(function(err) {
+				newUser.save(function(err) {
 					if (err) {
 						return callback(err);
 					}
@@ -191,7 +192,6 @@ schema.statics.authorize = function(username, password, callback) {
 };
 
 exports.User = mongoose.model('User', schema);
-
 
 // <editor-fold desc='ошибка авторизации'>
 function AuthErrorF(message) {
