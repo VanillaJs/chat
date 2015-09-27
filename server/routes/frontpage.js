@@ -1,3 +1,3 @@
-exports.get = function (req, res) {
-    res.render('index');
+exports.get = function(req, res) {
+	res.render('index');
 };

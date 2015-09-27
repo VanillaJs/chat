@@ -7,9 +7,7 @@ export function channels(state = {current: null, contacts: {}}, action) {
 	case channelActionType.SET_ACTIVE_CHANNEL:
 		return assign({}, state, {current: action.id});
 	case channelActionType.ADD_CHANNEL:
-		if (action.contact !== null)
-		{
-			console.log(action);
+		if (action.contact !== null) {
 			state.contacts[action.contact.channel] = action.contact.custom;
 			return assign({}, state, {contacts: state.contacts});
 		}

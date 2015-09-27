@@ -5,7 +5,7 @@ export function setUserData(user, contacts) {
 	return {
 		type: userActionType.SET_USER_DATA,
 		user,
-		contacts,
+		contacts
 	};
 }
 

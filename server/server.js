@@ -2,7 +2,7 @@ var http = require('http');
 var path = require('path');
 var express = require('express');
 var morgan = require('morgan');
-var session = require('express-session'); // для того чтобы выставить сессеию в mongo
+var session = require('express-session'); // для того чтобы выставить сессию в mongo
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var errorhandler = require('errorhandler');
@@ -17,8 +17,7 @@ app.set('view engine', 'jade');
 // Установка вьюшек для отображения
 app.set('views', __dirname + path.sep + 'templates');
 
-
-app.use(morgan()); // логгер
+app.use(morgan(process.env.NODE_ENV === 'develop' ? 'dev' : 'tiny')); // логгер
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -30,7 +29,7 @@ app.use(session({
 	resave: false,
 	cookie: config.get('session:cookie'),
 	store: require('./lib/database/sessionStore'),
-	saveUninitialized: false,
+	saveUninitialized: false
 }));
 
 app.use(passport.initialize());
@@ -46,8 +45,7 @@ app.use(express.static(path.join(__dirname, '/../web/build/')));
 
 // "обработчик ошибок"
 app.use(function httpErrorHandler(err, req, res, next) {
-	'use strict';
-	let error = err;
+	var error = err;
 	if (typeof error === 'number') {
 		error = new HttpError(error);
 	}

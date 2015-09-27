@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import UserInfo from '../user-info';
 import UserDetail from '../user-detail';
@@ -11,22 +11,25 @@ import './sidebar.sass';
 @connect()
 
 class Sidebar extends Component {
+	static propTypes = {
+		dispatch: PropTypes.func
+	}
 
-  handleContactSearch(username) {
-    this.props.dispatch(sendAddContact(username));
-  }
+	handleContactSearch(username) {
+		this.props.dispatch(sendAddContact(username));
+	}
 
-  render() {
-    return (
-      <aside className="sidebar">
-        <UserInfo/>
-        <UserDetail/>
-        <ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
-        <ChannelAdd/>
-        <ChannelList/>
-      </aside>
-    );
-  }
+	render() {
+		return (
+			<aside className="sidebar">
+				<UserInfo/>
+				<UserDetail/>
+				<ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
+				<ChannelAdd/>
+				<ChannelList/>
+			</aside>
+		);
+	}
 }
 
 export default Sidebar;

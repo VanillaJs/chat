@@ -1,6 +1,6 @@
-const forever = require('forever');
-const fs = require('fs');
-const child = new(forever.Monitor)('./server/server.js', {
+var forever = require('forever');
+var fs = require('fs');
+var child = new(forever.Monitor)('./server/server.js', {
 	'silent': process.env.NODE_ENV !== 'develop',
 	'pidFile': 'server/pids/app.pid',
 	'watch': true,
@@ -9,7 +9,7 @@ const child = new(forever.Monitor)('./server/server.js', {
 	'watchIgnorePatterns': [],
 	'logFile': fs.existsSync('logs/forever.log') ? 'logs/forever.log' : '',
 	'outFile': fs.existsSync('logs/forever.out') ? 'logs/forever.out' : '',
-	'errFile': fs.existsSync('logs/forever.err') ? 'logs/forever.err' : '',
+	'errFile': fs.existsSync('logs/forever.err') ? 'logs/forever.err' : ''
 });
 child.start();
 forever.startServer(child);

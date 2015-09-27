@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addMessage} from '../../actions/messages';
@@ -12,17 +12,22 @@ import './main.sass';
 }))
 
 class Main extends Component {
-  render() {
+	static propTypes = {
+		dispatch: PropTypes.func,
+		channels: PropTypes.object
+	}
+
+	render() {
 		const {dispatch} = this.props;
 		const boundActions = bindActionCreators({addMessage}, dispatch);
 
-    return (
-	    <main className="main">
-	      <Dialog />
-	      <Input channel={this.props.channels.current} {...boundActions} />
-	    </main>
-    );
-  }
+		return (
+			<main className="main">
+				<Dialog />
+				<Input channel={this.props.channels.current} {...boundActions} />
+			</main>
+		);
+	}
 }
 
 export default Main;

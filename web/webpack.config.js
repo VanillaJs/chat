@@ -1,7 +1,6 @@
-
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var JS_REGEX = /\.js$|\.jsx$|\.es6$|\.babel$/;
 
@@ -14,17 +13,17 @@ var config = {
 	output: {
 		path: path.join(__dirname, 'build/js'),
 		filename: 'app.js',
-		publicPath: '/',
+		publicPath: '/'
 	},
 
 	plugins: [
 		new webpack.NoErrorsPlugin(),
-		new ExtractTextPlugin('../css/default.css'),
+		new ExtractTextPlugin('../css/default.css')
 	],
 
 	resolve: {
 		modulesDirectories: ['node_modules', 'src'],
-		extensions: ['', '.js', '.jsx'],
+		extensions: ['', '.js', '.jsx']
 	},
 
 	module: {
@@ -33,16 +32,16 @@ var config = {
 				test: JS_REGEX,
 				exclude: /node_modules/,
 				include: path.join(__dirname, 'src'),
-				loader: 'babel',
+				loader: 'babel'
 			},
 			{
 				test: /\.sass$/,
-				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax'),
-			},
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax')
+			}
 		],
 
-		noParse: /\.min\.js/,
-	},
+		noParse: /\.min\.js/
+	}
 
 };
 

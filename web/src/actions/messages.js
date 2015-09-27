@@ -17,6 +17,6 @@ export function addRemoteMessage(data) {
 	return {
 		type: messageActionType.ADD_REMOTE_MESSAGE,
 		userId,
-		message,
+		message
 	};
 }

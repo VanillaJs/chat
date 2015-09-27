@@ -3,8 +3,9 @@ import './index.sass';
 
 class Channel extends Component {
 	static propTypes = {
-		channel: PropTypes.object,
-		changeChannel: PropTypes.func,
+		channel: PropTypes.object.isRequired,
+		changeChannel: PropTypes.func.isRequired,
+		active: PropTypes.bool
 	}
 	constructor(props) {
 		super(props);
@@ -14,15 +15,12 @@ class Channel extends Component {
 		this.props.changeChannel(this.props.channel._id);
 	}
 
-
 	render() {
-		console.log(this.props.channel);
-
 		const activeTab = this.props.active ? <div className="channel__active-label"></div> : '';
 
 		return (
 			<li className="channel-wrap" onClick={this.changeChannel.bind(this)}>
-				<a href="#" className="channel">
+				<div className="channel">
 					{activeTab}
 					<div className="channel__image-wrap"><img src="http://bit.ly/1R3jddn" alt="" className="channel__image"></img></div>
 					<div className="channel__message">
@@ -30,7 +28,7 @@ class Channel extends Component {
 						<div className="channel__message-content"><span>Первое сообщение, приём, т...</span></div>
 					</div>
 					<div className="channel__time"><span>10:10</span></div>
-				</a>
+				</div>
 			</li>
 		);
 	}

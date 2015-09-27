@@ -1,12 +1,15 @@
 {
-  "extends": "airbnb",
-  "rules": {
+	"extends": "airbnb",
+	"rules": {
 		"react/jsx-uses-react": 2,
 		"react/jsx-uses-vars": 2,
 		"react/react-in-jsx-scope": 2,
 		"react/jsx-quotes": 0,
-    "jsx-quotes": [2, "prefer-double"],
+		"jsx-quotes": [2, "prefer-double"],
 		"indent": [2, "tab"],
-		"block-scoped-var": 0
-  }
+		"comma-dangle": [2, "never"],
+		"block-scoped-var": 0,
+		"no-var": 0,
+		no-shadow: 1
+	}
 }
