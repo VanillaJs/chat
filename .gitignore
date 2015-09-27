@@ -9,3 +9,4 @@ node-debug.log
 layout
 *.iml
 npm-debug.log
+web/src/fonts

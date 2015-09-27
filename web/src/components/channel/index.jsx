@@ -11,24 +11,24 @@ class Channel extends Component {
 		super(props);
 	}
 
-	changeChannel() {
+	changeChannel(e) {
+		e.preventDefault();
 		this.props.changeChannel(this.props.channel._id);
 	}
 
 	render() {
-		const activeTab = this.props.active ? <div className="channel__active-label"></div> : '';
+		const activeModificator = this.props.active ? '--active' : '';
 
 		return (
-			<li className="channel-wrap" onClick={this.changeChannel.bind(this)}>
-				<div className="channel">
-					{activeTab}
+			<li className={'channel-wrap' + activeModificator} onClick={this.changeChannel.bind(this)}>
+				<a className="channel">
 					<div className="channel__image-wrap"><img src="http://bit.ly/1R3jddn" alt="" className="channel__image"></img></div>
 					<div className="channel__message">
 						<div className="channel__message-header"><span>{this.props.channel.name}</span></div>
-						<div className="channel__message-content"><span>Первое сообщение, приём, т...</span></div>
+						<div className="channel__message-content"><span>Первое сообщение,т...</span></div>
 					</div>
 					<div className="channel__time"><span>10:10</span></div>
-				</div>
+				</a>
 			</li>
 		);
 	}

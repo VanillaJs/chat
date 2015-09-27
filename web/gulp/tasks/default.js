@@ -15,6 +15,7 @@ gulp.task('build', function buildTask(cb) {
 		'fonts',
 		'images',
 		'scripts',
+		'vendorCss',
 		cb
 	);
 });

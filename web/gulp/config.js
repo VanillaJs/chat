@@ -5,13 +5,15 @@ module.exports = {
 			js: 'build/js/',
 			css: 'build/css/',
 			img: 'build/img/',
-			fonts: 'build/fonts/'
+			fonts: 'build/fonts/',
+			vendorsCss: 'build/css/'
 		},
 		src: {
 			js: 'src/index.js',
 			css: 'src/**/*.{scss,sass,css}',
 			img: 'src/img/**/*.*',
-			fonts: 'src/fonts/**/*.*'
+			fonts: 'src/fonts/**/*.*',
+			vendorsCss: 'src/style/vendor/**/*.css'
 		},
 		watch: {
 			html: 'src/**/*.jade',

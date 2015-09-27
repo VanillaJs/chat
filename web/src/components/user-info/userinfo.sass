@@ -1,24 +1,27 @@
 .user-info
-  margin-bottom: 30px
+	padding: 10px 30px
+	background: #eee
+	display: flex
+	align-items: center
 
-  &__greeting
-    width: 70%
-    margin: 0 15px
-    display: inline-block
-    vertical-align: middle
+	&:hover
+		background: #ddd
+		cursor: pointer
 
-  &__name
-    font-weight: 700
 
-.user-settings
-  display: inline-block
-  vertical-align: middle
-  font-size: 0
-  width: 16px
-  height: 16px
+	&__image
+		width: 50px
+		height: 50px
+		margin-right: 20px
+		background: #ff494b
 
-  &__icon
-    display: inline-block
-    width: 100%
-    height: 100%
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA/UlEQVQ4T62TXXGCQQxFDw4qAQe0DkABOGgd0CoAFAAOwEGroK0CioNKwAHM2ckyYQe+4YE8bXaTu/fmp8dtewZ28fwC/F0L7aXLJ8Ckn7hbAdM4b4G3OBvzDxz0K4DJ3wFQfzIwm/cmDYPNSL8CZLodqi6eiqws4RMY35m9D7ZnCeZJcZAADNqEr/78ZqwMCoD0Z8CkSVZrKVRY+4HgawGOV2h/AHYh2zuwbGMfAqAENdae13oUjR0SnI1V7kKrUT8XMc/Fb8xDZxe6OvpVi/6wQXKU3QF7LT393HfZOBea955Lm9tl6qetU/9rJC2AeZytxXkzM0Cr+a51PgFLFDdvbdo+XwAAAABJRU5ErkJggg==');
+	&__greeting
+		font-size: 14px
+		width: 70%
+		margin-right: 15px
+
+	&__name
+		font-weight: 700
+
+	&__icon-settings
+		color: #999

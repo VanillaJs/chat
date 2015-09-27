@@ -1,21 +1,32 @@
 .user-detail
-  font-size: 0
+	display: flex
+	background: #eee
+	position: relative
+	align-items: center;
+	justify-content: center;
 
-  &__item
-    display: inline-block
-    vertical-align: middle
-    width: 20%
-    font-size: 16px
+	&__item
+		display: flex
+		align-items: center;
+		flex-direction: column
+		justify-content: center;
+		height: 70px
+		color: #666
+		font-size: 14px
+		vertical-align: middle
+		width: 20%
 
-  &__number
-    display: block
-    font-size: 28px
+		&:hover
+			background: #ddd
 
-  &__menu-link
-    display: inline-block
-    vertical-align: middle
-    font-size: 0
-    width: 10px
-    height: 10px
-    border: 2px solid black
-    transform: rotate(45deg)
+	&__number
+		display: block
+		font-size: 24px
+
+	&__menu
+		display: flex
+		width: 25px
+		height: 25px
+		font-size: 16px
+		align-items: center;
+		justify-content: center;
