@@ -3,7 +3,7 @@ var sendStatus = require('../../lib/channelstatus');
 
 module.exports = function(socket, Users) {
 	var data = Users[socket.handshake.user._id];
-
+	var sendData;
 	var sendMessage = function(status, roomId, message) {
 		var toUser = data.contacts[roomId];
 
@@ -13,19 +13,16 @@ module.exports = function(socket, Users) {
 			if (Users[toUser.user].channel !== roomId) {
 				// отправляем ему сообщение
 				sendStatus(socket.handshake.user._id, Users, 's.user.send_private', toUser, {message_count: 1});
-
 			}
 		}
 
-		var sendData = {
+		sendData = {
 			status: true,
 			chnnelId: roomId,
 			userId: message.userId,
 			message: message
 		};
         //
-
-
 
 		socket.broadcast.to(roomId).emit('s.user.send_message', sendData);
 	};
@@ -41,6 +38,7 @@ module.exports = function(socket, Users) {
 		message.userId = socket.handshake.user._id;
 		if (data.channel === 'Lobby') {
 			message.message = message.text;
+			message.userId = socket.handshake.user.username;
 			sendMessage(true, message.room_id, message);
 		} else {
 			// пишем в базу

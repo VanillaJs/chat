@@ -23,7 +23,8 @@ class Dialog extends Component {
 				<DialogDetails/>
 					<ul className="messages-container">
 						{messages.map((message, index) => {
-							let user = (message.userId === "me") ? "Я" : channels.contacts[message.channelId].name;
+							let userName = (channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby') ? channels.contacts[message.channelId].name : message.userId;
+							let user = (message.userId === "me") ? "Я" : userName;
 							return <DialogMessage key={index} user={user} message={message.message}/>;
 						})}
 					</ul>
