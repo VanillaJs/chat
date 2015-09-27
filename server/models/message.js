@@ -67,12 +67,12 @@ schema.statics.addNew = function(message, callback) {
 	var Message = this;
 	async.waterfall([
 		function(callback) {
-			MessageType.findOne({name: message.messageType}, callback);
+			MessageType.findOne({name: message.message_type}, callback);
 		},
 		function(messageType, callback) {
 			var newMessageType;
 			if (!messageType) {
-				newMessageType = new MessageType({name: message.messageType, type: message.messageType});
+				newMessageType = new MessageType({name: message.message_type, type: message.message_type});
 				newMessageType.save(function(err) {
 					if (err) {
 						return callback(err);
@@ -86,13 +86,14 @@ schema.statics.addNew = function(message, callback) {
 		function(messageType, callback) {
 			var newMessageObj;
 			var newMessage;
+
 			if (messageType) {
 				newMessageObj = {
 					channelId: message.room_id,
-					userId: message.user_id,
-					messageTypeId: messageType.id,
+					userId: message.userId,
+					messageTypeId: messageType._id,
 					message: message.text,
-					read: [message.user_id]
+					read: [message.userId]
 				};
 				newMessage = new Message(newMessageObj);
 				newMessage.save(function(err) {
@@ -103,7 +104,7 @@ schema.statics.addNew = function(message, callback) {
 				});
 			} else {
 				// set error
-				callback(null, messageType);
+				callback(null, newMessage);
 			}
 		}
 

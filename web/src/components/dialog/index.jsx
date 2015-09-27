@@ -17,13 +17,14 @@ class Dialog extends Component {
 	}
 
 	render() {
-		const {messages, user} = this.props;
+		const {messages, channels} = this.props;
 		return (
 			<div className="dialog">
 				<DialogDetails/>
 					<ul className="messages-container">
-						{Object.keys(messages).map(key => {
-							return <DialogMessage key={key} user={user} message={messages[key]}/>;
+						{messages.map((message, index) => {
+							let user = (message.userId === "me") ? "Я" : channels.contacts[message.channelId].name;
+							return <DialogMessage key={index} user={user} message={message.message}/>;
 						})}
 					</ul>
 			</div>

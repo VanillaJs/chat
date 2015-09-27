@@ -23,7 +23,7 @@ class DialogMessage extends Component {
 			<div className="dialog-message ">
 				<UserPic/>
 				<div className="dialog-message__content">
-					<p className="dialog-message__sender">{this.props.user.username}</p>
+					<p className="dialog-message__sender">{this.props.user}</p>
 					<p className="dialog-message__text">{this.props.message}</p>
 			<br/>
 					<time className="dialog-message__time">13:10</time>

@@ -6,21 +6,28 @@ module.exports = function(socket, Users) {
 
 	var sendMessage = function(status, roomId, message) {
 		var toUser = data.contacts[roomId];
+
 		// Проверяем пользователь онлайн или нет
-		if (Users.hasOwnProperty(toUser.user)) {
+		if (toUser !== undefined && Users.hasOwnProperty(toUser.user)) {
 			// проверяем, что он не находится в этом канале
 			if (Users[toUser.user].channel !== roomId) {
 				// отправляем ему сообщение
 				sendStatus(socket.handshake.user._id, Users, 's.user.send_private', toUser, {message_count: 1});
+
 			}
 		}
 
-		socket.broadcast.to(roomId).emit('s.user.send_message', {
+		var sendData = {
 			status: true,
-			room_id: roomId,
-			userId: roomId,
+			chnnelId: roomId,
+			userId: message.userId,
 			message: message
-		});
+		};
+        //
+
+
+
+		socket.broadcast.to(roomId).emit('s.user.send_message', sendData);
 	};
 
 	// Добавление контактов логика еще не готова
@@ -31,15 +38,13 @@ module.exports = function(socket, Users) {
 	socket.on('c.user.send_message', function(message) {
 		// var status = false;
 		// save to database
-		if (socket.handshake.user.room === 'Lobby') {
+		message.userId = socket.handshake.user._id;
+		if (data.channel === 'Lobby') {
+			message.message = message.text;
 			sendMessage(true, message.room_id, message);
 		} else {
-			message.user_id = socket.handshake.user._id;
 			// пишем в базу
 			Message.addNew(message, function(err, messageNew) {
-				// if (!err) {
-				// 	status = true;
-				// }
 				sendMessage(true, message.room_id, messageNew);
 			});
 		}
