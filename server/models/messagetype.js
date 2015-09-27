@@ -1,5 +1,5 @@
-var mongoose = require('./../lib/database/mongoose'),
-	Schema = mongoose.Schema;
+var mongoose = require('./../lib/database/mongoose');
+var Schema = mongoose.Schema;
 
 // схема модели Типов сообщений
 var schema = new Schema({

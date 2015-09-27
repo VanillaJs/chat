@@ -3,14 +3,13 @@ var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
 var sendStatus = require('../../lib/channelstatus');
 
-module.exports = function (socket, Users) {
-
+module.exports = function(socket, Users) {
 	// Вход пользователя в комнату чата
-	var userData = Users[socket.handshake.user._id],
-		channel = userData.channel;
+	var userData = Users[socket.handshake.user._id];
+	var channel = userData.channel;
 
 
-	sendStatus(socket.handshake.user._id, Users, "s.channel.online");
+	sendStatus(socket.handshake.user._id, Users, 's.channel.online');
 
 	socket.join(channel);
 	// Обнаружение пользователя в данной комнате
@@ -25,48 +24,46 @@ module.exports = function (socket, Users) {
 		socket.emit('s.channel.join', {channel: channel.id});
 	});
 
-	//Добавление контактов логика еще не готова
+	// Добавление контактов логика еще не готова
 	socket.on('c.channel.add', function(user) {
-		var send_data = null;
+		var sendData = null;
 		User.findByParams(user.username, user.username, function(err, user) {
-			if(user)
-			{
-				if(!err)
-				{
-					//Если канал существует
-					Channel.findOrCreate("user", socket.handshake.user._id, user._id, function(err , channel) {
-						if(!err)
-						{
-							send_data = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
-							Users[socket.handshake.user._id].contacts[send_data._id] = send_data;
-							Users[user._id].contacts[send_data._id] = Channel.prepareChannel(user._id, channel, Users);
+			var toUser;
+			if (user) {
+				if (!err) {
+					// Если канал существует
+					Channel.findOrCreate('user', socket.handshake.user._id, user._id, function(err, channel) {
+						if (!err) {
+							sendData = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
+							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
+							Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
 						}
-						//Таймаут для того, что данные по пользователю приходят асинхронно
-						setTimeout(function () {
-							Users[socket.handshake.user._id].contacts[send_data._id] = send_data;
-							var toUser = send_data;
-							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[send_data._id]);
+						// Таймаут для того, что данные по пользователю приходят асинхронно
+						setTimeout(function() {
+							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
+							toUser = sendData;
+							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
 
-							socket.emit('s.channel.add', {channel:send_data._id, custom:send_data});
+							socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
 						}, 50);
 					});
 				}
 			} else {
-				//пользователь не найден
-				socket.emit('s.channel.add', send_data);
+				// пользователь не найден
+				socket.emit('s.channel.add', sendData);
 			}
-
 		});
 	});
 
 	socket.on('c.channel.delete', function(channel) {
-		Channel.findOne({_id:channel.id}).remove(function(err, mess) {
-			var sendObject = {id:channel.id, is_delete :mess.result.n === 1};
-			//Удаление сообщений по каналу
+		Channel.findOne({_id: channel.id}).remove(function(err, mess) {
+			var sendObject = {id: channel.id, is_delete: mess.result.n === 1};
+			var toUser;
+			// Удаление сообщений по каналу
 			Message.find({ channelId: { $in: [channel.id] }  }).remove();
-			var toUser = userData.contacts[channel.id];
+			toUser = userData.contacts[channel.id];
 			sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
-			//И удаляем из глобального объекта пользователя данный контакт
+			// И удаляем из глобального объекта пользователя данный контакт
 			Users[socket.handshake.user._id].contacts[channel.id];
 
 			socket.emit('s.channel.delete', sendObject);
@@ -74,9 +71,6 @@ module.exports = function (socket, Users) {
 	});
 
 	socket.on('disconnect', function() {
-		sendStatus(socket.handshake.user._id, Users, "s.channel.offline");
+		sendStatus(socket.handshake.user._id, Users, 's.channel.offline');
 	});
-
 };
-
-

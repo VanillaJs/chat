@@ -5,7 +5,7 @@ function errorHandler(error) {
 		(error.name + ' in ' + error.plugin).bold.red,
 		'',
 		error.message,
-		'',
+		''
 	].join('\n'));
 
 	this.emit('end');

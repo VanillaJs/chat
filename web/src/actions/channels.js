@@ -4,14 +4,14 @@ import {socket} from '../socket';
 export function setChannels(list) {
 	return {
 		type: channelActionType.SET_CHANNELS,
-		list,
+		list
 	};
 }
 
 export function setActiveChannel(id) {
 	return {
 		type: channelActionType.SET_ACTIVE_CHANNEL,
-		id,
+		id
 	};
 }
 
@@ -34,27 +34,27 @@ export function changeChannel(id) {
 export function setContactList(contacts) {
 	return {
 		type: channelActionType.SET_CHANNEL_LIST,
-		contacts,
+		contacts
 	};
 }
 
 export function removeFromChannelList(data) {
 	return {
 		type: channelActionType.CHANNEL_REMOVE,
-		id:data.id,
-		is_delete:data.is_delete
+		id: data.id,
+		is_delete: data.is_delete
 	};
 }
 
 export function addContact(contact) {
 	return {
 		type: channelActionType.ADD_CHANNEL,
-		contact,
+		contact
 	};
 }
 
 export function deleteChannel(id, num) {
-	return dispatch  => {
+	return ()  => {
 		socket.emit('c.channel.delete', {id, num});
 	};
 }

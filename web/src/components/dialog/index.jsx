@@ -7,12 +7,14 @@ import './dialog.sass';
 @connect(store => ({
 	messages: store.messages,
 	channels: store.channels,
-	user: store.user,
+	user: store.user
 }))
-/*
- *<DialogMessage short="true"/>
- */
+
 class Dialog extends Component {
+	static propTypes = {
+		messages: PropTypes.array,
+		user: PropTypes.object
+	}
 
 	render() {
 		const {messages, user} = this.props;
@@ -21,10 +23,8 @@ class Dialog extends Component {
 				<DialogDetails/>
 					<ul className="messages-container">
 						{Object.keys(messages).map(key => {
-							return <DialogMessage user={user} message={messages[key]}/>;
+							return <DialogMessage key={key} user={user} message={messages[key]}/>;
 						})}
-
-
 					</ul>
 			</div>
 		);

@@ -1,6 +1,5 @@
 var async = require('async');
 var cookieParser = require('cookie-parser');
-var log = require('./../lib/log')(module);
 var config = require('./../config');
 var sessionStore = require('./../lib/database/sessionStore');
 var HttpError = require('./../error').HttpError;
@@ -40,7 +39,6 @@ module.exports = function(server) {
 	var io = require('socket.io').listen(server);
 
 	io.set('origins', config.get('app:socketOrigin'));
-	io.set('logger', log);
 	io.use(function(socket, next) {
 		var handshakeData = socket.request;
 		async.waterfall([
@@ -68,7 +66,7 @@ module.exports = function(server) {
 					return callback(new HttpError(403, 'Anonymous session may not connect'));
 				}
 				callback(null, user);
-			},
+			}
 		], function(err, user) {
 			if (err) {
 				if (err instanceof HttpError) {

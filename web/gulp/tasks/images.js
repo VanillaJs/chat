@@ -8,14 +8,14 @@ var path = require('../config.js').path;
 gulp.task('images', function imagesTask() {
 	return gulp.src(path.src.img)
 			.pipe(imagemin({
-					progressive: true,
-					svgoPlugins: [{
-						removeViewBox: false
-					}],
-					use: [
-						pngquant()
-					],
-					interlaced: true
+				progressive: true,
+				svgoPlugins: [{
+					removeViewBox: false
+				}],
+				use: [
+					pngquant()
+				],
+				interlaced: true
 			}))
 			.pipe(gulp.dest(path.build.img))
 			.pipe(gulpif(global.watch, connect.reload()));
