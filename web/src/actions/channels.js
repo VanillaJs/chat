@@ -44,7 +44,7 @@ export function fetchChannelList() {
 		socket.emit('c.user.get_channels');
 		socket.on('s.user.set_channels', function handler(list) {
 			dispatch(setChannels(list));
-			socket.removeEventListener(handler);
+			socket.removeListener(handler);
 		});
 	};
 }
@@ -94,7 +94,7 @@ export function fetchContactList() {
 		socket.emit('c.user.get_contact_list');
 		socket.on('s.user.SET_CHANNEL_LIST', function handler(contacts) {
 			dispatch(setContactList(contacts));
-			socket.removeEventListener(handler);
+			socket.removeListener(handler);
 		});
 	};
 }

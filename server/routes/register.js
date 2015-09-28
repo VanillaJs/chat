@@ -21,7 +21,11 @@ exports.post = function(req, res, next) {
 		return err
 			? next(err)
 			: passport.authenticate('local')(req, res, function() {
-				res.redirect('/');
+				if (req.xhr) {
+					res.json({error: null, created: true});
+				} else {
+					res.redirect('/');
+				}
 			});
 	});
 };

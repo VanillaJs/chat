@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
+import {bindActionsToSocketEvents} from './socket';
 import store from './store';
 import Header from './components/header';
 import Sidebar from './components/sidebar';
 import Main from './components/main';
 import {fetchUserData} from './actions/user';
-
 import './components/page.sass';
+
+bindActionsToSocketEvents();
 
 export default class App extends Component {
 	componentWillMount() {
