@@ -8,13 +8,15 @@
     "server-dev": "NODE_ENV=develop node app.js",
     "server-prod": "NODE_ENV=production node app.js",
     "clean": "rm -rf web/build",
+    "mocha" : "mocha $(find test -name '*.js') --sort",
     "build": "npm run clean && gulp --gulpfile web/gulpfile.js build",
     "lint": "eslint *.{js,jsx} --ignore-path .gitignore",
     "gulp": "gulp --gulpfile web/gulpfile.js",
     "gulp:watch": "gulp --gulpfile web/gulpfile.js watch"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "mocha"
   ],
   "homepage": "http://vjs.cloudapp.net/",
   "dependencies": {
@@ -32,6 +34,7 @@
     "forever": "^0.15.1",
     "jade": "^1.11.0",
     "mime": "~1.2.7  ",
+    "mocha": "^2.3.3",
     "mongoose": "^4.1.7",
     "morgan": "^1.0.1",
     "nconf": "^0.7.2",
