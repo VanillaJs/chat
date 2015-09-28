@@ -6,11 +6,12 @@ var config = require(directoryServer + 'config');
 describe('mongoose', function() {
 	describe('connection to mongo', function () {
 		it('should coonect to mongo', function (done) {
-			if(mongoose.connection.db)
+			if(mongoose.connection._readyState === 0)
 			{
-				done();
-			} else {
+				//если _readyState === , то подключеня к базе нет
 				mongoose.connect(config.get('mongoose:uri'), done);
+			} else {
+				done();
 			}
 		});
 	});
