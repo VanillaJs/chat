@@ -4,8 +4,25 @@ var util = require('util');
 var mongoose = require('./../lib/database/mongoose');
 var Schema = mongoose.Schema;
 
+var schema;
+
+// <editor-fold desc='ошибка авторизации'>
+function AuthError(message) {
+	Error.apply(this, arguments);
+	Error.captureStackTrace(this, AuthError);
+
+	this.message = message;
+}
+
+util.inherits(AuthError, Error);
+
+AuthError.prototype.name = 'AuthError';
+
+exports.AuthError = AuthError;
+// </editor-fold>
+
 // схема модели пользователя
-var schema = new Schema(
+schema = new Schema(
 	{
 		username: {
 			type: String,
@@ -192,18 +209,3 @@ schema.statics.authorize = function(username, password, callback) {
 };
 
 exports.User = mongoose.model('User', schema);
-
-// <editor-fold desc='ошибка авторизации'>
-function AuthErrorF(message) {
-	Error.apply(this, arguments);
-	Error.captureStackTrace(this, AuthError);
-
-	this.message = message;
-}
-
-util.inherits(AuthErrorF, Error);
-
-AuthErrorF.prototype.name = 'AuthError';
-
-exports.AuthError = AuthErrorF;
-// </editor-fold>
