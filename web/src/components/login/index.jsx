@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import serialize from 'form-serialize';
 import {sendFormData} from '../../utils/request';
 import './index.sass';
@@ -36,14 +37,19 @@ class Login extends Component {
 	render() {
 		return (
 			<form className="login-form" ref="form" onSubmit={::this.onSubmit} action="." method="POST">
-				<div className="login-form__header">Login</div>
+				<div className="login-form__header">
+					<h1>Login</h1>
+					<Link to={'/register'}>Register</Link>
+				</div>
 				<div className="login-form__content">
 					{this.state.error ? this.renderError() : ''}
 
 					<p className="login-form__field">
+						<label>Username</label>
 						<input ref="login" type="text" name="username" />
 					</p>
 					<p className="login-form__field">
+						<label>Password</label>
 						<input ref="password" type="password" name="password" />
 					</p>
 					<p className="login-form__field">
