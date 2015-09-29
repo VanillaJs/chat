@@ -8,7 +8,7 @@
     "server-dev": "NODE_ENV=develop node app.js",
     "server-prod": "NODE_ENV=production node app.js",
     "clean": "rm -rf web/build",
-    "mocha" : "mocha $(find test -name '*.js') --sort",
+    "test" : "mocha $(find test -name '*.js') --sort",
     "build": "npm run clean && gulp --gulpfile web/gulpfile.js build",
     "lint": "eslint *.{js,jsx} --ignore-path .gitignore",
     "gulp": "gulp --gulpfile web/gulpfile.js",
@@ -16,7 +16,7 @@
   },
   "pre-commit": [
     "lint",
-    "mocha"
+    "test"
   ],
   "homepage": "http://vjs.cloudapp.net/",
   "dependencies": {
@@ -34,7 +34,6 @@
     "forever": "^0.15.1",
     "jade": "^1.11.0",
     "mime": "~1.2.7  ",
-    "mocha": "^2.3.3",
     "mongoose": "^4.1.7",
     "morgan": "^1.0.1",
     "nconf": "^0.7.2",
@@ -83,6 +82,7 @@
     "imagemin-pngquant": "*",
     "node-sass": "^3.3.2",
     "opn": "*",
+    "mocha": "^2.3.3",
     "pre-commit": "^1.1.1",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2",
