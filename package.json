@@ -10,7 +10,7 @@
     "clean": "rm -rf web/build",
     "test": "mocha $(find test -name '*.js') --sort",
     "build": "npm run clean && gulp --gulpfile web/gulpfile.js build",
-    "lint": "eslint . --ignore-path .gitignore",
+    "lint": "eslint ./**/*.{js} --ignore-path .gitignore",
     "gulp": "gulp --gulpfile web/gulpfile.js",
     "gulp:watch": "gulp --gulpfile web/gulpfile.js watch"
   },
