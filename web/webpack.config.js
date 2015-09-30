@@ -37,6 +37,10 @@ var config = {
 			{
 				test: /\.sass$/,
 				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax')
+			},
+			{
+				test: /\.(eot|woff|ttf|svg|png|jpg)$/,
+				loader: 'url-loader?limit=30000&name=[name]-[hash].[ext]'
 			}
 		],
 
