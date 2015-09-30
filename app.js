@@ -12,4 +12,3 @@ var child = new(forever.Monitor)('./server/server.js', {
 	'errFile': fs.existsSync('logs/forever.err') ? 'logs/forever.err' : ''
 });
 child.start();
-forever.startServer(child);
