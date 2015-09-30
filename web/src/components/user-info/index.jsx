@@ -29,7 +29,7 @@ class UserInfo extends Component {
 				Welcome <span className="user-info__name">Dmitry Medvedev</span>
 			</p>
 			<div className="user-info__icon-settings">
-				<i className={"fa fa-cog " + hoverModificator}></i>
+				<i className={'fa fa-cog ' + hoverModificator}></i>
 			</div>
 		</div>
 		);

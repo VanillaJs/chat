@@ -13,7 +13,8 @@ import './dialog.sass';
 class Dialog extends Component {
 	static propTypes = {
 		messages: PropTypes.array,
-		user: PropTypes.object
+		user: PropTypes.object,
+		channels: PropTypes.object
 	}
 
 	render() {
@@ -23,8 +24,8 @@ class Dialog extends Component {
 				<DialogDetails/>
 					<ul className="messages-container">
 						{messages.map((message, index) => {
-							let userName = (channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby') ? channels.contacts[message.channelId].name : message.userId;
-							let user = (message.userId === "me") ? "Я" : userName;
+							const userName = (channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby') ? channels.contacts[message.channelId].name : message.userId;
+							const user = (message.userId === 'me') ? 'Я' : userName;
 							return <DialogMessage key={index} user={user} message={message.message}/>;
 						})}
 					</ul>
