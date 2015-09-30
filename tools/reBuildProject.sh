@@ -10,4 +10,4 @@ npm run build
 ps -ax | grep 'mongod' | grep -v grep | awk '{print $1}' | xargs kill -9
 mongod --dbpath ./server/db/ &
 ps -ax | grep 'node' | grep -v grep | awk '{print $1}' | xargs kill -9
-npm start
+npm run server:prod

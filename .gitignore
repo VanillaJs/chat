@@ -3,7 +3,8 @@
 node_modules
 bower_components
 */build
-server/logs
+logs
+server/pids
 db
 node-debug.log
 layout
