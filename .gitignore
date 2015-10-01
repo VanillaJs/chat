@@ -1,6 +1,7 @@
 .idea
 .DS_Store
 node_modules
+*/node_modules
 bower_components
 */build
 logs
@@ -10,4 +11,3 @@ node-debug.log
 layout
 *.iml
 npm-debug.log
-web/src/fonts
