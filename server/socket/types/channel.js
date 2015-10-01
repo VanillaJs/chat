@@ -16,10 +16,12 @@ module.exports = function(socket, Users) {
 	function updateChannel(sessionId, value) {
 		// Через попу, но пока работает )
 		sessionStore.load(sessionId, function(err, session) {
-			session.passport.user.channel = value;
-			session.reload(function() {
-				session.touch().save();
-			});
+			if (session !== undefined) {
+				session.passport.user.channel = value;
+				session.reload(function() {
+					session.touch().save();
+				});
+			}
 		});
 	}
 

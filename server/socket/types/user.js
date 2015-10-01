@@ -1,5 +1,6 @@
 var Message = require('../../models/message').Message;
 var sendStatus = require('../../lib/channelstatus');
+var config = require('./../../config');
 
 module.exports = function(socket, Users) {
 	var data = Users[socket.handshake.user._id];
@@ -36,7 +37,7 @@ module.exports = function(socket, Users) {
 		// var status = false;
 		// save to database
 		message.userId = socket.handshake.user._id;
-		if (data.channel === 'Lobby') {
+		if (data.channel === config.get('defaultChannel')) {
 			message.message = message.text;
 			message.userId = socket.handshake.user.username;
 			sendMessage(true, message.room_id, message);

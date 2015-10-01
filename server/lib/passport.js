@@ -24,7 +24,7 @@ passport.use('local', new AuthLocalStrategy(
 					username: user.username,
 					photoUrl: 'url_to_avatar',
 					profileUrl: 'url_to_profile',
-					channel: 'Lobby'
+					channel: config.get('defaultChannel')
 				});
 			});
 		}
@@ -65,7 +65,7 @@ passport.use('facebook', new AuthFacebookStrategy(
 				username: user.username,
 				photoUrl: 'url_to_avatar',
 				profileUrl: 'url_to_profile',
-				channel: 'Lobby'
+				channel: config.get('defaultChannel')
 			});
 		});
 	}
@@ -107,7 +107,7 @@ passport.use('vk', new AuthVKStrategy(
 				username: user.username,
 				photoUrl: 'url_to_avatar',
 				profileUrl: 'url_to_profile',
-				channel: 'Lobby'
+				channel: config.get('defaultChannel')
 			});
 		});
 	}

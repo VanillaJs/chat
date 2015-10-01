@@ -74,7 +74,7 @@ module.exports = function(server) {
 				next(err);
 			}
 			var channel = socket.handshake.session.passport.user.channel;
-			var defaultChannel = 'Lobby';
+			var defaultChannel = config.get('defaultChannel');
 			socket.handshake.user = user;
 			// Если пользователь уже присутствует
 			if (Users.hasOwnProperty(user._id)) {
