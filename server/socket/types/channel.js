@@ -71,6 +71,20 @@ module.exports = function(socket, Users) {
 	});
 
 	socket.on('disconnect', function() {
-		sendStatus(socket.handshake.user._id, Users, 's.channel.offline');
+		if (userData.soketData.length) {
+			// проверяем какие сокеты уже отвалились
+			for (index in userData.soketData) {
+				if (userData.soketData[index].id === socket.id) {
+					// удаляем их
+					userData.soketData.splice(index, 1);
+				}
+			}
+		}
+		if(userData.soketData.length === 0) {
+
+			sendStatus(socket.handshake.user._id, Users, 's.channel.offline');
+			delete Users[socket.handshake.user._id];
+		}
+
 	});
 };
