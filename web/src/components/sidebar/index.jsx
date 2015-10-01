@@ -21,6 +21,16 @@ class Sidebar extends Component {
 		this.props.dispatch(sendAddContact(username));
 	}
 
+	handleOnlineCount() {
+		let count = 0;
+		for(let key in this.props.channels.contacts ) {
+			if(this.props.channels.contacts[key].is_online) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 
 
 	render() {
@@ -29,7 +39,7 @@ class Sidebar extends Component {
 		return (
 			<aside className="sidebar">
 				<UserInfo/>
-				<UserDetail/>
+				<UserDetail contactsCount={Object.keys(this.props.channels.contacts).length} onlineContacts={this.handleOnlineCount()}/>
 				<ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
 				<ChannelAdd/>
 				<ChannelList channels={channels} dispath={dispatch}/>
