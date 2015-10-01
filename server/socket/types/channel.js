@@ -8,6 +8,7 @@ module.exports = function(socket, Users) {
 	// Вход пользователя в комнату чата
 	var userData = Users[socket.handshake.user._id];
 	var channel = userData.channel;
+	var session = socket.handshake.session;
 
 	function ifUserOnline(id) {
 		return Users.hasOwnProperty(id);
@@ -36,7 +37,9 @@ module.exports = function(socket, Users) {
 
 	socket.on('c.channel.join', function(channelTo) {
 		socket.leave(userData.channel);
-		Users[socket.handshake.user._id].channel = socket.handshake.session.passport.user.channel = channelTo.id;
+		Users[socket.handshake.user._id].channel = channelTo.id;
+		// Обновление сессии
+		updateChannel(session.id, channelTo.id);
 
 		socket.join(channelTo.id);
 		socket.emit('s.channel.join', {channel: channelTo.id});
@@ -103,8 +106,6 @@ module.exports = function(socket, Users) {
 	});
 
 	socket.on('disconnect', function() {
-		var session = socket.handshake.session;
-
 		if (userData.soketData.length) {
 			// проверяем какие сокеты уже отвалились
 			for (index in userData.soketData) {
@@ -115,8 +116,6 @@ module.exports = function(socket, Users) {
 			}
 		}
 		if (userData.soketData.length === 0) {
-			// Обновление сессии
-			updateChannel(session.id, session.passport.user.channel);
 			sendStatus(socket.handshake.user._id, Users, 's.channel.offline');
 			delete Users[socket.handshake.user._id];
 		}
