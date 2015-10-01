@@ -23,13 +23,15 @@ export function channels(state = {current: null, contacts: {}}, action) {
 	case channelActionType.SET_CHANNEL_ONLINE:
 		if(state.contacts.hasOwnProperty(action.channel)) {
 			state.contacts[action.channel].is_online = true;
+			return assign({}, state, {contacts: state.contacts});
 		}
-		return assign({}, state, {contacts: state.contacts});
+		return state;
 	case channelActionType.SET_CHANNEL_OFFLINE:
 		if(state.contacts.hasOwnProperty(action.channel)) {
 			state.contacts[action.channel].is_online = false;
+			return assign({}, state, {contacts: state.contacts});
 		}
-		return assign({}, state, {contacts: state.contacts});
+		return state;
 	default:
 		return state;
 	}
