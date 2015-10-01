@@ -57,7 +57,6 @@ module.exports = function(server) {
 				if (!session) {
 					return callback(new HttpError(401, 'No session'));
 				}
-
 				socket.handshake.session = session;
 				loadUser(session, callback);
 			},
@@ -74,7 +73,8 @@ module.exports = function(server) {
 				}
 				next(err);
 			}
-
+			var channel = socket.handshake.session.passport.user.channel;
+			var defaultChannel = 'Lobby';
 			socket.handshake.user = user;
 			// Если пользователь уже присутствует
 			if (Users.hasOwnProperty(user._id)) {
@@ -93,11 +93,15 @@ module.exports = function(server) {
 				// Если пользователя нет , то добавляем его
 				const sockets = [];
 				sockets.push(socket);
-				const putData = {userData: user, soketData: sockets, channel: 'Lobby'};
+				const putData = {userData: user, soketData: sockets, channel: channel || defaultChannel};
 				Users[user._id] = putData;
 			}
 			Channel.getContactsByUserID(user._id, Users, function getContactsByUserIDCallback(channelError, contacts) {
 				Users[user._id].contacts = contacts;
+				// если мы удалили канал и он каким-то образом остался в нем
+				if (!Users[user._id].contacts.hasOwnProperty(channel)) {
+					Users[user._id].channel = defaultChannel;
+				}
 				next(channelError);
 			});
 		});

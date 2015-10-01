@@ -23,7 +23,8 @@ passport.use('local', new AuthLocalStrategy(
 					user_id: user._id,
 					username: user.username,
 					photoUrl: 'url_to_avatar',
-					profileUrl: 'url_to_profile'
+					profileUrl: 'url_to_profile',
+					channel: 'Lobby'
 				});
 			});
 		}
@@ -63,7 +64,8 @@ passport.use('facebook', new AuthFacebookStrategy(
 				user_id: user._id,
 				username: user.username,
 				photoUrl: 'url_to_avatar',
-				profileUrl: 'url_to_profile'
+				profileUrl: 'url_to_profile',
+				channel: 'Lobby'
 			});
 		});
 	}
@@ -104,7 +106,8 @@ passport.use('vk', new AuthVKStrategy(
 				user_id: user._id,
 				username: user.username,
 				photoUrl: 'url_to_avatar',
-				profileUrl: 'url_to_profile'
+				profileUrl: 'url_to_profile',
+				channel: 'Lobby'
 			});
 		});
 	}
