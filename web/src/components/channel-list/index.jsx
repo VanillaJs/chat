@@ -16,17 +16,16 @@ class ChannelList extends Component {
 	}
 
 	render() {
-		const {channels: {contacts}, dispatch} = this.props;
-		const boundActionCreators = bindActionCreators({changeChannel}, dispatch);
+		const boundActionCreators = bindActionCreators({changeChannel}, this.props.dispatch);
 		return (
 			<ul className="channels__add">
-				{Object.keys(contacts).map(key => {
+				{Object.keys(this.props.channels.contacts).map(key => {
 					return (
 						<Channel
-							key={contacts[key]._id}
-							online={contacts[key].is_online === true}
-							active={contacts[key]._id === this.props.channels.current}
-							channel={contacts[key]}
+							key={this.props.channels.contacts[key]._id}
+							online={this.props.channels.contacts[key].is_online === true}
+							active={this.props.channels.contacts[key]._id === this.props.channels.current}
+							channel={this.props.channels.contacts[key]}
 							{...boundActionCreators} />
 					);
 				})}

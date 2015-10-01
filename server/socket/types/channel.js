@@ -8,6 +8,10 @@ module.exports = function(socket, Users) {
 	var userData = Users[socket.handshake.user._id];
 	var channel = userData.channel;
 
+	function ifUserOnline(id) {
+		return Users.hasOwnProperty(id);
+	}
+
 
 	sendStatus(socket.handshake.user._id, Users, 's.channel.online');
 
@@ -36,13 +40,18 @@ module.exports = function(socket, Users) {
 						if (!err) {
 							sendData = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
 							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-							Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
+							if(ifUserOnline(user._id)) {
+								Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
+							}
+
 						}
 						// Таймаут для того, что данные по пользователю приходят асинхронно
 						setTimeout(function() {
 							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
 							toUser = sendData;
-							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
+							if(ifUserOnline(user._id)) {
+								sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
+							}
 
 							socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
 						}, 50);
@@ -61,10 +70,13 @@ module.exports = function(socket, Users) {
 			var toUser;
 			// Удаление сообщений по каналу
 			Message.find({ channelId: { $in: [channel.id] }  }).remove();
-			toUser = userData.contacts[channel.id];
-			sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
+			if(ifUserOnline(userData.contacts[channel.id].user)) {
+				toUser = userData.contacts[channel.id];
+				sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
+			}
+
 			// И удаляем из глобального объекта пользователя данный контакт
-			Users[socket.handshake.user._id].contacts[channel.id];
+			delete Users[socket.handshake.user._id].contacts[channel.id];
 
 			socket.emit('s.channel.delete', sendObject);
 		});

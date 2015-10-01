@@ -8,7 +8,9 @@ import ChannelList from '../channel-list';
 import {sendAddContact} from '../../actions/channels';
 import './sidebar.sass';
 
-@connect()
+@connect(store => ({
+	channels: store.channels
+}))
 
 class Sidebar extends Component {
 	static propTypes = {
@@ -19,14 +21,18 @@ class Sidebar extends Component {
 		this.props.dispatch(sendAddContact(username));
 	}
 
+
+
 	render() {
+		const {channels, dispatch} = this.props;
+
 		return (
 			<aside className="sidebar">
 				<UserInfo/>
 				<UserDetail/>
 				<ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
 				<ChannelAdd/>
-				<ChannelList/>
+				<ChannelList channels={channels} dispath={dispatch}/>
 			</aside>
 		);
 	}
