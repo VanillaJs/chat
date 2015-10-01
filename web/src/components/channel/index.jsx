@@ -6,7 +6,8 @@ class Channel extends Component {
 	static propTypes = {
 		channel: PropTypes.object.isRequired,
 		changeChannel: PropTypes.func.isRequired,
-		active: PropTypes.bool
+		active: PropTypes.bool,
+		online: PropTypes.bool
 	}
 	constructor(props) {
 		super(props);

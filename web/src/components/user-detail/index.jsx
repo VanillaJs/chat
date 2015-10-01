@@ -1,7 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import './userdetail.sass';
 
 class UserDetail extends Component {
+	static propTypes = {
+		contactsCount: PropTypes.int,
+		onlineContacts: PropTypes.int
+	}
+	constructor(props) {
+		super(props);
+	}
+
 	render() {
 		return (
 		<div className="user-detail">

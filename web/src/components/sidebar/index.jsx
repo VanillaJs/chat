@@ -14,7 +14,8 @@ import './sidebar.sass';
 
 class Sidebar extends Component {
 	static propTypes = {
-		dispatch: PropTypes.func
+		dispatch: PropTypes.func,
+		channels: PropTypes.object.isRequired
 	}
 
 	handleContactSearch(username) {
@@ -23,19 +24,16 @@ class Sidebar extends Component {
 
 	handleOnlineCount() {
 		let count = 0;
-		for(let key in this.props.channels.contacts ) {
-			if(this.props.channels.contacts[key].is_online) {
+		for (const key in this.props.channels.contacts) {
+			if (this.props.channels.contacts[key].is_online) {
 				count++;
 			}
 		}
 		return count;
 	}
 
-
-
 	render() {
 		const {channels, dispatch} = this.props;
-
 		return (
 			<aside className="sidebar">
 				<UserInfo/>

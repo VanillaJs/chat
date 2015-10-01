@@ -2,8 +2,12 @@ import React, {Component} from 'react';
 import './index.sass';
 
 class UserPic extends Component {
-
-
+	static propTypes = {
+		online: PropTypes.bool
+	}
+	constructor(props) {
+		super(props);
+	}
 
 	render() {
 		var online;
