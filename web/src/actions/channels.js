@@ -15,6 +15,22 @@ export function setActiveChannel(id) {
 	};
 }
 
+export function setOnlineChannel(data) {
+	let channel = data.channel;
+	return {
+		type: channelActionType.SET_CHANNEL_ONLINE,
+		channel
+	};
+}
+
+export function setOfflineChannel(data) {
+	let channel = data.channel;
+	return {
+		type: channelActionType.SET_CHANNEL_OFFLINE,
+		channel
+	};
+}
+
 export function fetchChannelList() {
 	return dispatch => {
 		socket.emit('c.user.get_channels');

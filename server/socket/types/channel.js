@@ -2,11 +2,30 @@ var User = require('../../models/user').User;
 var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
 var sendStatus = require('../../lib/channelstatus');
+var joinAllSocket = require('../../lib/sendselfsockets');
+var sessionStore = require('./../../lib/database/sessionStore');
 
 module.exports = function(socket, Users) {
 	// Вход пользователя в комнату чата
 	var userData = Users[socket.handshake.user._id];
 	var channel = userData.channel;
+	var session = socket.handshake.session;
+
+	function ifUserOnline(id) {
+		return Users.hasOwnProperty(id);
+	}
+
+	function updateChannel(sessionId, value) {
+		// Через попу, но пока работает )
+		sessionStore.load(sessionId, function(err, session) {
+			if (session !== undefined) {
+				session.passport.user.channel = value;
+				session.reload(function() {
+					session.touch().save();
+				});
+			}
+		});
+	}
 
 
 	sendStatus(socket.handshake.user._id, Users, 's.channel.online');
@@ -17,11 +36,14 @@ module.exports = function(socket, Users) {
 
 	socket.emit('s.channel.join', {channel: channel});
 
-	socket.on('c.channel.join', function(channel) {
-		socket.leave(userData.room);
-		Users[socket.handshake.user._id].channel = channel.id;
-		socket.join(channel.id);
-		socket.emit('s.channel.join', {channel: channel.id});
+	socket.on('c.channel.join', function(channelTo) {
+		socket.leave(userData.channel);
+		Users[socket.handshake.user._id].channel = channelTo.id;
+		// Обновление сессии
+		updateChannel(session.id, channelTo.id);
+		// добавил переключение по комнатам в одной сессии у всех пользователей
+		joinAllSocket(Users[socket.handshake.user._id], 's.channel.join', {channel: channelTo.id});
+		socket.emit('s.channel.join', {channel: channelTo.id});
 	});
 
 	// Добавление контактов логика еще не готова
@@ -30,19 +52,26 @@ module.exports = function(socket, Users) {
 		User.findByParams(user.username, user.username, function(err, user) {
 			var toUser;
 			if (user) {
-				if (!err) {
+				if (err) {
+					// ошибка
+				} else {
 					// Если канал существует
-					Channel.findOrCreate('user', socket.handshake.user._id, user._id, function(err, channel) {
+					Channel.findOrCreate('user', socket.handshake.user._id, user._id, function (err, channel) {
 						if (!err) {
 							sendData = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
 							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-							Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
+							if (ifUserOnline(user._id)) {
+								Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
+							}
+
 						}
-						// Таймаут для того, что данные по пользователю приходят асинхронно
-						setTimeout(function() {
+							// Таймаут для того, что данные по пользователю приходят асинхронно
+						setTimeout(function () {
 							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
 							toUser = sendData;
-							sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
+							if (ifUserOnline(user._id)) {
+								sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
+							}
 
 							socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
 						}, 50);
@@ -61,16 +90,35 @@ module.exports = function(socket, Users) {
 			var toUser;
 			// Удаление сообщений по каналу
 			Message.find({ channelId: { $in: [channel.id] }  }).remove();
-			toUser = userData.contacts[channel.id];
-			sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
+			if (ifUserOnline(userData.contacts[channel.id].user)) {
+				toUser = userData.contacts[channel.id];
+				sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
+			}
+
+			/*
+			 * нужно добавить логику при удалении чтобы он менял канал на дефолтный
+			 */
+
 			// И удаляем из глобального объекта пользователя данный контакт
-			Users[socket.handshake.user._id].contacts[channel.id];
+			delete Users[socket.handshake.user._id].contacts[channel.id];
 
 			socket.emit('s.channel.delete', sendObject);
 		});
 	});
 
 	socket.on('disconnect', function() {
-		sendStatus(socket.handshake.user._id, Users, 's.channel.offline');
+		if (userData.soketData.length) {
+			// проверяем какие сокеты уже отвалились
+			for (index in userData.soketData) {
+				if (userData.soketData[index].id === socket.id) {
+					// удаляем их
+					userData.soketData.splice(index, 1);
+				}
+			}
+		}
+		if (userData.soketData.length === 0) {
+			sendStatus(socket.handshake.user._id, Users, 's.channel.offline');
+			delete Users[socket.handshake.user._id];
+		}
 	});
 };

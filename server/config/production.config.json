@@ -1,5 +1,6 @@
 {
   "port": 3000,
+  "defaultChannel": "Lobby",
   "app":{
     "serverUrl":"http://vjs.cloudapp.net:3000",
     "socketOrigin":"http://vjs.cloudapp.net:*"

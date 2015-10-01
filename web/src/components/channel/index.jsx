@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
+import UserPic from '../user-pic';
 import './index.sass';
 
 class Channel extends Component {
 	static propTypes = {
 		channel: PropTypes.object.isRequired,
 		changeChannel: PropTypes.func.isRequired,
-		active: PropTypes.bool
+		active: PropTypes.bool,
+		online: PropTypes.bool
 	}
 	constructor(props) {
 		super(props);
@@ -18,11 +20,12 @@ class Channel extends Component {
 
 	render() {
 		const activeModificator = this.props.active ? '--active' : '';
-
 		return (
 			<li className={'channel-wrap' + activeModificator} onClick={this.changeChannel.bind(this)}>
 				<a className="channel">
-					<div className="channel__image-wrap"><img src="http://bit.ly/1R3jddn" alt="" className="channel__image"></img></div>
+					<div className="channel__image-wrap">
+						<UserPic online={this.props.online}/>
+					</div>
 					<div className="channel__message">
 						<div className="channel__message-header"><span>{this.props.channel.name}</span></div>
 						<div className="channel__message-content"><span>Первое сообщение,т...</span></div>

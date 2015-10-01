@@ -24,9 +24,7 @@ class Dialog extends Component {
 				<DialogDetails/>
 					<ul className="messages-container">
 						{messages.map((message, index) => {
-							const userName = (channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby') ? channels.contacts[message.channelId].name : message.userId;
-							const user = (message.userId === 'me') ? 'Я' : userName;
-							return <DialogMessage key={index} user={user} message={message.message}/>;
+							return <DialogMessage key={index} user={this.props.user} channels={channels} message={message}/>;
 						})}
 					</ul>
 			</div>

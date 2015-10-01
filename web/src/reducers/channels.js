@@ -20,6 +20,18 @@ export function channels(state = {current: null, contacts: {}}, action) {
 		return state;
 	case userActionType.SET_USER_DATA:
 		return assign({}, state, {contacts: action.contacts});
+	case channelActionType.SET_CHANNEL_ONLINE:
+		if(state.contacts.hasOwnProperty(action.channel)) {
+			state.contacts[action.channel].is_online = true;
+			return assign({}, state, {contacts: state.contacts});
+		}
+		return state;
+	case channelActionType.SET_CHANNEL_OFFLINE:
+		if(state.contacts.hasOwnProperty(action.channel)) {
+			state.contacts[action.channel].is_online = false;
+			return assign({}, state, {contacts: state.contacts});
+		}
+		return state;
 	default:
 		return state;
 	}
