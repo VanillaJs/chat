@@ -5,7 +5,8 @@ import './dialog-message.sass';
 class DialogMessage extends Component {
 	static propTypes = {
 		user: PropTypes.object,
-		message: PropTypes.string,
+		message: PropTypes.object,
+		channels: PropTypes.object,
 		short: PropTypes.bool
 	}
 
@@ -19,12 +20,22 @@ class DialogMessage extends Component {
 	}
 
 	renderFull() {
+		const {channels, message, user} = this.props;
+		let userName = message.userId;
+		if ( channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby' ) {
+			if ( user._id === message.userId ) {
+				userName = 'me';
+			} else {
+				userName = channels.contacts[message.channelId].name;
+			}
+		}
+
 		return (
 			<div className="dialog-message ">
 				<UserPic/>
 				<div className="dialog-message__content">
-					<p className="dialog-message__sender">{this.props.user}</p>
-					<p className="dialog-message__text">{this.props.message}</p>
+					<p className="dialog-message__sender">{userName}</p>
+					<p className="dialog-message__text">{message.message}</p>
 			<br/>
 					<time className="dialog-message__time">13:10</time>
 				</div>
