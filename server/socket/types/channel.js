@@ -2,6 +2,7 @@ var User = require('../../models/user').User;
 var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
 var sendStatus = require('../../lib/channelstatus');
+var joinAllSocket = require('../../lib/sendselfsockets');
 var sessionStore = require('./../../lib/database/sessionStore');
 
 module.exports = function(socket, Users) {
@@ -40,8 +41,8 @@ module.exports = function(socket, Users) {
 		Users[socket.handshake.user._id].channel = channelTo.id;
 		// Обновление сессии
 		updateChannel(session.id, channelTo.id);
-
-		socket.join(channelTo.id);
+		// добавил переключение по комнатам в одной сессии у всех пользователей
+		joinAllSocket(Users[socket.handshake.user._id], 's.channel.join', {channel: channelTo.id});
 		socket.emit('s.channel.join', {channel: channelTo.id});
 	});
 

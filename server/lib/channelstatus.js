@@ -17,25 +17,27 @@ function emmitEvent(user, channelId, additionalData, eventName) {
 function sendStatus(id, Users, eventName, toChannel, additionalData) {
 	var userId;
 	var userData = Users[id];
-	var keysChannels = Object.keys(userData.contacts);
-	if (toChannel === undefined) {
-		// будем отправлять другим пользователям , что пользователь появился
-		if (keysChannels.length) {
-			keysChannels.map(function channelsHandler(key) {
-				// отправляем уведомление только в каналы типа user
-				if (userData.contacts[key].type === 'user') {
-					userId = userData.contacts[key].user;
-					// проверяем если пользоваетель онлайн
-					if (Users.hasOwnProperty(userId)) {
-						emmitEvent(Users[userId], key, additionalData, eventName);
+	if(userData !== undefined) {
+		var keysChannels = Object.keys(userData.contacts);
+		if (toChannel === undefined) {
+			// будем отправлять другим пользователям , что пользователь появился
+			if (keysChannels.length) {
+				keysChannels.map(function channelsHandler(key) {
+					// отправляем уведомление только в каналы типа user
+					if (userData.contacts[key].type === 'user') {
+						userId = userData.contacts[key].user;
+						// проверяем если пользоваетель онлайн
+						if (Users.hasOwnProperty(userId)) {
+							emmitEvent(Users[userId], key, additionalData, eventName);
+						}
 					}
-				}
-			});
-		}
-	} else {
-		if (Users.hasOwnProperty(toChannel.user)) {
-			// проверяем если пользоваетель онлайн
-			emmitEvent(Users[toChannel.user], toChannel._id, additionalData, eventName);
+				});
+			}
+		} else {
+			if (Users.hasOwnProperty(toChannel.user)) {
+				// проверяем если пользоваетель онлайн
+				emmitEvent(Users[toChannel.user], toChannel._id, additionalData, eventName);
+			}
 		}
 	}
 }
