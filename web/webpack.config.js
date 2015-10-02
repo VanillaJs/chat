@@ -36,7 +36,7 @@ var config = {
 			},
 			{
 				test: /\.sass$/,
-				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax')
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!autoprefixer-loader!sass-loader?indentedSyntax')
 			},
 			{
 				test: /\.(eot|woff|ttf|svg|png|jpg)$/,
