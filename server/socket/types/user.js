@@ -30,7 +30,10 @@ module.exports = function(socket, Users) {
 
 	// Добавление контактов логика еще не готова
 	socket.on('c.user.get_data', function() {
-		socket.emit('s.user.set_data', {data: data.userData, contacts: data.contacts});
+		setTimeout(function () {
+			socket.emit('s.user.set_data', {data: data.userData, contacts: data.contacts});
+		}, 50);
+
 	});
 
 	socket.on('c.user.send_message', function(message) {
