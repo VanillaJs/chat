@@ -83,6 +83,7 @@
     "gulp-watch": "*",
     "imagemin-pngquant": "*",
     "mocha": "^2.3.3",
+    "moment": "^2.10.6",
     "node-sass": "^3.3.2",
     "opn": "*",
     "pre-commit": "^1.1.1",

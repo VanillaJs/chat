@@ -56,17 +56,16 @@ module.exports = function(socket, Users) {
 					// ошибка
 				} else {
 					// Если канал существует
-					Channel.findOrCreate('user', socket.handshake.user._id, user._id, function (err, channel) {
+					Channel.findOrCreate('user', socket.handshake.user._id, user._id, function(err, channel) {
 						if (!err) {
 							sendData = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
 							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
 							if (ifUserOnline(user._id)) {
 								Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
 							}
-
 						}
 							// Таймаут для того, что данные по пользователю приходят асинхронно
-						setTimeout(function () {
+						setTimeout(function() {
 							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
 							toUser = sendData;
 							if (ifUserOnline(user._id)) {

@@ -17,8 +17,9 @@ function emmitEvent(user, channelId, additionalData, eventName) {
 function sendStatus(id, Users, eventName, toChannel, additionalData) {
 	var userId;
 	var userData = Users[id];
-	if(userData !== undefined) {
-		var keysChannels = Object.keys(userData.contacts);
+	var keysChannels;
+	if (userData !== undefined) {
+		keysChannels = Object.keys(userData.contacts);
 		if (toChannel === undefined) {
 			// будем отправлять другим пользователям , что пользователь появился
 			if (keysChannels.length) {
