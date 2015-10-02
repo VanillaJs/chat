@@ -1,41 +1,41 @@
 .dialog-input
-
-	.userpic
-		vertical-align: top
-
-	&__window
-		position: relative
-		display: inline-block
-		width: calc(100% - 70px);
+	position: relative
+	width: 100%
+	height: 130px
+	font-size: 0
 
 	&__textarea
-		width: 100%
-		height: 80px
-		margin-left: 20px
+		width: calc(100% - 60px);
+		height: 70px
+		margin: 0 0 10px 10px
 		padding: 5px
 		padding-right: 25px
 		resize: none
 		outline: 0
 		box-shadow: none;
+		border: 2px solid #cccccc
 
 		&:focus
 			outline: none
 
 	&__add-button
 		position: absolute
-		right: -10px
-		top: 0px
+		top: 0
+		right: 10px
+		display: block
+		font-size: 25px
+		color: #aaa
+		font-weight: 700
 		text-decoration: none
-		color: #000
-		font-size: 30px
-		cursor: pointer
-
-		&:before
-			content: '+'
 
 	&__send-button
 		display: block
-		width: 80px
+		width: 90px
 		height: 30px
 		margin: 0 0 0 auto
-		text-transform: uppercase
+		border: none
+		font-size: 15px
+		background-color: #ff4a4a
+		color: #fff
+		font-weight: 300
+		cursor: pointer
