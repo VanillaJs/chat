@@ -57,7 +57,7 @@ module.exports = function(socket, Users) {
 		// data.page
 		Message.getListByParams(data.room_id, data.page, function(err, messages) {
 			if (!err) {
-				socket.emit('s.user.message_by_room', {data: messages});
+				socket.emit('s.user.message_by_room', {data: messages.reverse()});
 			}
 		});
 	});

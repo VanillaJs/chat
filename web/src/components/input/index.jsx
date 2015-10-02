@@ -6,7 +6,8 @@ class Input extends Component {
 	static propTypes = {
 		addMessage: PropTypes.func,
 		channel: PropTypes.string,
-		user: PropTypes.Object
+		activeChannelId: PropTypes.string,
+		user: PropTypes.object
 	}
 
 	submitMessage(event) {
@@ -15,8 +16,9 @@ class Input extends Component {
 
 		const elm = this.refs.messageInput.getDOMNode();
 		const text = elm.value;
+		const {addMessage, activeChannelId, user} = this.props;
 		if (text) {
-			this.props.addMessage(this.props.user.username, 'text', text, this.props.channel);
+			addMessage(this.props.user.username, 'text', text, activeChannelId, user._id);
 			elm.value = '';
 		}
 	}
@@ -25,9 +27,11 @@ class Input extends Component {
 		return (
 			<div className="dialog-input">
 				<UserPic />
-				<textarea ref="messageInput" className="dialog-input__textarea"></textarea>
-				<a className="dialog-input__add-button" href="#">+</a>
-				<button onClick={this.submitMessage.bind(this)} className="dialog-input__send-button" type="submit">Send</button>
+				<div className="dialog-input__window">
+					<textarea ref="messageInput" className="dialog-input__textarea"></textarea>
+					<i className="dialog-input__add-button"></i>
+				</div>
+				<button onClick={::this.submitMessage} className="dialog-input__send-button" type="submit">Send</button>
 			</div>
 		);
 	}

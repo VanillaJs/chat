@@ -9,7 +9,7 @@ export function bindActionsToSocketEvents() {
 	socket.on('s.channel.join', data => { dispatch(setActiveChannel(data.channel)); });
 	socket.on('s.channel.online', data => { dispatch(setOnlineChannel(data)); });
 	socket.on('s.channel.offline', data => { dispatch(setOfflineChannel(data)); });
-	socket.on('s.user.send_message', data => { dispatch(addRemoteMessage(data)); });
+	socket.on('s.user.send_message', data => { console.log('sadsad'); dispatch(addRemoteMessage(data)); });
 	socket.on('s.channel.add', data => {
 		dispatch(addContact(data));
 	});

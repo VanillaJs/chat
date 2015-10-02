@@ -39,9 +39,9 @@ schema.statics.getListByParams = function(channelId, pageNum, callback) {
 	async.waterfall([
 		function(callback) {
 			if (skip > 0) {
-				Message.find({channelId: channelId}, callback).sort({created: 1}).skip(skip);
+				Message.find({channelId: channelId}, callback).sort({created: -1}).skip(skip);
 			} else {
-				Message.find({channelId: channelId}, callback).sort({created: 1}).limit(limit);
+				Message.find({channelId: channelId}, callback).sort({created: -1}).limit(limit);
 			}
 		},
 		function(messages, callback) {
