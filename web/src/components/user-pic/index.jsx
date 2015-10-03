@@ -17,7 +17,7 @@ class UserPic extends Component {
 
 		return (
 			<div className="userpic">
-				<img className="userpic__image" src={this.props.avatar} height="50" alt="Userpic"></img>
+				<img className="userpic__image" src={this.props.avatar} height="50" alt=""></img>
 				{online}
 			</div>
 		);
