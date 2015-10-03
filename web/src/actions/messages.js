@@ -29,7 +29,7 @@ export function prependChannelMessages(channelId, messages) {
 	};
 }
 
-export function setReadMessages(userId, data, channelId) {
+export function setReadMessages(userId, data) {
 	var unreadMessages = [];
 	// если сообщени есть
 	if (data.length) {

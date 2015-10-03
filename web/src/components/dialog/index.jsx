@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import DialogDetails from '../dialog-details';
 import DialogMessage from '../dialog-message';
 import './dialog.sass';
 
@@ -25,17 +24,25 @@ class Dialog extends Component {
 		fetchChannelMessages(user._id, nextProps.channels.current);
 	}
 
-	componentDidUpdate() {
-		const container = this.refs.container.getDOMNode();
-		container.scrollBottom = container.scrollHeight;
+	componentWillUpdate() {
+		const node = this.refs.container.getDOMNode();
+		this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
 	}
+
+	componentDidUpdate() {
+		if (this.shouldScrollBottom) {
+			const node = this.refs.messageContainer.getDOMNode();
+			node.scrollTop = node.scrollHeight;
+		}
+	}
+
 
 	render() {
 		const {messages, channels, user} = this.props;
 		return (
 			<div ref="container" className="dialog">
-				<DialogDetails/>
-				<ul className="messages-container">
+				<button onClick={}>LoadMessages</button>
+				<ul ref="messageContainer" className="messages-container">
 					{messages[channels.current] && messages[channels.current].map(_ => {
 						return <DialogMessage key={_._id} message={_} user={user} channels={channels} />;
 					})}
