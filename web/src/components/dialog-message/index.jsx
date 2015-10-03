@@ -37,9 +37,8 @@ class DialogMessage extends Component {
 				<div className="dialog-message__content">
 					<p className="dialog-message__sender">{userName}</p>
 					<p className="dialog-message__text">{message.message}</p>
-					<time className="dialog-message__time">{moment(message.created).format('MMM Do YYYY, h:mm')}</time>
 				</div>
-					<time className="dialog-message__time">13:10</time>
+					<time className="dialog-message__time">{moment(message.created).format('h:mm')}</time>
 			</div>
 		);
 	}
