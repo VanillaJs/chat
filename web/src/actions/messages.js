@@ -29,7 +29,7 @@ export function prependChannelMessages(channelId, messages) {
 	};
 }
 
-export function setReadMessages(userId, data) {
+export function setReadMessages(userId, data, channelId) {
 	var unreadMessages = [];
 	// если сообщени есть
 	if (data.length) {
@@ -57,7 +57,7 @@ export function fetchChannelMessages(userId, channelId, page = 1) {
 		transport.socket.on('s.user.message_by_room', function listener(r) {
 			dispatch(prependChannelMessages(channelId, r.data));
 
-			dispatch(setReadMessages(userId, r.data));
+			dispatch(setReadMessages(userId, r.data, channelId));
 			transport.socket.removeListener('s.user.message_by_room', listener);
 		});
 	};
