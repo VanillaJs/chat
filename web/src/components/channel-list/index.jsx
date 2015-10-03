@@ -17,6 +17,7 @@ class ChannelList extends Component {
 
 	render() {
 		const boundActionCreators = bindActionCreators({changeChannel}, this.props.dispatch);
+		console.log(this.props.channels.contacts);
 		return (
 			<ul className="channels__add">
 				{Object.keys(this.props.channels.contacts).map(key => {
@@ -26,6 +27,7 @@ class ChannelList extends Component {
 							online={this.props.channels.contacts[key].is_online === true}
 							active={this.props.channels.contacts[key]._id === this.props.channels.current}
 							channel={this.props.channels.contacts[key]}
+							unread={this.props.channels.contacts[key].message_count}
 							{...boundActionCreators} />
 					);
 				})}

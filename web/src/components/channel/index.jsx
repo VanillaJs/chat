@@ -28,7 +28,10 @@ class Channel extends Component {
 					</div>
 					<div className="channel__message">
 						<div className="channel__message-header"><span>{this.props.channel.name}</span></div>
-						<div className="channel__message-content"><span>Первое сообщение,т...</span></div>
+						<div className="channel__message-content">
+							<span className="channel__message-preview">Первое сообщение,т...</span>
+							<span className="channel__message-unread">{this.props.unread}</span>
+						</div>
 					</div>
 					<div className="channel__time"><span>10:10</span></div>
 				</a>
