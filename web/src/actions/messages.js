@@ -21,15 +21,17 @@ export function addRemoteMessage({userId, message}) {
 	};
 }
 
-export function prependChannelMessages(channelId, messages) {
+export function prependChannelMessages(channelId, messages, userId, page) {
 	return {
 		type: messageActionType.PREPEND_MESSAGES,
 		channelId,
-		messages
+		messages,
+		userId,
+		page
 	};
 }
 
-export function setReadMessages(userId, data) {
+export function setReadMessages(userId, data, channelId) {
 	var unreadMessages = [];
 	// если сообщени есть
 	if (data.length) {
@@ -55,7 +57,7 @@ export function fetchChannelMessages(userId, channelId, page = 1) {
 	return dispatch => {
 		transport.socket.emit('c.user.get_message_by_room', {room_id: channelId, page: page});
 		transport.socket.on('s.user.message_by_room', function listener(r) {
-			dispatch(prependChannelMessages(channelId, r.data));
+			dispatch(prependChannelMessages(channelId, r.data, userId, page));
 
 			dispatch(setReadMessages(userId, r.data, channelId));
 			transport.socket.removeListener('s.user.message_by_room', listener);

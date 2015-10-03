@@ -20,7 +20,6 @@ class UserInfo extends Component {
 	render() {
 		const hoverModificator = this.state.active ? 'fa-spin' : '';
 		let userName, userAvatar, userColor;
-		console.log(this.props);
 		if (this.props.user.username !== undefined ) {
 			userName = this.props.user.username;
 		}

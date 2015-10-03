@@ -36,14 +36,22 @@ class Dialog extends Component {
 		}
 	}
 
+	loadNewMessages() {
+		if (this.props.messages[this.props.channels.current] !== undefined) {
+			let page = this.props.messages[this.props.channels.current].page;
+			++page;
+			this.props.fetchChannelMessages(this.props.user._id, this.props.channels.current, page);
+		}
+	}
 
 	render() {
 		const {messages, channels, user} = this.props;
+		console.log(messages);
 		return (
 			<div ref="container" className="dialog">
-				<button onClick={}>LoadMessages</button>
+				<button onClick={this.loadNewMessages.bind(this)}>LoadMessages</button>
 				<ul ref="messageContainer" className="messages-container">
-					{messages[channels.current] && messages[channels.current].map(_ => {
+					{messages[channels.current] && messages[channels.current].listMessages.map(_ => {
 						return <DialogMessage key={_._id} message={_} user={user} channels={channels} />;
 					})}
 				</ul>
