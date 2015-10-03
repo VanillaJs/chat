@@ -22,16 +22,19 @@ module.exports = function(socket, Users) {
 			userId: message.userId,
 			message: message
 		};
-        //
 
 		socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	};
 
+	socket.emit('s.user.set_user_id', socket.handshake.user._id);
+
+	// функция делает сообщения прочитанными
+	socket.on('c.user.read_message', function(data) {
+		Message.setRead(data);
+	});
 	// Добавление контактов логика еще не готова
 	socket.on('c.user.get_data', function() {
-		setTimeout(function() {
-			socket.emit('s.user.set_data', {data: data.userData, contacts: data.contacts});
-		}, 50);
+		socket.emit('s.user.set_data', {data: data.userData, contacts: data.contacts});
 	});
 
 	socket.on('c.user.send_message', function(message) {
@@ -43,7 +46,6 @@ module.exports = function(socket, Users) {
 			message.userId = socket.handshake.user.username;
 			sendMessage(true, message.room_id, message);
 		} else {
-			console.log(message);
 			// пишем в базу
 			Message.addNew(message, function(err, messageNew) {
 				sendMessage(true, messageNew.channelId, messageNew);

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import DialogDetails from '../dialog-details';
 import DialogMessage from '../dialog-message';
 import './dialog.sass';
 
@@ -16,12 +17,12 @@ class Dialog extends Component {
 	 */
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
-		const {channels: newChannels} = nextProps;
+		const {channels: newChannels, user} = nextProps;
 		if (newChannels.current === channels.current ||
 				newChannels.contacts[newChannels.current] && newChannels.contacts[newChannels.current].inited) {
 			return;
 		}
-		fetchChannelMessages(nextProps.channels.current);
+		fetchChannelMessages(user._id, nextProps.channels.current);
 	}
 
 	componentDidUpdate() {
@@ -33,6 +34,7 @@ class Dialog extends Component {
 		const {messages, channels, user} = this.props;
 		return (
 			<div ref="container" className="dialog">
+				<DialogDetails/>
 				<ul className="messages-container">
 					{messages[channels.current] && messages[channels.current].map(_ => {
 						return <DialogMessage key={_._id} message={_} user={user} channels={channels} />;

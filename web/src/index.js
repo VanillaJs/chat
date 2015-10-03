@@ -1,21 +1,26 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Provider} from 'react-redux';
-import {bindActionsToSocketEvents} from './socket';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+import {Router, Route} from 'react-router';
 import store from './store';
 import App from './App';
+import Login from './components/login';
+import Register from './components/register';
 
-bindActionsToSocketEvents();
-
-class AppWrap extends Component {
-	render() {
-		return (
-			<Provider store={store}>
-				{ () => <App />}
-			</Provider>
-		);
-	}
+function renderRoutes() {
+	return (
+		<Router history={createBrowserHistory()}>
+			<Route path="/" component={App} />
+			<Route path="login" component={Login} />
+			<Route path="register" component={Register} />
+		</Router>
+	);
 }
 
 React.render(
-	<AppWrap />,
+	(
+		<Provider store={store}>
+			{() => renderRoutes()}
+		</Provider>
+	),
 	document.getElementById('app'));

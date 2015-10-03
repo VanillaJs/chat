@@ -17,7 +17,6 @@ class ChannelList extends Component {
 
 	render() {
 		const boundActionCreators = bindActionCreators({changeChannel}, this.props.dispatch);
-		console.log(this.props.channels.contacts);
 		return (
 			<ul className="channels__add">
 				{Object.keys(this.props.channels.contacts).map(key => {

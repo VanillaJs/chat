@@ -39,7 +39,7 @@ schema.statics.getListByParams = function(channelId, pageNum, callback) {
 	async.waterfall([
 		function(callback) {
 			if (skip > 0) {
-				Message.find({channelId: channelId}, callback).sort({created: -1}).skip(skip);
+				Message.find({channelId: channelId}, callback).sort({created: -1}).skip(skip).limit(limit);
 			} else {
 				Message.find({channelId: channelId}, callback).sort({created: -1}).limit(limit);
 			}
@@ -61,6 +61,13 @@ schema.statics.getUnreadMessagesByChannel = function(channelId, userId, callback
 			callback(null, messages.length);
 		}
 	], callback);
+};
+
+schema.statics.setRead = function(data) {
+	var Message = this;
+	Message.update({_id: { $in: data.messages }}, { $push: { read: data.userId } }, {multi: true}, function(err) {
+		console.log(err);
+	});
 };
 
 schema.statics.addNew = function(message, callback) {

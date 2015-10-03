@@ -4,16 +4,27 @@ var passport = require('./../lib/passport');
 
 module.exports = function(app) {
 	app.get('/', checkAuth, require('./frontpage').get);
-	app.get('/login', require('./login').get);
-	app.post('/login', passport.authenticate('local',
-		{
-			successRedirect: '/',
-			failureRedirect: '/login',
-			failureFlash: true
-		})
-	);
+	app.get('/login', require('./frontpage').get);
+
+	app.post('/login', function(req, res) {
+		passport.authenticate('local', function(err, user) {
+			if (req.xhr) {
+				if (err) {
+					return res.json({ error: err.message });
+				}
+				if (!user) { return res.json({error: 'Invalid Login'}); }
+				req.login(user, {}, function(err) {
+					if (err) {
+						return res.json({error: err});
+					}
+					res.json({ error: null });
+				});
+			}
+		})(req, res);
+	});
+
 	app.get('/login-fb', passport.authenticate('facebook', {scope: 'email'}));
-	app.get('/register', require('./register').get);
+	app.get('/register', require('./frontpage').get);
 	app.post('/register', require('./register').post);
 
 	app.get('/login-fb-callback*',
