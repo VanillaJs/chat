@@ -9,6 +9,14 @@ export function setUserData(user, contacts) {
 	};
 }
 
+export function setUserId(id) {
+	return {
+		type: userActionType.SET_ID,
+		id
+	};
+}
+
+
 export function fetchUserData() {
 	return dispatch => {
 		socket.on('s.user.set_data', function handler({data, contacts}) {

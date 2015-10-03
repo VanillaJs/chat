@@ -111,10 +111,11 @@ module.exports = function(server) {
 
 
 	io.on('connection', function socketConnectionHandler(socket) {
+
+		require('./types/user')(socket, Users);
 		require('./types/channel')(socket, Users);
 		// генерирую событие списка комнат getContsctsList
 		// Обработка пользовательских событий
-		require('./types/user')(socket, Users);
 	});
 
 	io.Users = Users;
