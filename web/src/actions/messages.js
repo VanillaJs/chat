@@ -28,11 +28,29 @@ export function prependChannelMessages(channelId, messages) {
 	};
 }
 
-export function fetchChannelMessages(channelId) {
+export function setReadMessages(userId, data) {
+	var unreadMessages = [];
+	// если сообщени есть
+	if (data.length) {
+		data.map(function messageHandler(message) {
+			if (message.read.indexOf(userId) < 0) {
+				unreadMessages.push(message._id);
+			}
+		});
+	}
+	// если есть непрочитанные тогда делаем их прочитанными
+	if (unreadMessages.length) {
+		socket.emit('c.user.read_message', {userId: userId, messages: unreadMessages});
+	}
+}
+
+export function fetchChannelMessages(userId, channelId, page = 1) {
 	return dispatch => {
-		socket.emit('c.user.get_message_by_room', {room_id: channelId, page: 1});
+		socket.emit('c.user.get_message_by_room', {room_id: channelId, page: page});
 		socket.on('s.user.message_by_room', function listener(r) {
 			dispatch(prependChannelMessages(channelId, r.data));
+
+			setReadMessages(userId, r.data);
 			socket.removeListener('s.user.message_by_room', listener);
 		});
 	};

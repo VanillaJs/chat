@@ -16,12 +16,13 @@ class Dialog extends Component {
 	 */
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
-		const {channels: newChannels} = nextProps;
+		const {channels: newChannels, user} = nextProps;
 		if (newChannels.current === channels.current ||
 				newChannels.contacts[newChannels.current] && newChannels.contacts[newChannels.current].inited) {
 			return;
 		}
-		fetchChannelMessages(nextProps.channels.current);
+		console.log(this.props);
+		fetchChannelMessages(user._id, nextProps.channels.current);
 	}
 
 	componentDidUpdate() {
