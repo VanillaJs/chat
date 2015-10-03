@@ -1,12 +1,12 @@
 {
   "name": "vjs",
   "version": "0.1.0",
-  "main": "server/server.js",
+  "main": "app.js",
   "scripts": {
     "prebuild": "npm run clean -s",
     "start": "npm run server:dev",
-    "server:dev": "NODE_ENV=develop DEBUG=socket.io* node server/server.js",
-    "server:prod": "NODE_ENV=production node server/server.js",
+    "server:dev": "NODE_ENV=develop DEBUG=socket.io* node app.js",
+    "server:prod": "NODE_ENV=production node app.js",
     "clean": "rm -rf web/build",
     "test": "mocha $(find test -name '*.js') --sort",
     "build": "npm run clean && gulp --gulpfile web/gulpfile.js build",
@@ -32,6 +32,7 @@
     "express": "~4.0.0",
     "express-session": "^1.11.3",
     "forever": "^0.15.1",
+    "forever-monitor": "^1.7.0",
     "jade": "^1.11.0",
     "mime": "~1.2.7  ",
     "mongoose": "^4.1.7",

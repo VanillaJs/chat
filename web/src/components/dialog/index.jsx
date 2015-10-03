@@ -18,8 +18,7 @@ class Dialog extends Component {
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
 		const {channels: newChannels, user} = nextProps;
-		if (newChannels.current === channels.current ||
-				newChannels.contacts[newChannels.current] && newChannels.contacts[newChannels.current].inited) {
+		if (newChannels.current === channels.current) {
 			return;
 		}
 		fetchChannelMessages(user._id, nextProps.channels.current);
@@ -37,6 +36,13 @@ class Dialog extends Component {
 		}
 	}
 
+	loadNewMessages() {
+		if (this.props.messages[this.props.channels.current] !== undefined) {
+			let page = this.props.messages[this.props.channels.current].page;
+			++page;
+			this.props.fetchChannelMessages(this.props.user._id, this.props.channels.current, page);
+		}
+	}
 
 	render() {
 		const {messages, channels, user} = this.props;
@@ -47,9 +53,9 @@ class Dialog extends Component {
 		return (
 			<div ref="container" className="dialog">
 				<DialogDetails online={isOnline}/>
-				<button>LoadMessages</button>
+				<button onClick={this.loadNewMessages.bind(this)}>LoadMessages</button>
 				<ul ref="messageContainer" className="messages-container">
-					{messages[channels.current] && messages[channels.current].map(_ => {
+					{messages[channels.current] && messages[channels.current].listMessages.map(_ => {
 						return <DialogMessage key={_._id} message={_} user={user} channels={channels} />;
 					})}
 				</ul>

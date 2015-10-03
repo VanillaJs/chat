@@ -10,7 +10,7 @@ module.exports = function(socket, Users) {
 		// Проверяем пользователь онлайн или нет
 		if (toUser !== undefined && Users.hasOwnProperty(toUser.user)) {
 			// проверяем, что он не находится в этом канале
-			if (Users[toUser.user].channel !== channelId) {
+			if (Users[toUser.user].channel.toString() !== channelId.toString()) {
 				// отправляем ему сообщение
 				sendStatus(socket.handshake.user._id, Users, 's.user.send_private', toUser, {message_count: 1});
 			}
