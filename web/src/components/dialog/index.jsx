@@ -17,8 +17,7 @@ class Dialog extends Component {
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
 		const {channels: newChannels, user} = nextProps;
-		if (newChannels.current === channels.current ||
-				newChannels.contacts[newChannels.current] && newChannels.contacts[newChannels.current].inited) {
+		if (newChannels.current === channels.current) {
 			return;
 		}
 		fetchChannelMessages(user._id, nextProps.channels.current);
