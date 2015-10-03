@@ -4,7 +4,6 @@ export PATH="/brew/bin:$PATH"
 export MANPATH="/brew/share/man:$MANPATH"
 export INFOPATH="/brew/share/info:$INFOPATH"
 echo Begin building
-pwd
 npm install
 npm run clean
 npm run build
