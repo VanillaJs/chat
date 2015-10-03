@@ -18,7 +18,7 @@ class Input extends Component {
 		const text = elm.value;
 		const {addMessage, activeChannelId, user} = this.props;
 		if (text) {
-			addMessage(this.props.user.username, 'text', text, activeChannelId, user._id);
+			addMessage('text', text, activeChannelId, user._id);
 			elm.value = '';
 		}
 	}
