@@ -22,12 +22,11 @@ module.exports = function(socket, Users) {
 			userId: message.userId,
 			message: message
 		};
-        //
 
 		socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	};
 
-	socket.emit('s.user.set_user_id', socket.handshake.user._id)
+	socket.emit('s.user.set_user_id', socket.handshake.user._id);
 
 	// функция делает сообщения прочитанными
 	socket.on('c.user.read_message', function(data) {
@@ -37,8 +36,6 @@ module.exports = function(socket, Users) {
 	socket.on('c.user.get_data', function() {
 		socket.emit('s.user.set_data', {data: data.userData, contacts: data.contacts});
 	});
-
-
 
 	socket.on('c.user.send_message', function(message) {
 		// var status = false;

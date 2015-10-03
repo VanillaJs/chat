@@ -27,7 +27,7 @@ class Dialog extends Component {
 
 	componentDidUpdate() {
 		const container = this.refs.container.getDOMNode();
-		container.scrollTop = container.scrollHeight;
+		container.scrollBottom = container.scrollHeight;
 	}
 
 	render() {
