@@ -16,7 +16,7 @@ export function setActiveChannel(id) {
 }
 
 export function setOnlineChannel(data) {
-	let channel = data.channel;
+	const channel = data.channel;
 	return {
 		type: channelActionType.SET_CHANNEL_ONLINE,
 		channel
@@ -24,7 +24,7 @@ export function setOnlineChannel(data) {
 }
 
 export function setOfflineChannel(data) {
-	let channel = data.channel;
+	const channel = data.channel;
 	return {
 		type: channelActionType.SET_CHANNEL_OFFLINE,
 		channel

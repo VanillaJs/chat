@@ -3,8 +3,8 @@ import './userdetail.sass';
 
 class UserDetail extends Component {
 	static propTypes = {
-		contactsCount: PropTypes.int,
-		onlineContacts: PropTypes.int
+		contactsCount: PropTypes.number,
+		onlineContacts: PropTypes.number
 	}
 	constructor(props) {
 		super(props);

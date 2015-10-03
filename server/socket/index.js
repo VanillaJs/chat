@@ -67,14 +67,16 @@ module.exports = function(server) {
 				callback(null, user);
 			}
 		], function(err, user) {
+			var channel;
+			var defaultChannel;
 			if (err) {
 				if (err instanceof HttpError) {
 					return next(new Error('Not authorized'));
 				}
 				next(err);
 			}
-			var channel = socket.handshake.session.passport.user.channel;
-			var defaultChannel = config.get('defaultChannel');
+			channel = socket.handshake.session.passport.user.channel;
+			defaultChannel = config.get('defaultChannel');
 			socket.handshake.user = user;
 			// Если пользователь уже присутствует
 			if (Users.hasOwnProperty(user._id)) {

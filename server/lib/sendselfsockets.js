@@ -7,6 +7,6 @@ var joinAllSocket = function(user, eventName, sendData) {
 			socketObj.emit(eventName, sendData);
 		});
 	}
-}
+};
 
 module.exports = joinAllSocket;

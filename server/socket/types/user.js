@@ -30,10 +30,9 @@ module.exports = function(socket, Users) {
 
 	// Добавление контактов логика еще не готова
 	socket.on('c.user.get_data', function() {
-		setTimeout(function () {
+		setTimeout(function() {
 			socket.emit('s.user.set_data', {data: data.userData, contacts: data.contacts});
 		}, 50);
-
 	});
 
 	socket.on('c.user.send_message', function(message) {
@@ -57,7 +56,7 @@ module.exports = function(socket, Users) {
 		// data.page
 		Message.getListByParams(data.room_id, data.page, function(err, messages) {
 			if (!err) {
-				socket.emit('s.user.message_by_room', {data: messages});
+				socket.emit('s.user.message_by_room', {data: messages.reverse()});
 			}
 		});
 	});
