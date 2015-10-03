@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import DialogDetails from '../dialog-details';
 import DialogMessage from '../dialog-message';
 import './dialog.sass';
 
@@ -39,8 +40,13 @@ class Dialog extends Component {
 
 	render() {
 		const {messages, channels, user} = this.props;
+		let isOnline = false;
+		if ((channels.contacts[channels.current] !== undefined) && (channels.contacts[channels.current].is_online === true)) {
+			isOnline = true;
+		}
 		return (
 			<div ref="container" className="dialog">
+				<DialogDetails online={isOnline}/>
 				<button>LoadMessages</button>
 				<ul ref="messageContainer" className="messages-container">
 					{messages[channels.current] && messages[channels.current].map(_ => {
