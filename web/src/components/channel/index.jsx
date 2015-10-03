@@ -7,7 +7,8 @@ class Channel extends Component {
 		channel: PropTypes.object.isRequired,
 		changeChannel: PropTypes.func.isRequired,
 		active: PropTypes.bool,
-		online: PropTypes.bool
+		online: PropTypes.bool,
+		unread: PropTypes.int
 	}
 	constructor(props) {
 		super(props);
