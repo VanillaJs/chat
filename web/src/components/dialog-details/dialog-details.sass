@@ -1,27 +1,30 @@
 .dialog-details
-  margin-bottom: 30px
+	position: absolute
+	left: 0
+	top: 0
+	width: 100%
+	padding: 15px 50px 15px 30px
+	background-color: #f6f6f6
 
-  &__contact
-    float: left
+	&__name
+		font-weight: 700
+		font-size: 16px
 
-  &__menu
-    display: inline-block
-    vertical-align: middle
-    text-decoration: none
-    color: #000
-    float: right
+	&__status
+		display: inline-block
+		vertical-align: middle
+		font-size: 13px
+		line-height: 15px
+		font-weight: 300
 
-
-  &:after
-    content:''
-    display: table
-    clear: both
-
-  &__status-icon--online
-    display: inline-block
-    width: 10px
-    height: 10px
-    border: 2px solid white
-    border-radius: 50%
-    background-color: green
-    font-size: 0
+		&--online:before
+			display: inline-block
+			vertical-align: middle
+			content: ''
+			width: 4px
+			height: 4px
+			margin-right: 5px
+			border: 1px solid white
+			border-radius: 50%
+			background-color: #00a651
+			font-size: 0

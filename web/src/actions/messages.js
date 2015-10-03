@@ -1,10 +1,10 @@
 import * as messageActionType from '../constants/messages';
 import {socket} from '../socket';
 
-export function addMessage(type = 'text', message, channel) {
+export function addMessage(username, type = 'text', message, channel) {
 	const data = {message_type: type, text: message, room_id: channel};
 	socket.emit('c.user.send_message', {message_type: type, text: message, room_id: channel});
-	data.userId = 'me';
+	data.userId = username;
 	data.message = message;
 	return {
 		type: messageActionType.ADD_MESSAGE,

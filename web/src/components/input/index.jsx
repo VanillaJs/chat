@@ -5,7 +5,8 @@ import './input.sass';
 class Input extends Component {
 	static propTypes = {
 		addMessage: PropTypes.func,
-		channel: PropTypes.string
+		channel: PropTypes.string,
+		user: PropTypes.Object
 	}
 
 	submitMessage(event) {
@@ -15,7 +16,7 @@ class Input extends Component {
 		const elm = this.refs.messageInput.getDOMNode();
 		const text = elm.value;
 		if (text) {
-			this.props.addMessage('text', text, this.props.channel);
+			this.props.addMessage(this.props.user.username, 'text', text, this.props.channel);
 			elm.value = '';
 		}
 	}
@@ -24,10 +25,8 @@ class Input extends Component {
 		return (
 			<div className="dialog-input">
 				<UserPic />
-				<div className="dialog-input__window">
-					<textarea ref="messageInput" className="dialog-input__textarea"></textarea>
-					<i className="dialog-input__add-button"></i>
-				</div>
+				<textarea ref="messageInput" className="dialog-input__textarea"></textarea>
+				<a className="dialog-input__add-button" href="#">+</a>
 				<button onClick={this.submitMessage.bind(this)} className="dialog-input__send-button" type="submit">Send</button>
 			</div>
 		);

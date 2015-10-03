@@ -8,23 +8,25 @@ import './main.sass';
 
 @connect(store => ({
 	messages: store.messages,
-	channels: store.channels
+	channels: store.channels,
+	user: store.user
 }))
 
 class Main extends Component {
 	static propTypes = {
 		dispatch: PropTypes.func,
-		channels: PropTypes.object
+		channels: PropTypes.object,
+		user: PropTypes.object
 	}
 
 	render() {
-		const {dispatch} = this.props;
+		const {dispatch, user} = this.props;
 		const boundActions = bindActionCreators({addMessage}, dispatch);
 
 		return (
 			<main className="main">
 				<Dialog />
-				<Input channel={this.props.channels.current} {...boundActions} />
+				<Input user={user} channel={this.props.channels.current} {...boundActions} />
 			</main>
 		);
 	}

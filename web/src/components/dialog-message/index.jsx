@@ -24,7 +24,7 @@ class DialogMessage extends Component {
 		let userName = message.userId;
 		if ( channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby' ) {
 			if ( user._id === message.userId ) {
-				userName = 'me';
+				userName = user.username;
 			} else {
 				userName = channels.contacts[message.channelId].name;
 			}
@@ -36,9 +36,8 @@ class DialogMessage extends Component {
 				<div className="dialog-message__content">
 					<p className="dialog-message__sender">{userName}</p>
 					<p className="dialog-message__text">{message.message}</p>
-			<br/>
-					<time className="dialog-message__time">13:10</time>
 				</div>
+					<time className="dialog-message__time">13:10</time>
 			</div>
 		);
 	}
