@@ -8,6 +8,14 @@ export function setChannels(list) {
 	};
 }
 
+export function setPrivateToChannel(id, count) {
+	return {
+		type: channelActionType.ADD_MESSAGE_TO_CHANNEL,
+		id,
+		count
+	};
+}
+
 export function setActiveChannel(id) {
 	return {
 		type: channelActionType.SET_ACTIVE_CHANNEL,
