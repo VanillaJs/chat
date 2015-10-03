@@ -24,7 +24,7 @@ class DialogMessage extends Component {
 		let userName = message.userId;
 		if ( channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby' ) {
 			if ( user._id === message.userId ) {
-				userName = 'me';
+				userName = user.username;
 			} else {
 				userName = channels.contacts[message.channelId].name;
 			}

@@ -5,7 +5,8 @@ import './input.sass';
 class Input extends Component {
 	static propTypes = {
 		addMessage: PropTypes.func,
-		channel: PropTypes.string
+		channel: PropTypes.string,
+		user: PropTypes.Object
 	}
 
 	submitMessage(event) {
@@ -15,7 +16,7 @@ class Input extends Component {
 		const elm = this.refs.messageInput.getDOMNode();
 		const text = elm.value;
 		if (text) {
-			this.props.addMessage('text', text, this.props.channel);
+			this.props.addMessage(this.props.user.username, 'text', text, this.props.channel);
 			elm.value = '';
 		}
 	}
