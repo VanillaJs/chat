@@ -60,4 +60,12 @@ module.exports = function(socket, Users) {
 			}
 		});
 	});
+
+	socket.on('c.user.get_supported_tags', function () {
+		socket.emit('s.user.return_supported_tags', {
+			tags: [
+				'img'
+			]
+		})
+	});
 };
