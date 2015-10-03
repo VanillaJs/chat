@@ -3,7 +3,9 @@
 if [[ -z $(ps -ax | 'grep' 'reBuildProject' | grep -v grep) ]];
 	then
 		echo No reBuild Processes
+
 		git rev-parse HEAD > /tmp/.githead
+		git pull
 		echo Repo Pulled
 
 		if [[  `cat /tmp/.githead` != `git rev-parse HEAD`  ]] || [[ -z $(pgrep "node") ]];
