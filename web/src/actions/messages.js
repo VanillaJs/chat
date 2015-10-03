@@ -1,4 +1,5 @@
 import * as messageActionType from '../constants/messages';
+import * as channelActionType from '../constants/channels.js';
 import transport from '../socket';
 
 export function addMessage(messageType = 'text', text, roomId, userId) {
@@ -42,6 +43,12 @@ export function setReadMessages(userId, data) {
 	if (unreadMessages.length) {
 		transport.socket.emit('c.user.read_message', {userId: userId, messages: unreadMessages});
 	}
+	const readLength = unreadMessages.length;
+	return {
+		type: channelActionType.READ_MESSAGES,
+		channelId,
+		readLength
+	};
 }
 
 export function fetchChannelMessages(userId, channelId, page = 1) {
@@ -50,7 +57,7 @@ export function fetchChannelMessages(userId, channelId, page = 1) {
 		transport.socket.on('s.user.message_by_room', function listener(r) {
 			dispatch(prependChannelMessages(channelId, r.data));
 
-			setReadMessages(userId, r.data);
+			dispatch(setReadMessages(userId, r.data));
 			transport.socket.removeListener('s.user.message_by_room', listener);
 		});
 	};

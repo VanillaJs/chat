@@ -46,6 +46,12 @@ export function channels(state = {current: null, contacts: {}}, action) {
 			return assign({}, state);
 		}
 		return state;
+	case channelActionType.READ_MESSAGES:
+		if (state.contacts[action.channelId] && action.readLength > 0) {
+			state.contacts[action.channelId].message_count = state.contacts[action.channelId].message_count - action.readLength;
+			return assign({}, state);
+		}
+		return state;
 
 	case channelActionType.ADD_MESSAGE_TO_CHANNEL:
 		if (action.count > 0 && state.contacts.hasOwnProperty(action.id)) {
