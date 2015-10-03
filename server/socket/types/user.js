@@ -5,13 +5,12 @@ var config = require('./../../config');
 module.exports = function(socket, Users) {
 	var data = Users[socket.handshake.user._id];
 	var sendData;
-	var sendMessage = function(status, roomId, message) {
-		var toUser = data.contacts[roomId];
-
+	var sendMessage = function(status, channelId, message) {
+		var toUser = data.contacts[channelId];
 		// Проверяем пользователь онлайн или нет
 		if (toUser !== undefined && Users.hasOwnProperty(toUser.user)) {
 			// проверяем, что он не находится в этом канале
-			if (Users[toUser.user].channel !== roomId) {
+			if (Users[toUser.user].channel !== channelId) {
 				// отправляем ему сообщение
 				sendStatus(socket.handshake.user._id, Users, 's.user.send_private', toUser, {message_count: 1});
 			}
@@ -19,13 +18,13 @@ module.exports = function(socket, Users) {
 
 		sendData = {
 			status: true,
-			chnnelId: roomId,
+			chnnelId: channelId,
 			userId: message.userId,
 			message: message
 		};
         //
 
-		socket.broadcast.to(roomId).emit('s.user.send_message', sendData);
+		socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	};
 
 	// Добавление контактов логика еще не готова
@@ -44,9 +43,10 @@ module.exports = function(socket, Users) {
 			message.userId = socket.handshake.user.username;
 			sendMessage(true, message.room_id, message);
 		} else {
+			console.log(message);
 			// пишем в базу
 			Message.addNew(message, function(err, messageNew) {
-				sendMessage(true, message.room_id, messageNew);
+				sendMessage(true, messageNew.channelId, messageNew);
 			});
 		}
 	});

@@ -2,7 +2,7 @@ import * as messageActionType from '../constants/messages';
 import {socket} from '../socket';
 
 export function addMessage(messageType = 'text', text, roomId, userId) {
-	const data = {message_type: messageType, room_id: roomId, text, userId};
+	const data = {message_type: messageType, room_id: roomId, text: text, userId: userId};
 
 	socket.emit('c.user.send_message', data);
 
