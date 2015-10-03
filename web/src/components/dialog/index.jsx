@@ -46,7 +46,6 @@ class Dialog extends Component {
 
 	render() {
 		const {messages, channels, user} = this.props;
-		console.log(messages);
 		return (
 			<div ref="container" className="dialog">
 				<button onClick={this.loadNewMessages.bind(this)}>LoadMessages</button>

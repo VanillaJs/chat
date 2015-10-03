@@ -6,7 +6,6 @@ bower_components
 */build
 logs
 server/pids
-db
 node-debug.log
 layout
 *.iml
