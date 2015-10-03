@@ -22,7 +22,6 @@ module.exports = function(socket, Users) {
 			userId: message.userId,
 			message: message
 		};
-        //
 
 		socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	};

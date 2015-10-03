@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {addMessage, fetchChannelMessages} from '../../actions/messages';
+import {fetchChannelMessages} from '../../actions/messages';
 import Dialog from '../dialog';
 import Input from '../input';
 import './main.sass';
@@ -22,7 +22,6 @@ class Main extends Component {
 
 	render() {
 		const {dispatch, user, channels, messages} = this.props;
-		const boundActions = bindActionCreators({addMessage}, dispatch);
 
 		return (
 			<main className="main">
@@ -33,8 +32,7 @@ class Main extends Component {
 						{...bindActionCreators({fetchChannelMessages}, dispatch)} />
 				<Input
 						activeChannelId={this.props.channels.current}
-						user={user}
-						{...boundActions} />
+						user={user} />
 			</main>
 		);
 	}

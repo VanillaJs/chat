@@ -6,10 +6,10 @@ export function addMessage(messageType = 'text', text, roomId, userId) {
 
 	transport.socket.emit('c.user.send_message', data);
 
-	return {
-		type: messageActionType.ADD_MESSAGE,
-		data
-	};
+	// return {
+	// 	type: messageActionType.ADD_MESSAGE,
+	// 	data
+	// };
 }
 
 export function addRemoteMessage({userId, message}) {
