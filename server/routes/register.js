@@ -3,7 +3,7 @@ var passport = require('./../lib/passport');
 
 exports.post = function(req, res, next) {
 	var colors = ['31b0c3', 'fdc689', 'f8a232', 'f8a232', 'f6a4c9', '8c6239', '39b54a'];
-	var avatars = ['/avatar/1.svg', '/avatar/2.svg', '/avatar/3.svg'];
+	var avatars = ['/img/avatar-1.png', '/img/avatar-1.png', '/img/avatar-1.png'];
 	var numC = Math.floor((Math.random() * colors.length) + 1) - 1;
 	var numA = Math.floor((Math.random() * avatars.length) + 1) - 1;
 	var color = colors[numC];

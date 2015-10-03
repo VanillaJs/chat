@@ -9,7 +9,8 @@ import {sendAddContact} from '../../actions/channels';
 import './sidebar.sass';
 
 @connect(store => ({
-	channels: store.channels
+	channels: store.channels,
+	user: store.user
 }))
 
 class Sidebar extends Component {
@@ -36,7 +37,7 @@ class Sidebar extends Component {
 		const {channels, dispatch} = this.props;
 		return (
 			<aside className="sidebar">
-				<UserInfo/>
+				<UserInfo user={this.props.user}/>
 				<UserDetail contactsCount={Object.keys(this.props.channels.contacts).length} onlineContacts={this.handleOnlineCount()}/>
 				<ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
 				<ChannelAdd/>
