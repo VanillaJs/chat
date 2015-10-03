@@ -1,8 +1,8 @@
 {
-  "port": 3000,
+  "port": 1723,
   "defaultChannel": "Lobby",
   "app":{
-    "serverUrl":"http://vjs.cloudapp.net:3000",
+    "serverUrl":"http://vjs.cloudapp.net:1723",
     "socketOrigin":"http://vjs.cloudapp.net:*"
   },
   "mongoose": {
