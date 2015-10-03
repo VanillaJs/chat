@@ -1,10 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import serialize from 'form-serialize';
 import {sendFormData} from '../../utils/request';
 import './index.sass';
 
 class Register extends Component {
+	static propTypes = {
+		history: PropTypes.object
+	};
+
 	constructor() {
 		super();
 		this.state = {error: null};
