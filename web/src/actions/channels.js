@@ -1,5 +1,5 @@
 import channelActionType from '../constants/channels';
-import {socket} from '../socket';
+import transport from '../socket';
 
 export function setChannels(list) {
 	return {
@@ -41,17 +41,17 @@ export function setOfflineChannel(data) {
 
 export function fetchChannelList() {
 	return dispatch => {
-		socket.emit('c.user.get_channels');
-		socket.on('s.user.set_channels', function handler(list) {
+		transport.socket.emit('c.user.get_channels');
+		transport.socket.on('s.user.set_channels', function handler(list) {
 			dispatch(setChannels(list));
-			socket.removeListener(handler);
+			transport.socket.removeListener(handler);
 		});
 	};
 }
 
 export function changeChannel(id) {
 	return () => {
-		socket.emit('c.channel.join', {id});
+		transport.socket.emit('c.channel.join', {id});
 	};
 }
 
@@ -79,22 +79,22 @@ export function addContact(contact) {
 
 export function deleteChannel(id, num) {
 	return ()  => {
-		socket.emit('c.channel.delete', {id, num});
+		transport.socket.emit('c.channel.delete', {id, num});
 	};
 }
 
 export function sendAddContact(username) {
 	return () => {
-		socket.emit('c.channel.add', {username});
+		transport.socket.emit('c.channel.add', {username});
 	};
 }
 
 export function fetchContactList() {
 	return dispatch => {
-		socket.emit('c.user.get_contact_list');
-		socket.on('s.user.SET_CHANNEL_LIST', function handler(contacts) {
+		transport.socket.emit('c.user.get_contact_list');
+		transport.socket.on('s.user.SET_CHANNEL_LIST', function handler(contacts) {
 			dispatch(setContactList(contacts));
-			socket.removeListener(handler);
+			transport.socket.removeListener(handler);
 		});
 	};
 }

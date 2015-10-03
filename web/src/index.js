@@ -11,8 +11,8 @@ function renderRoutes() {
 	return (
 		<Router history={createBrowserHistory()}>
 			<Route path="/" component={App} />
-			<Route path="/login" component={Login} />
-			<Route path="/register" component={Register} />
+			<Route path="login" component={Login} />
+			<Route path="register" component={Register} />
 		</Router>
 	);
 }

@@ -1,10 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import serialize from 'form-serialize';
 import {sendFormData} from '../../utils/request';
 import './index.sass';
 
 class Login extends Component {
+	static propTypes = {
+		history: PropTypes.object
+	};
+
 	constructor() {
 		super();
 		this.state = {error: null};
@@ -19,7 +23,7 @@ class Login extends Component {
 						this.setState({error: r.error});
 					} else {
 						this.setState({error: null});
-						console.log('success');
+						console.log('success')
 						// this.props.history.pushState({}, '/');
 					}
 				})

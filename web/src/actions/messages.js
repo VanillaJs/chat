@@ -1,10 +1,10 @@
 import * as messageActionType from '../constants/messages';
-import {socket} from '../socket';
+import transport from '../socket';
 
 export function addMessage(messageType = 'text', text, roomId, userId) {
 	const data = {message_type: messageType, room_id: roomId, text: text, userId: userId};
 
-	socket.emit('c.user.send_message', data);
+	transport.socket.emit('c.user.send_message', data);
 
 	return {
 		type: messageActionType.ADD_MESSAGE,
@@ -40,18 +40,18 @@ export function setReadMessages(userId, data) {
 	}
 	// если есть непрочитанные тогда делаем их прочитанными
 	if (unreadMessages.length) {
-		socket.emit('c.user.read_message', {userId: userId, messages: unreadMessages});
+		transport.socket.emit('c.user.read_message', {userId: userId, messages: unreadMessages});
 	}
 }
 
 export function fetchChannelMessages(userId, channelId, page = 1) {
 	return dispatch => {
-		socket.emit('c.user.get_message_by_room', {room_id: channelId, page: page});
-		socket.on('s.user.message_by_room', function listener(r) {
+		transport.socket.emit('c.user.get_message_by_room', {room_id: channelId, page: page});
+		transport.socket.on('s.user.message_by_room', function listener(r) {
 			dispatch(prependChannelMessages(channelId, r.data));
 
 			setReadMessages(userId, r.data);
-			socket.removeListener('s.user.message_by_room', listener);
+			transport.socket.removeListener('s.user.message_by_room', listener);
 		});
 	};
 }

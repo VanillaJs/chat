@@ -19,8 +19,7 @@ class Register extends Component {
 						this.setState({error: r.error});
 					} else {
 						this.setState({error: null});
-						console.log('success');
-						// this.props.history.pushState({}, '/');
+						this.props.history.pushState({}, '/');
 					}
 				})
 				.catch(err => {
