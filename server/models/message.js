@@ -65,10 +65,10 @@ schema.statics.getUnreadMessagesByChannel = function(channelId, userId, callback
 
 schema.statics.setRead = function(data) {
 	var Message = this;
-	Message.update({_id: { $in: data.messages }}, { $push: { read: data.userId } }, {multi: true}, function (err) {
+	Message.update({_id: { $in: data.messages }}, { $push: { read: data.userId } }, {multi: true}, function(err) {
 		console.log(err);
 	});
-}
+};
 
 schema.statics.addNew = function(message, callback) {
 	var Message = this;

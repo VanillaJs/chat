@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import {addMessage} from '../../actions/messages';
 import UserPic from '../user-pic';
 import './input.sass';
 
@@ -17,7 +16,7 @@ class Input extends Component {
 
 		const elm = this.refs.messageInput.getDOMNode();
 		const text = elm.value;
-		const {activeChannelId, user} = this.props;
+		const {addMessage, activeChannelId, user} = this.props;
 		if (text) {
 			addMessage('text', text, activeChannelId, user._id);
 			elm.value = '';

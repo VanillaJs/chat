@@ -10,7 +10,6 @@ import './components/page.sass';
 export default class App extends Component {
 	componentWillMount() {
 		transport.init();
-		transport.bindActionsToSocketEvents();
 		store.dispatch(fetchUserData());
 	}
 
