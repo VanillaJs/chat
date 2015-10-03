@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import DialogDetails from '../dialog-details';
 import DialogMessage from '../dialog-message';
 import './dialog.sass';
 
@@ -33,6 +34,7 @@ class Dialog extends Component {
 		const {messages, channels, user} = this.props;
 		return (
 			<div ref="container" className="dialog">
+				<DialogDetails/>
 				<ul className="messages-container">
 					{messages[channels.current] && messages[channels.current].map(_ => {
 						return <DialogMessage key={_._id} message={_} user={user} channels={channels} />;
