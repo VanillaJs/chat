@@ -21,7 +21,6 @@ class Dialog extends Component {
 				newChannels.contacts[newChannels.current] && newChannels.contacts[newChannels.current].inited) {
 			return;
 		}
-		console.log(this.props);
 		fetchChannelMessages(user._id, nextProps.channels.current);
 	}
 
