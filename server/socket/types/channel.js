@@ -64,16 +64,19 @@ module.exports = function(socket, Users) {
 								Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
 							}
 						}
-							// Таймаут для того, что данные по пользователю приходят асинхронно
-						setTimeout(function() {
-							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-							toUser = sendData;
-							if (ifUserOnline(user._id)) {
-								sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
-							}
 
-							socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
-						}, 50);
+						if (channel) {
+							// Таймаут для того, что данные по пользователю приходят асинхронно
+							setTimeout(function() {
+								Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
+								toUser = sendData;
+								if (ifUserOnline(user._id)) {
+									sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
+								}
+
+								socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
+							}, 50);
+						}
 					});
 				}
 			} else {
