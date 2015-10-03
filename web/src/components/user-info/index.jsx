@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import UserPic from '../user-pic';
 import './userinfo.sass';
 
@@ -19,14 +19,24 @@ class UserInfo extends Component {
 
 	render() {
 		const hoverModificator = this.state.active ? 'fa-spin' : '';
-
+		let userName, userAvatar, userColor;
+		console.log(this.props);
+		if (this.props.user.username !== undefined ) {
+			userName = this.props.user.username;
+		}
+		if (this.props.user.avatar !== undefined ) {
+			userAvatar = this.props.user.avatar;
+		}
+		if (this.props.user.color !== undefined ) {
+			userColor = this.props.user.color;
+		}
 		return (
 		<div className="user-info" onMouseOver={this.onMouseOver.bind(this)} onMouseOut={this.onMouseOut.bind(this)}>
 			<div className="user-info__image">
-				<UserPic/>
+				<UserPic avatar={userAvatar} color={userColor} />
 			</div>
 			<p className="user-info__greeting">
-				Welcome <span className="user-info__name">Dmitry Medvedev</span>
+				Welcome <span className="user-info__name">{userName}</span>
 			</p>
 			<div className="user-info__icon-settings">
 				<i className={'fa fa-cog ' + hoverModificator}></i>
