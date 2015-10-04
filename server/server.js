@@ -4,6 +4,7 @@ var express = require('express');
 var morgan = require('morgan');
 var session = require('express-session'); // для того чтобы выставить сессию в mongo
 var bodyParser = require('body-parser');
+var compression = require('compression');
 var cookieParser = require('cookie-parser');
 var errorhandler = require('errorhandler');
 var log = require('./lib/log')(module);
@@ -37,6 +38,7 @@ app.use(passport.session());
 
 app.use(require('./middleware/sendHttpError'));
 app.use(require('./middleware/loadUser'));
+app.use(compression());
 
 // роуты приложения
 require('./routes')(app);
