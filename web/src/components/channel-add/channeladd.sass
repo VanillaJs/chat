@@ -1,17 +1,44 @@
-.contacts__add
-	display: flex
-	height: 70px
-	align-items: center;
-	padding: 40px
+.contacts
 
-	&:hover
-		background: #ddd
-		cursor: pointer
+	&__modal
+		position: fixed
+		top: 0
+		left: 0
+		width: 100%
+		height: 100%
+		background: rgba(0, 0, 0, 0.7)
+		z-index: 15
 
-.contacts__add-icon
-	color: #ff494b
-	font-size: 38px
-	margin-right: 15px
+	&__form
+		position: fixed
+		left: 50%
+		top: 50%
+		padding: 15px
+		background: #FFF
+		transform: translate(-50%, -50%)
 
-.contacts__add-text
-	font-size: 13px
+		h1
+			margin-bottom: 10px
+			font-size: 1.2rem
+
+		input
+			font-size: 1rem
+			padding: 5px 10px
+
+	&__add
+		display: flex
+		height: 70px
+		align-items: center;
+		padding: 40px
+
+		&:hover
+			background: #ddd
+			cursor: pointer
+
+	&__add-icon
+		color: #ff494b
+		font-size: 38px
+		margin-right: 15px
+
+	&__add-text
+		font-size: 13px

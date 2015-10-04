@@ -3,7 +3,8 @@ import './index.sass';
 
 class UserPic extends Component {
 	static propTypes = {
-		online: PropTypes.bool
+		online: PropTypes.bool,
+		avatar: PropTypes.string
 	}
 	constructor(props) {
 		super(props);
