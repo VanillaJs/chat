@@ -1,3 +1,4 @@
+/* eslint id-length: 1*/
 var User = require('../../models/user').User;
 var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
