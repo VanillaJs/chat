@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import cx from 'classnames';
 import './channeladd.sass';
 
 class ContactAdd extends Component {
@@ -27,25 +28,19 @@ class ContactAdd extends Component {
 
 	render() {
 		return (
-			<div className="contacts__add">
-				<span onClick={::this._toggle} className="contacts__add-icon">
-					<i className="fa fa-plus-circle"></i>
-				</span>
-				<p className="contacts__add-text">Add friend or group</p>
-				{(() => {
-					if (this.state.active) {
-						return (
-							<div className="contacts__modal">
-								<section className="contacts__form">
-									<h1>Добавление контакта</h1>
-									<input ref="input" type="text" />
-									<button onClick={::this._addContact}>OK</button>
-									<span className="close" onClick={::this._toggle}>&times;</span>
-								</section>
-							</div>
-						);
-					}
-				})()}
+			<div className={cx({'contacts-add': true, 'is-active': this.state.active})}>
+				<div onClick={::this._toggle} className="contacts-add__button">
+					<span className="contacts-add__icon">
+						<i className="fa fa-plus-circle"></i>
+					</span>
+					<p className="contacts-add__text">Add friend or group</p>
+				</div>
+				<div className="contacts-add__form">
+					<h6>Добавление контакта</h6>
+					<input ref="input" type="text" />
+					<button onClick={::this._addContact}>OK</button>
+					<span className="close" onClick={::this._toggle}>&times;</span>
+				</div>
 			</div>
 		);
 	}

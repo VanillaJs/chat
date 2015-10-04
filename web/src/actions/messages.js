@@ -56,10 +56,10 @@ export function setReadMessages(userId, data, channelId) {
 export function fetchChannelMessages(userId, channelId, page = 1) {
 	return dispatch => {
 		transport.socket.emit('c.user.get_message_by_room', {room_id: channelId, page: page});
-		transport.socket.on('s.user.message_by_room', function listener(r) {
-			dispatch(prependChannelMessages(channelId, r.data, userId, page));
+		transport.socket.on('s.user.message_by_room', function listener(res) {
+			dispatch(prependChannelMessages(channelId, res.data, userId, page));
 
-			dispatch(setReadMessages(userId, r.data, channelId));
+			dispatch(setReadMessages(userId, res.data, channelId));
 			transport.socket.removeListener('s.user.message_by_room', listener);
 		});
 	};

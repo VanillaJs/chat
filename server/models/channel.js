@@ -26,7 +26,7 @@ schema.statics.findOrCreate = function(type, userCreateId, userAddId, callback) 
 		return callback('Alredy Exist!');
 	}
 
-	Channel.findOne( { $and: [ { users: { $in: [userCreateId] }  }, { users: { $in: [userAddId] } }, {type: type} ] }, function(err, channel) {
+	Channel.findOne( { $and: [ { users: { $in: [userCreateId] } }, { users: { $in: [userAddId] } }, {type: type} ] }, function(err, channel) {
 		if (!err) {
 			if (channel) {
 				callback('Alredy Exist!', null);

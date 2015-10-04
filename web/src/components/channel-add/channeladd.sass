@@ -1,31 +1,46 @@
-.contacts
+@import '~components/mixins';
 
-	&__modal
-		position: fixed
-		top: 0
-		left: 0
-		width: 100%
-		height: 100%
-		background: rgba(0, 0, 0, 0.7)
-		z-index: 15
+.contacts-add
+	position: relative
 
 	&__form
-		position: fixed
-		left: 50%
-		top: 50%
-		padding: 15px
+		display: none
+		position: absolute
+		left: 0
+		top: 0
+		width: 100%
+		height: 100%
+		padding: 5px 15px 0 15px
 		background: #FFF
-		transform: translate(-50%, -50%)
+		text-align: left
 
-		h1
-			margin-bottom: 10px
-			font-size: 1.2rem
+		h6
+			margin-bottom: 5px
+			font-size: 0.9rem
 
 		input
+			display: inline-block
 			font-size: 1rem
+			margin-right: 5px
 			padding: 5px 10px
 
-	&__add
+		button
+			height: 32px
+			padding: 0 5px
+			@include default-button-theme()
+
+		.close
+			position: absolute
+			right: 5px
+			top: 5px
+			font-size: 2rem
+			line-height: 0.5
+			cursor: pointer
+
+	&.is-active &__form
+		display: block
+
+	&__button
 		display: flex
 		height: 70px
 		align-items: center;
@@ -35,10 +50,10 @@
 			background: #ddd
 			cursor: pointer
 
-	&__add-icon
+	&__icon
 		color: #ff494b
 		font-size: 38px
 		margin-right: 15px
 
-	&__add-text
+	&__text
 		font-size: 13px

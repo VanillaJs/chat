@@ -5,7 +5,7 @@ import {addRemoteMessage} from './actions/messages';
 import {setActiveChannel, setOfflineChannel, setOnlineChannel, addContact, removeFromChannelList, setPrivateToChannel} from './actions/channels';
 import {setUserId} from './actions/user';
 
-const transport =  {
+const transport = {
 	init: function() {
 		transport.socket = io.connect({transports: ['websocket', 'polling']});
 		transport.bindActionsToSocketEvents();

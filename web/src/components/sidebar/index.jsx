@@ -49,8 +49,8 @@ class Sidebar extends Component {
 				<UserDetail
 					contactsCount={Object.keys(this.props.channels.contacts).length}
 					onlineContacts={this.getOnlineCount()} />
-				<ChannelFilter onTextChange={::this._onFilterChange} />
 				<ChannelAdd {...bindActionCreators({sendAddContact}, dispatch)} />
+				<ChannelFilter onTextChange={::this._onFilterChange} />
 				<ChannelList
 					channels={this.state.filterText ? this.state.filteredChannels : channels.contacts}
 					currentChannelId={channels.current}

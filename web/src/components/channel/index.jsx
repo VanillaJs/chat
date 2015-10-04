@@ -14,8 +14,8 @@ class Channel extends Component {
 		super(props);
 	}
 
-	changeChannel(e) {
-		e.preventDefault();
+	changeChannel(event) {
+		event.preventDefault();
 		this.props.changeChannel(this.props.channel._id);
 	}
 

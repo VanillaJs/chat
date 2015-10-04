@@ -78,7 +78,7 @@ export function addContact(contact) {
 }
 
 export function deleteChannel(id, num) {
-	return ()  => {
+	return () => {
 		transport.socket.emit('c.channel.delete', {id, num});
 	};
 }

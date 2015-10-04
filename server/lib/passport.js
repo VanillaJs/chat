@@ -121,8 +121,8 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(data, done) {
 	try {
 		done(null, data);
-	} catch (e) {
-		done(e.err);
+	} catch (error) {
+		done(error.err);
 	}
 });
 
