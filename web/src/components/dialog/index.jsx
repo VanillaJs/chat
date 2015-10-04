@@ -36,12 +36,11 @@ class Dialog extends Component {
 		}
 	}
 
-
 	render() {
 		const {messages, channels, user} = this.props;
 		return (
 			<div ref="container" className="dialog">
-				<button onClick={}>LoadMessages</button>
+				<button>LoadMessages</button>
 				<ul ref="messageContainer" className="messages-container">
 					{messages[channels.current] && messages[channels.current].map(_ => {
 						return <DialogMessage key={_._id} message={_} user={user} channels={channels} />;

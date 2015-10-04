@@ -3,6 +3,9 @@ import UserPic from '../user-pic';
 import './userinfo.sass';
 
 class UserInfo extends Component {
+	static propTypes = {
+		user: PropTypes.object
+	}
 
 	constructor(props) {
 		super(props);
@@ -19,8 +22,9 @@ class UserInfo extends Component {
 
 	render() {
 		const hoverModificator = this.state.active ? 'fa-spin' : '';
-		let userName, userAvatar, userColor;
-		console.log(this.props);
+		let userName;
+		let userAvatar;
+		let userColor;
 		if (this.props.user.username !== undefined ) {
 			userName = this.props.user.username;
 		}
@@ -31,7 +35,7 @@ class UserInfo extends Component {
 			userColor = this.props.user.color;
 		}
 		return (
-		<div className="user-info" onMouseOver={this.onMouseOver.bind(this)} onMouseOut={this.onMouseOut.bind(this)}>
+		<div className="user-info" onMouseOver={::this.onMouseOver} onMouseOut={::this.onMouseOut}>
 			<div className="user-info__image">
 				<UserPic avatar={userAvatar} color={userColor} />
 			</div>

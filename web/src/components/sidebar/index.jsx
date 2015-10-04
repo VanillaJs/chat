@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import UserInfo from '../user-info';
 import UserDetail from '../user-detail';
-import ContactSearch from '../contact-search';
+import ChannelFilter from '../channel-filter';
 import ChannelAdd from '../channel-add';
 import ChannelList from '../channel-list';
 import {sendAddContact} from '../../actions/channels';
+import {changeChannel} from '../../actions/channels';
 import './sidebar.sass';
 
 @connect(store => ({
@@ -15,33 +17,44 @@ import './sidebar.sass';
 
 class Sidebar extends Component {
 	static propTypes = {
-		dispatch: PropTypes.func,
-		channels: PropTypes.object.isRequired
+		dispatch: PropTypes.func.isRequired,
+		channels: PropTypes.object.isRequired,
+		user: PropTypes.object.isRequired
 	}
 
-	handleContactSearch(username) {
-		this.props.dispatch(sendAddContact(username));
+	constructor(props) {
+		super(props);
+		this.state = {filterText: ''};
 	}
 
-	handleOnlineCount() {
-		let count = 0;
-		for (const key in this.props.channels.contacts) {
-			if (this.props.channels.contacts[key].is_online) {
-				count++;
-			}
-		}
-		return count;
+	getOnlineCount() {
+		const {channels: {contacts}} = this.props;
+		return Object.keys(contacts).filter(key => contacts[key].is_online).length;
+	}
+
+	_onFilterChange(text) {
+		const filteredChannels = {};
+		const {channels: {contacts}} = this.props;
+		Object.keys(contacts)
+					.filter(key => contacts[key].name.indexOf(text) !== -1)
+					.forEach(key => filteredChannels[key] = contacts[key]);
+		this.setState({filteredChannels, filterText: text});
 	}
 
 	render() {
 		const {channels, dispatch} = this.props;
 		return (
 			<aside className="sidebar">
-				<UserInfo user={this.props.user}/>
-				<UserDetail contactsCount={Object.keys(this.props.channels.contacts).length} onlineContacts={this.handleOnlineCount()}/>
-				<ContactSearch onContactSearch={this.handleContactSearch.bind(this)} />
-				<ChannelAdd/>
-				<ChannelList channels={channels} dispath={dispatch}/>
+				<UserInfo user={this.props.user} />
+				<UserDetail
+					contactsCount={Object.keys(this.props.channels.contacts).length}
+					onlineContacts={this.getOnlineCount()} />
+				<ChannelFilter onTextChange={::this._onFilterChange} />
+				<ChannelAdd {...bindActionCreators({sendAddContact}, dispatch)} />
+				<ChannelList
+					channels={this.state.filterText ? this.state.filteredChannels : channels.contacts}
+					currentChannelId={channels.current}
+					{...bindActionCreators({changeChannel}, dispatch)} />
 			</aside>
 		);
 	}
