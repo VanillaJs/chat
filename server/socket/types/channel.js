@@ -1,3 +1,4 @@
+/* eslint id-length: 1*/
 var User = require('../../models/user').User;
 var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
@@ -91,7 +92,7 @@ module.exports = function(socket, Users) {
 			var sendObject = {id: channel.id, is_delete: mess.result.n === 1};
 			var toUser;
 			// Удаление сообщений по каналу
-			Message.find({ channelId: { $in: [channel.id] }  }).remove();
+			Message.find({ channelId: { $in: [channel.id] } }).remove();
 			if (ifUserOnline(userData.contacts[channel.id].user)) {
 				toUser = userData.contacts[channel.id];
 				sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
@@ -109,6 +110,7 @@ module.exports = function(socket, Users) {
 	});
 
 	socket.on('disconnect', function() {
+		var index;
 		if (userData.soketData.length) {
 			// проверяем какие сокеты уже отвалились
 			for (index in userData.soketData) {

@@ -3,7 +3,8 @@ import './index.sass';
 
 class UserPic extends Component {
 	static propTypes = {
-		online: PropTypes.bool
+		online: PropTypes.bool,
+		avatar: PropTypes.string
 	}
 	constructor(props) {
 		super(props);
@@ -17,7 +18,7 @@ class UserPic extends Component {
 
 		return (
 			<div className="userpic">
-				<img className="userpic__image" src={this.props.avatar} height="50" alt=""></img>
+				<img className="userpic__image" src={this.props.avatar || 'https://placeholdit.imgix.net/~text?txtsize=9&txt=50%C3%9750&w=50&h=50'} height="50" alt=""></img>
 				{online}
 			</div>
 		);

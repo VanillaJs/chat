@@ -1,3 +1,4 @@
+/* global describe it*/
 var directoryServer = './../../server/';
 var Message = require(directoryServer + 'models/message').Message;
 describe('model/user.js', function() {

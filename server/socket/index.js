@@ -69,6 +69,7 @@ module.exports = function(server) {
 		], function(err, user) {
 			var channel;
 			var defaultChannel;
+			var index;
 			if (err) {
 				if (err instanceof HttpError) {
 					return next(new Error('Not authorized'));

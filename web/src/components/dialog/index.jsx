@@ -13,7 +13,6 @@ class Dialog extends Component {
 
 	/**
 	 * Fetch from server message history for active channel
-	 * Only once per channel
 	 */
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
@@ -39,7 +38,7 @@ class Dialog extends Component {
 	loadNewMessages() {
 		if (this.props.messages[this.props.channels.current] !== undefined) {
 			let page = this.props.messages[this.props.channels.current].page;
-			++page;
+			page += 1;
 			this.props.fetchChannelMessages(this.props.user._id, this.props.channels.current, page);
 		}
 	}
@@ -55,8 +54,8 @@ class Dialog extends Component {
 				<DialogDetails online={isOnline}/>
 				<button onClick={this.loadNewMessages.bind(this)}>LoadMessages</button>
 				<ul ref="messageContainer" className="messages-container">
-					{messages[channels.current] && messages[channels.current].listMessages.map(_ => {
-						return <DialogMessage key={_._id} message={_} user={user} channels={channels} />;
+					{messages[channels.current] && messages[channels.current].listMessages.map(hash => {
+						return <DialogMessage key={hash._id} message={hash} user={user} channels={channels} />;
 					})}
 				</ul>
 			</div>

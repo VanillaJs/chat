@@ -1,33 +1,28 @@
 import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import Channel from '../channel';
-import {changeChannel} from '../../actions/channels';
-import './index.sass';
 
-@connect(store => ({
-	channels: store.channels
-}))
+import './index.sass';
 
 class ChannelList extends Component {
 	static propTypes = {
-		dispatch: PropTypes.func.isRequired,
-		channels: PropTypes.object.isRequired
+		changeChannel: PropTypes.func.isRequired,
+		channels: PropTypes.object.isRequired,
+		currentChannelId: PropTypes.string
 	}
 
 	render() {
-		const boundActionCreators = bindActionCreators({changeChannel}, this.props.dispatch);
+		const {changeChannel, channels} = this.props;
 		return (
 			<ul className="channels__add">
-				{Object.keys(this.props.channels.contacts).map(key => {
+				{Object.keys(channels).map(key => {
 					return (
 						<Channel
-							key={this.props.channels.contacts[key]._id}
-							online={this.props.channels.contacts[key].is_online === true}
-							active={this.props.channels.contacts[key]._id === this.props.channels.current}
-							channel={this.props.channels.contacts[key]}
-							unread={this.props.channels.contacts[key].message_count}
-							{...boundActionCreators} />
+							key={channels[key]._id}
+							online={channels[key].is_online === true}
+							active={channels[key]._id === this.props.currentChannelId}
+							channel={channels[key]}
+							unread={parseInt(channels[key].message_count, 10)}
+							changeChannel={changeChannel} />
 					);
 				})}
 			</ul>

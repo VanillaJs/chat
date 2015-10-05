@@ -8,14 +8,14 @@ class Channel extends Component {
 		changeChannel: PropTypes.func.isRequired,
 		active: PropTypes.bool,
 		online: PropTypes.bool,
-		unread: PropTypes.int
+		unread: PropTypes.number
 	}
 	constructor(props) {
 		super(props);
 	}
 
-	changeChannel(e) {
-		e.preventDefault();
+	changeChannel(event) {
+		event.preventDefault();
 		this.props.changeChannel(this.props.channel._id);
 	}
 

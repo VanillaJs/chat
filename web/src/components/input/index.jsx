@@ -35,7 +35,7 @@ class Input extends Component {
 		return (
 			<div className="dialog-input">
 				<UserPic />
-				<textarea  ref="messageInput" className="dialog-input__textarea"></textarea>
+				<textarea ref="messageInput" className="dialog-input__textarea"></textarea>
 				<a className="dialog-input__add-button" href="#">+</a>
 				<button onClick={this.submitMessage.bind(this)} className="dialog-input__send-button" type="submit">Send</button>
 			</div>

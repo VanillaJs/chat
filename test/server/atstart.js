@@ -1,3 +1,4 @@
+/* global describe it*/
 var directoryServer = './../../server/';
 var mongoose = require('mongoose');
 var config = require(directoryServer + 'config');
