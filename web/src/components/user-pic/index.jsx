@@ -12,7 +12,9 @@ class UserPic extends Component {
 	}
 
 	render() {
-		let online, userAvatar, userColor;
+		let online;
+		let userAvatar;
+		let userColor;
 		const {avatar, color} = this.props;
 		if (this.props.online) {
 			online = <span className="user-status user-status--online">Online</span>;

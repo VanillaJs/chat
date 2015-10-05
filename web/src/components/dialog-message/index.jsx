@@ -22,7 +22,10 @@ class DialogMessage extends Component {
 
 	renderFull() {
 		const {channels, message, user} = this.props;
-		let userName, userColor, userAvatar, userOnline;
+		let userName;
+		let userColor;
+		let userAvatar;
+		let userOnline;
 
 		userName = message.userId;
 		if ( channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby' ) {

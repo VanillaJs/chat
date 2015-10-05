@@ -24,19 +24,22 @@ class UserInfo extends Component {
 	render() {
 		const hoverModificator = this.state.active ? 'fa-spin' : '';
 		const {user: {avatar, color, username}} = this.props;
-		let userName, userAvatar, userColor;
+		let userName;
+		let userAvatar;
+		let userColor;
 
 		if (username !== undefined && avatar !== undefined && color !== undefined) {
 			userName = username;
 			userAvatar = avatar;
 			userColor = color;
+			userOnline = true;
 		}
 
 		return (
 		<div className="user-info" onMouseOver={this.onMouseOver.bind(this)} onMouseOut={this.onMouseOut.bind(this)}>
 			<div className="user-info__image">
 				<UserPic
-					online={true}
+					online={userOnline}
 					avatar={userAvatar}
 					color={userColor}/>
 			</div>
