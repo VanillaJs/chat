@@ -23,7 +23,6 @@ class ChannelList extends Component {
 					return (
 						<Channel
 							key={this.props.channels.contacts[key]._id}
-							online={this.props.channels.contacts[key].is_online === true}
 							active={this.props.channels.contacts[key]._id === this.props.channels.current}
 							channel={this.props.channels.contacts[key]}
 							unread={this.props.channels.contacts[key].message_count}
