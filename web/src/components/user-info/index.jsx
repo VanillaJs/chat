@@ -27,6 +27,7 @@ class UserInfo extends Component {
 		let userName;
 		let userAvatar;
 		let userColor;
+		let userOnline;
 
 		if (username !== undefined && avatar !== undefined && color !== undefined) {
 			userName = username;
