@@ -20,14 +20,15 @@ class Channel extends Component {
 
 	render() {
 		const activeModificator = this.props.active ? '--active' : '';
-		const {channel: {avatar, color, name, is_online}, unread} = this.props;
+		const {channel: {avatar, color, name}, unread} = this.props;
+		const isOnline = this.props.channel.is_online;
 
 		return (
 			<li className={'channel-wrap' + activeModificator} onClick={this.changeChannel.bind(this)}>
 				<a className="channel">
 					<div className="channel__image-wrap">
 						<UserPic
-							online={is_online}
+							online={isOnline}
 							avatar={avatar}
 							color={color}/>
 					</div>
