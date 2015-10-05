@@ -7,14 +7,14 @@ class Channel extends Component {
 		channel: PropTypes.object.isRequired,
 		changeChannel: PropTypes.func.isRequired,
 		active: PropTypes.bool,
-		unread: PropTypes.int
+		unread: PropTypes.number
 	}
 	constructor(props) {
 		super(props);
 	}
 
-	changeChannel(e) {
-		e.preventDefault();
+	changeChannel(event) {
+		event.preventDefault();
 		this.props.changeChannel(this.props.channel._id);
 	}
 

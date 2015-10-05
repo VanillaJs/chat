@@ -18,9 +18,9 @@ class Register extends Component {
 		event.preventDefault();
 		sendFormData('/register', serialize(this.refs.form.getDOMNode()))
 				.then(result => {
-					const r = JSON.parse(result);
-					if (r.error) {
-						this.setState({error: r.error});
+					const res = JSON.parse(result);
+					if (res.error) {
+						this.setState({error: res.error});
 					} else {
 						this.setState({error: null});
 						this.props.history.pushState({}, '/');

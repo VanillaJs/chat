@@ -1,3 +1,4 @@
+/* eslint id-length: 1*/
 var User = require('../../models/user').User;
 var Channel = require('../../models/channel').Channel;
 var Message = require('../../models/message').Message;
@@ -64,16 +65,19 @@ module.exports = function(socket, Users) {
 								Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
 							}
 						}
-							// Таймаут для того, что данные по пользователю приходят асинхронно
-						setTimeout(function() {
-							Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-							toUser = sendData;
-							if (ifUserOnline(user._id)) {
-								sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
-							}
 
-							socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
-						}, 50);
+						if (channel) {
+							// Таймаут для того, что данные по пользователю приходят асинхронно
+							setTimeout(function() {
+								Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
+								toUser = sendData;
+								if (ifUserOnline(user._id)) {
+									sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
+								}
+
+								socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
+							}, 50);
+						}
 					});
 				}
 			} else {
@@ -88,7 +92,7 @@ module.exports = function(socket, Users) {
 			var sendObject = {id: channel.id, is_delete: mess.result.n === 1};
 			var toUser;
 			// Удаление сообщений по каналу
-			Message.find({ channelId: { $in: [channel.id] }  }).remove();
+			Message.find({ channelId: { $in: [channel.id] } }).remove();
 			if (ifUserOnline(userData.contacts[channel.id].user)) {
 				toUser = userData.contacts[channel.id];
 				sendStatus(socket.handshake.user._id, Users, 's.channel.delete', toUser);
@@ -106,6 +110,7 @@ module.exports = function(socket, Users) {
 	});
 
 	socket.on('disconnect', function() {
+		var index;
 		if (userData.soketData.length) {
 			// проверяем какие сокеты уже отвалились
 			for (index in userData.soketData) {

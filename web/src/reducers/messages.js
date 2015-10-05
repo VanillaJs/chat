@@ -1,12 +1,17 @@
 import assign from 'object-assign';
 import types from '../constants/messages';
 
-function updateChannelMessages(state, channelId, message, userId) {
+function updateChannelMessages(state, channelId, message, userId, page = 1) {
 	const messageList = typeof message === 'string' ? [{message, userId, channelId}] : message;
 	if (!state[channelId]) {
-		state[channelId] = [];
+		state[channelId] = {listMessages: [], page: 1};
 	}
-	state[channelId] = state[channelId].concat(messageList);
+
+	if (state[channelId].page !== page) {
+		state[channelId].page = page;
+	}
+
+	state[channelId].listMessages = state[channelId].listMessages.concat(messageList);
 
 	return state;
 }
@@ -25,7 +30,7 @@ export function messages(state = {}, action) {
 		return assign({}, updateChannelMessages(state, channelId, message, userId));
 
 	case types.PREPEND_MESSAGES:
-		return assign({}, updateChannelMessages(state, action.channelId, action.messages));
+		return assign({}, updateChannelMessages(state, action.channelId, action.messages, action.userId, action.page));
 
 	default:
 		return state;

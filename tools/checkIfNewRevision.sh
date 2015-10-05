@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
 
-git rev-parse HEAD > /tmp/.githead
-echo Repo Pulled
-if [[  `cat /tmp/.githead` != `git rev-parse HEAD`  ]] || [[ -z $(pgrep "node") ]];
+if [[ -z $(ps -ax | 'grep' 'reBuildProject' | grep -v grep) ]];
 	then
-		echo Either new revision or No Node Processes
- 		if [[ -z $(ps -ax | 'grep' 'reBuildProject' | grep -v grep) ]];
+		echo No reBuild Processes
+
+		git rev-parse HEAD > /tmp/.githead
+		git pull
+		echo Repo Pulled
+
+		if [[  `cat /tmp/.githead` != `git rev-parse HEAD`  ]] || [[ -z $(pgrep "node") ]];
 			then
-				echo No reBuild Processes
+				echo Either new revision or No Node Processes
 				exit 0
 			else
-				echo Already building
+				echo no new version and process runs
 				exit 1
 			fi
 	else
-		echo no new version
+		echo Already building
 		exit 1
 fi

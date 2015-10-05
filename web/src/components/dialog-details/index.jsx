@@ -8,10 +8,15 @@ import './dialog-details.sass';
 
 class DialogDetails extends Component {
 	static propTypes = {
-		channels: PropTypes.object.isRequired
+		channels: PropTypes.object.isRequired,
+		online: PropTypes.bool
+	}
+	constructor(props) {
+		super(props);
 	}
 
 	render() {
+		const onlineModificator = this.props.online ? '--online' : '';
 		let userName;
 		if ((this.props.channels.contacts !== undefined) && (this.props.channels.contacts[this.props.channels.current] !== undefined)) {
 			userName = this.props.channels.contacts[this.props.channels.current].name;
@@ -20,7 +25,7 @@ class DialogDetails extends Component {
 			<div className="dialog-details">
 				<div className="dialog-details__contact">
 					<p className="dialog-details__name">{userName}</p>
-					<p className="dialog-details__status dialog-details__status--online">online</p>
+					<p className={'dialog-details__status ' + 'dialog-details__status' + onlineModificator}>{this.props.online ? 'online' : 'offline'}</p>
 				</div>
 			</div>
 		);

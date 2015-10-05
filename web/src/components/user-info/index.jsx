@@ -6,8 +6,6 @@ class UserInfo extends Component {
 	static propTypes = {
 		user: PropTypes.object.isRequired
 	}
-
-
 	constructor(props) {
 		super(props);
 		this.state = {active: false};
@@ -37,7 +35,7 @@ class UserInfo extends Component {
 		}
 
 		return (
-		<div className="user-info" onMouseOver={this.onMouseOver.bind(this)} onMouseOut={this.onMouseOut.bind(this)}>
+		<div className="user-info" onMouseOver={::this.onMouseOver} onMouseOut={::this.onMouseOut}>
 			<div className="user-info__image">
 				<UserPic
 					online={userOnline}
