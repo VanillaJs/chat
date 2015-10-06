@@ -27,7 +27,7 @@ class DialogMessage extends Component {
 			if ( user._id.toString() === message.userId.toString() ) {
 				userName = user.username;
 			} else {
-				if(message.channelId.toString() !== 'Lobby') {
+				if (message.channelId.toString() !== 'Lobby') {
 					userName = channels.contacts[message.channelId].name;
 				}
 			}
