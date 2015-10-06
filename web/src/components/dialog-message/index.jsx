@@ -23,9 +23,9 @@ class DialogMessage extends Component {
 	renderFull() {
 		const {channels, message, user} = this.props;
 		let userName;
-		let userColor;
-		let userAvatar;
-		let userOnline;
+		let userColor = '90C3D4';
+		let userAvatar = '/img/avatar-1.png';
+		let userOnline = true;
 
 		userName = message.userId;
 		if ( channels.contacts[message.channelId] !== undefined) {
@@ -40,11 +40,6 @@ class DialogMessage extends Component {
 					userColor = channels.contacts[message.channelId].color;
 					userAvatar = channels.contacts[message.channelId].avatar;
 					userOnline = channels.contacts[message.channelId].is_online;
-				} else {
-					// костыль пока не знаю как решить
-					userColor = '/img/avatar-1.png';
-					userAvatar = '90C3D4';
-					userOnline = true;
 				}
 			}
 		}
