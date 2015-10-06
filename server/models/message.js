@@ -86,9 +86,9 @@ schema.statics.addNew = function(message, callback) {
 					}
 					callback(null, newMessageType);
 				});
+			} else {
+				callback(null, messageType);
 			}
-
-			callback(null, messageType);
 		},
 		function(messageType, callback) {
 			var newMessageObj;
@@ -96,7 +96,7 @@ schema.statics.addNew = function(message, callback) {
 
 			if (messageType) {
 				newMessageObj = {
-					channelId: message.room_id,
+					channelId: message.channelId,
 					userId: message.userId,
 					messageTypeId: messageType._id,
 					message: message.text,
@@ -111,7 +111,7 @@ schema.statics.addNew = function(message, callback) {
 				});
 			} else {
 				// set error
-				callback(null, newMessage);
+				callback("MessageType is not created!", null);
 			}
 		}
 

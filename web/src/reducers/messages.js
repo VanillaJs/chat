@@ -1,28 +1,39 @@
 import assign from 'object-assign';
 import types from '../constants/messages';
+import uniq from 'lodash/array/uniq'; // нужна для выборки только уникальных
+const defaultData = {
+	Lobby: {
+		listMessages: [],
+		page: 1
+	}
+};
 
 function updateChannelMessages(state, channelId, message, userId, page = 1) {
-	const messageList = typeof message === 'string' ? [{message, userId, channelId}] : message;
+
+
 	if (!state[channelId]) {
 		state[channelId] = {listMessages: [], page: 1};
 	}
 
+	const messageList = typeof message === 'string' ? [{message, userId, channelId, _id: state[channelId].listMessages.length + 1}] : message;
+
 	if (state[channelId].page !== page) {
 		state[channelId].page = page;
 	}
-
-	state[channelId].listMessages = state[channelId].listMessages.concat(messageList);
+	state[channelId].listMessages = uniq(state[channelId].listMessages.concat(messageList), '_id');
 
 	return state;
 }
 
-export function messages(state = {}, action) {
+
+export function messages(state = defaultData, action) {
 	switch (action.type) {
 
 	case types.ADD_MESSAGE:
-		return assign({}, updateChannelMessages(state, action.data.room_id, action.data.text, action.data.userId));
+		return assign({}, updateChannelMessages(state, action.data.channelId, action.data.text, action.data.userId));
 
 	case types.ADD_REMOTE_MESSAGE:
+
 		if (!action.message) {
 			return state;
 		}

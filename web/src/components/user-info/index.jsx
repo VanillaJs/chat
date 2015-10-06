@@ -4,9 +4,8 @@ import './userinfo.sass';
 
 class UserInfo extends Component {
 	static propTypes = {
-		user: PropTypes.object
+		user: PropTypes.object.isRequired
 	}
-
 	constructor(props) {
 		super(props);
 		this.state = {active: false};
@@ -22,22 +21,26 @@ class UserInfo extends Component {
 
 	render() {
 		const hoverModificator = this.state.active ? 'fa-spin' : '';
+		const {user: {avatar, color, username}} = this.props;
 		let userName;
 		let userAvatar;
 		let userColor;
-		if (this.props.user.username !== undefined ) {
-			userName = this.props.user.username;
+		let userOnline;
+
+		if (username !== undefined && avatar !== undefined && color !== undefined) {
+			userName = username;
+			userAvatar = avatar;
+			userColor = color;
+			userOnline = true;
 		}
-		if (this.props.user.avatar !== undefined ) {
-			userAvatar = this.props.user.avatar;
-		}
-		if (this.props.user.color !== undefined ) {
-			userColor = this.props.user.color;
-		}
+
 		return (
 		<div className="user-info" onMouseOver={::this.onMouseOver} onMouseOut={::this.onMouseOut}>
 			<div className="user-info__image">
-				<UserPic avatar={userAvatar} color={userColor} />
+				<UserPic
+					online={userOnline}
+					avatar={userAvatar}
+					color={userColor}/>
 			</div>
 			<p className="user-info__greeting">
 				Welcome <span className="user-info__name">{userName}</span>

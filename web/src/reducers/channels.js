@@ -2,8 +2,24 @@ import assign from 'object-assign';
 import channelActionType from '../constants/channels';
 import userActionType from '../constants/user';
 import {PREPEND_MESSAGES} from '../constants/messages';
+const defaultChannelsData = {
+	current: null,
+	contacts: {
+		Lobby: {
+			_id: 'Lobby',
+			avatar: '/img/avatar-1.png',
+			color: '90C3D4',
+			inited: true,
+			is_online: true,
+			message_count: 0,
+			name: 'GLOBAL ROOM',
+			type: 'room',
+			user: 'Lobby'
+		}
+	}
+};
 
-export function channels(state = {current: null, contacts: {}}, action) {
+export function channels(state = defaultChannelsData, action) {
 	switch (action.type) {
 
 	case channelActionType.SET_ACTIVE_CHANNEL:
@@ -24,6 +40,7 @@ export function channels(state = {current: null, contacts: {}}, action) {
 		return state;
 
 	case userActionType.SET_USER_DATA:
+		action.contacts['Lobby'] = defaultChannelsData.contacts.Lobby;
 		return assign({}, state, {contacts: action.contacts});
 
 	case channelActionType.SET_CHANNEL_ONLINE:

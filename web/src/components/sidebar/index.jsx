@@ -42,10 +42,10 @@ class Sidebar extends Component {
 	}
 
 	render() {
-		const {channels, dispatch} = this.props;
+		const {channels, dispatch, user} = this.props;
 		return (
 			<aside className="sidebar">
-				<UserInfo user={this.props.user} />
+				<UserInfo user={user}/>
 				<UserDetail
 					contactsCount={Object.keys(this.props.channels.contacts).length}
 					onlineContacts={this.getOnlineCount()} />

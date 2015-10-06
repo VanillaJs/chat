@@ -22,18 +22,34 @@ class DialogMessage extends Component {
 
 	renderFull() {
 		const {channels, message, user} = this.props;
-		let userName = message.userId;
-		if ( channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby' ) {
-			if ( user._id === message.userId ) {
+		let userName;
+		let userColor = '90C3D4';
+		let userAvatar = '/img/avatar-1.png';
+		let userOnline = true;
+
+		userName = message.userId;
+		if ( channels.contacts[message.channelId] !== undefined) {
+			if ( user._id.toString() === message.userId.toString() ) {
 				userName = user.username;
+				userColor = user.color;
+				userAvatar = user.avatar;
+				userOnline = true;
 			} else {
-				userName = channels.contacts[message.channelId].name;
+				if (message.channelId.toString() !== 'Lobby') {
+					userName = channels.contacts[message.channelId].name;
+					userColor = channels.contacts[message.channelId].color;
+					userAvatar = channels.contacts[message.channelId].avatar;
+					userOnline = channels.contacts[message.channelId].is_online;
+				}
 			}
 		}
 
 		return (
 			<div className="dialog-message">
-				<UserPic />
+				<UserPic
+					online={userOnline}
+					avatar={userAvatar}
+					color={userColor}/>
 				<div className="dialog-message__content">
 					<p className="dialog-message__sender">{userName}</p>
 					<p className="dialog-message__text">{message.message}</p>

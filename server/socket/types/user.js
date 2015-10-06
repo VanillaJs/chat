@@ -22,7 +22,6 @@ module.exports = function(socket, Users) {
 			userId: message.userId,
 			message: message
 		};
-
 		socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	};
 
@@ -44,11 +43,15 @@ module.exports = function(socket, Users) {
 		if (data.channel === config.get('defaultChannel')) {
 			message.message = message.text;
 			message.userId = socket.handshake.user.username;
-			sendMessage(true, message.room_id, message);
+			sendMessage(true, message.channelId, message);
 		} else {
 			// пишем в базу
 			Message.addNew(message, function(err, messageNew) {
-				sendMessage(true, messageNew.channelId, messageNew);
+				if (!err) {
+					sendMessage(true, messageNew.channelId, messageNew);
+				} else {
+					console.log(err)
+				}
 			});
 		}
 	});
@@ -56,7 +59,7 @@ module.exports = function(socket, Users) {
 	socket.on('c.user.get_message_by_room', function(data) {
 		// data.room_id
 		// data.page
-		Message.getListByParams(data.room_id, data.page, function(err, messages) {
+		Message.getListByParams(data.channelId, data.page, function(err, messages) {
 			if (!err) {
 				socket.emit('s.user.message_by_room', {data: messages.reverse()});
 			}
