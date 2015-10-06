@@ -67,6 +67,5 @@ export function fetchChannelMessages(userId, channelId, page = 1) {
 				transport.socket.removeListener('s.user.message_by_room', listener);
 			});
 		}
-
 	};
 }

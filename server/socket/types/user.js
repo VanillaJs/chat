@@ -47,7 +47,11 @@ module.exports = function(socket, Users) {
 		} else {
 			// пишем в базу
 			Message.addNew(message, function(err, messageNew) {
-				sendMessage(true, messageNew.channelId, messageNew);
+				if (!err) {
+					sendMessage(true, messageNew.channelId, messageNew);
+				} else {
+					console.log(err)
+				}
 			});
 		}
 	});
