@@ -30,8 +30,6 @@ class Input extends Component {
 				addMessage('text', text, activeChannelId, user._id);
 				elm.value = '';
 			}
-		} else {
-			alert('Вы не ввели сообщение!');
 		}
 	}
 
