@@ -40,6 +40,11 @@ class DialogMessage extends Component {
 					userColor = channels.contacts[message.channelId].color;
 					userAvatar = channels.contacts[message.channelId].avatar;
 					userOnline = channels.contacts[message.channelId].is_online;
+				} else {
+					// костыль пока не знаю как решить
+					userColor = '/img/avatar-1.png';
+					userAvatar = '90C3D4';
+					userOnline = true;
 				}
 			}
 		}
