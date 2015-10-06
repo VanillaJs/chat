@@ -2,8 +2,8 @@ import * as messageActionType from '../constants/messages';
 import * as channelActionType from '../constants/channels.js';
 import transport from '../socket';
 
-export function addMessage(messageType = 'text', text, roomId, userId) {
-	const data = {message_type: messageType, room_id: roomId, text: text, userId: userId};
+export function addMessage(messageType = 'text', text, channelId, userId) {
+	const data = {message_type: messageType, channelId: channelId, text: text, userId: userId};
 
 	transport.socket.emit('c.user.send_message', data);
 
@@ -55,12 +55,18 @@ export function setReadMessages(userId, data, channelId) {
 
 export function fetchChannelMessages(userId, channelId, page = 1) {
 	return dispatch => {
-		transport.socket.emit('c.user.get_message_by_room', {room_id: channelId, page: page});
-		transport.socket.on('s.user.message_by_room', function listener(res) {
-			dispatch(prependChannelMessages(channelId, res.data, userId, page));
+		if (channelId.toString() === 'Lobby') {
+			dispatch(prependChannelMessages(channelId, [], userId, page));
+		} else {
+			transport.socket.emit('c.user.get_message_by_room', {channelId: channelId, page: page});
 
-			dispatch(setReadMessages(userId, res.data, channelId));
-			transport.socket.removeListener('s.user.message_by_room', listener);
-		});
+			transport.socket.on('s.user.message_by_room', function listener(res) {
+				dispatch(prependChannelMessages(channelId, res.data, userId, page));
+
+				dispatch(setReadMessages(userId, res.data, channelId));
+				transport.socket.removeListener('s.user.message_by_room', listener);
+			});
+		}
+
 	};
 }

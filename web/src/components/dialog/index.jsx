@@ -49,12 +49,16 @@ class Dialog extends Component {
 		if ((channels.contacts[channels.current] !== undefined) && (channels.contacts[channels.current].is_online === true)) {
 			isOnline = true;
 		}
+		let messagesList = [];
+		if (messages[channels.current] && messages[channels.current].listMessages.length > 0) {
+			messagesList = messages[channels.current].listMessages;
+		}
 		return (
 			<div ref="container" className="dialog">
 				<DialogDetails online={isOnline}/>
 				<button onClick={this.loadNewMessages.bind(this)}>LoadMessages</button>
 				<ul ref="messageContainer" className="messages-container">
-					{messages[channels.current] && messages[channels.current].listMessages.map(hash => {
+					{messagesList.map(hash => {
 						return <DialogMessage key={hash._id} message={hash} user={user} channels={channels} />;
 					})}
 				</ul>

@@ -23,11 +23,13 @@ class DialogMessage extends Component {
 	renderFull() {
 		const {channels, message, user} = this.props;
 		let userName = message.userId;
-		if ( channels.contacts[message.channelId] !== undefined && message.channelId !== 'Lobby' ) {
-			if ( user._id === message.userId ) {
+		if ( channels.contacts[message.channelId] !== undefined) {
+			if ( user._id.toString() === message.userId.toString() ) {
 				userName = user.username;
 			} else {
-				userName = channels.contacts[message.channelId].name;
+				if(message.channelId.toString() !== 'Lobby') {
+					userName = channels.contacts[message.channelId].name;
+				}
 			}
 		}
 

@@ -96,7 +96,7 @@ schema.statics.addNew = function(message, callback) {
 
 			if (messageType) {
 				newMessageObj = {
-					channelId: message.room_id,
+					channelId: message.channelId,
 					userId: message.userId,
 					messageTypeId: messageType._id,
 					message: message.text,
