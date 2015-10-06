@@ -38,7 +38,7 @@ export function messages(state = defaultData, action) {
 			return state;
 		}
 		const {channelId, message, userId} = action.message;
-		return assign({}, updateChannelMessages(state, channelId, message, userId, 1));
+		return assign({}, updateChannelMessages(state, channelId, message, userId));
 
 	case types.PREPEND_MESSAGES:
 		return assign({}, updateChannelMessages(state, action.channelId, action.messages, action.userId, action.page));
