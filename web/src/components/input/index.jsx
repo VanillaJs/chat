@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import UserPic from '../user-pic';
 import './input.sass';
-
+import trim from 'lodash/string/trim';
 class Input extends Component {
 	static propTypes = {
 		addMessage: PropTypes.func,
@@ -23,11 +23,15 @@ class Input extends Component {
 		event.stopPropagation();
 
 		const elm = this.refs.messageInput.getDOMNode();
-		const text = elm.value;
-		const {addMessage, activeChannelId, user} = this.props;
-		if (text) {
-			addMessage('text', text, activeChannelId, user._id);
-			elm.value = '';
+		const text = trim(elm.value);
+		if (text.length > 0) {
+			const {addMessage, activeChannelId, user} = this.props;
+			if (text) {
+				addMessage('text', text, activeChannelId, user._id);
+				elm.value = '';
+			}
+		} else {
+			alert('Вы не ввели сообщение!');
 		}
 	}
 
