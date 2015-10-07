@@ -173,7 +173,7 @@ var Channels = inherit({
 	/*
 	 * Функция для проверки фходящих данных
 	 * является вильтом
-	 * @return {Bool} html
+	 * @return {Bool}
 	 */
 	_dataIsCorrect: function(event, data) {
 		console.log(event);

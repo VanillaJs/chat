@@ -124,7 +124,9 @@ var User = inherit({
 		this._socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	},
 	/*
-	 * Фйнкци для проверки фходящих данных
+	 * Функция для проверки фходящих данных
+	 * является вильтом
+	 * @return {Bool}
 	 */
 	_dataIsCorrect: function(event, data) {
 		switch (event) {
