@@ -33,6 +33,7 @@
     "express-session": "^1.11.3",
     "forever": "^0.15.1",
     "forever-monitor": "^1.7.0",
+    "inherit": "^2.2.2",
     "jade": "^1.11.0",
     "mime": "~1.2.7  ",
     "mongoose": "^4.1.7",
