@@ -23,14 +23,14 @@ function loadUser(session, callback) {
 		return callback(null, null);
 	}
 
-	User.findById(session.passport.user.user_id, function(err, user) {
-		if (err) return callback(err);
-
-		if (!user) {
-			return callback(null, null);
-		}
-		callback(null, user);
-	});
+	User.findById(session.passport.user.user_id)
+		.then(function(user) {
+			if (!user) {
+				return callback(null, null);
+			}
+			callback(null, user);
+		})
+		.catch(callback);
 }
 
 module.exports = function(server) {

@@ -129,17 +129,15 @@ var User = inherit({
 		};
 		this._socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	},
-	/*
+	/**
 	 * Функция для проверки фходящих данных
-	 * является вильтом
+	 * является фильтом
+	 * @param  {?}      event
+	 * @param  {Object} data
 	 * @return {Bool}
 	 */
-<<<<<<< 6b06404ca519037256cf60d4c407bcec7ab180dc
 	_dataIsCorrect: function(event, data) {
 		var mustKeys;
-=======
-	_dataIsCorrect: function(event) {
->>>>>>> partial server code update callbacks to promises, show last channel message in contact list, hide empty unread message block
 		switch (event) {
 		case userTypes.SEND_MESSAGE:
 			mustKeys = {message_type: 'String', channelId: 'ObjectId', text: 'String', userId: 'ObjectId'};

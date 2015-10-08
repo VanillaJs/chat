@@ -8,7 +8,6 @@ function emmitEvent(user, channelId, additionalData, eventName) {
 			if (additionalData) {
 				sendData.custom = additionalData;
 			}
-
 			socketObj.emit(eventName, sendData);
 		});
 	}
