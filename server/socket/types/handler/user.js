@@ -14,7 +14,6 @@ var User = inherit({
 	 */
 	__constructor: function(socket, Users) {
 		this._socket = socket;
-		this._error = {};
 		this._users = Users;
 		this._data = Users[socket.handshake.user._id];
 	},
