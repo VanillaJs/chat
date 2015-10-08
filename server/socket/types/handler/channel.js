@@ -146,8 +146,12 @@ var Channels = inherit({
 							args[0] = {};
 						}
 						// Проверяем все ли впорядке с входящими данными
-						if (self._dataIsCorrect(event, args[0])) {
+						var notError = self._dataIsCorrect(event, args[0]);
+						if (notError === true) {
 							callback.apply(self, args);
+						} else {
+							// новое событие об ошибке входящих данных
+							self._socket.emit('s.server.error', {event: event, error: notError});
 						}
 					});
 				})(this._handlers[index].name, index, this._handlers[index].callback);
