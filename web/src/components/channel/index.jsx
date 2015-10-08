@@ -38,7 +38,7 @@ class Channel extends Component {
 							if (!active && lastMessage) {
 								return (
 									<div className="channel__message-content">
-										<span className="channel__message-preview">{lastMessage}</span>
+										<span className="channel__message-preview">{lastMessage.substring(0, 60)}</span>
 									</div>
 								);
 							}
@@ -46,7 +46,6 @@ class Channel extends Component {
 						})()
 						}
 					</div>
-					<div className="channel__time"><span>10:10</span></div>
 					{unread && unread > 0 ?
 						<span className="channel__message-unread">{unread}</span> : ''}
 				</a>

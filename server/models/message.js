@@ -56,7 +56,12 @@ schema.statics.getUnreadMessagesByChannel = function(channelId, userId) {
 };
 
 schema.statics.getLastChannelMessage = function(channelId) {
-	return this.findOne({channelId: channelId}).sort({created: -1});
+	var _this = this;
+	return MessageType
+			.findByType('text')
+			.then(function(textType) {
+				return _this.findOne({channelId: channelId, messageTypeId: textType._id}).sort({created: -1});
+			});
 };
 
 schema.statics.setRead = function(data) {

@@ -92,12 +92,13 @@ var User = inherit({
 				(function(event, index, callback) { /* eslint no-loop-func: 1 */
 					self._socket.on(event, function() {
 						var args = arguments;
+						var notError;
 						// Для того чтобы привести к одноми виду
 						if (!Object.keys(args).length) {
 							args[0] = {};
 						}
 						// Проверяем все ли впорядке с входящими данными
-						var notError = self._dataIsCorrect(event, args[0]);
+						notError = self._dataIsCorrect(event, args[0]);
 						if (notError === true) {
 							callback.apply(self, args);
 						} else {

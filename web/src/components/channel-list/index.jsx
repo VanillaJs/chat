@@ -13,7 +13,7 @@ class ChannelList extends Component {
 	render() {
 		const {changeChannel, channels} = this.props;
 		return (
-			<ul className="channels__add">
+			<ul className="channels-list">
 				{Object.keys(channels).map(key => {
 					return (
 						<Channel

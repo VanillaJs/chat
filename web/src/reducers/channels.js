@@ -1,6 +1,7 @@
 import assign from 'object-assign';
 import channelActionType from '../constants/channels';
 import userActionType from '../constants/user';
+import messageActionType from '../constants/messages';
 const defaultChannelsData = {
 	current: null,
 	contacts: {
@@ -72,6 +73,17 @@ export function channels(state = defaultChannelsData, action) {
 			return assign({}, state);
 		}
 		return state;
+
+	case messageActionType.ADD_MESSAGE:
+	case messageActionType.ADD_REMOTE_MESSAGE:
+		const messageData = action.data || action.message;
+		if (!messageData) {
+			return state;
+		}
+		const {channelId, text, message} = messageData;
+		state.contacts[channelId].lastMessage = text || message;
+		return assign({}, state);
+
 	default:
 		return state;
 	}
