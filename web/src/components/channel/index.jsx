@@ -7,7 +7,8 @@ class Channel extends Component {
 		channel: PropTypes.object.isRequired,
 		changeChannel: PropTypes.func.isRequired,
 		active: PropTypes.bool,
-		unread: PropTypes.number
+		unread: PropTypes.number,
+		lastMessage: PropTypes.string
 	}
 	constructor(props) {
 		super(props);
@@ -19,9 +20,8 @@ class Channel extends Component {
 	}
 
 	render() {
-		const activeModificator = this.props.active ? '--active' : '';
-		const {channel: {avatar, color, name}, unread} = this.props;
-		const isOnline = this.props.channel.is_online;
+		const {channel: {avatar, color, name, is_online: isOnline}, unread, active, lastMessage} = this.props;
+		const activeModificator = active ? '--active' : '';
 
 		return (
 			<li className={'channel-wrap' + activeModificator} onClick={this.changeChannel.bind(this)}>
@@ -34,12 +34,21 @@ class Channel extends Component {
 					</div>
 					<div className="channel__message">
 						<div className="channel__message-header"><span>{name}</span></div>
-						<div className="channel__message-content">
-							<span className="channel__message-preview">Первое сообщение,т...</span>
-						</div>
+						{(() => {
+							if (!active && lastMessage) {
+								return (
+									<div className="channel__message-content">
+										<span className="channel__message-preview">{lastMessage}</span>
+									</div>
+								);
+							}
+							return '';
+						})()
+						}
 					</div>
 					<div className="channel__time"><span>10:10</span></div>
-					<span className="channel__message-unread">{unread}</span>
+					{unread && unread > 0 ?
+						<span className="channel__message-unread">{unread}</span> : ''}
 				</a>
 			</li>
 		);

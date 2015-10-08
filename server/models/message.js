@@ -50,17 +50,13 @@ schema.statics.getListByParams = function(channelId, pageNum, callback) {
 	], callback);
 };
 
-schema.statics.getUnreadMessagesByChannel = function(channelId, userId, callback) {
+schema.statics.getUnreadMessagesByChannel = function(channelId, userId) {
 	// будет логика запросв
-	var Message = this;
-	async.waterfall([
-		function(callback) {
-			Message.find({$and: [ {read: { $nin: [userId] }}, {channelId: channelId} ]}, callback);
-		},
-		function(messages, callback) {
-			callback(null, messages.length);
-		}
-	], callback);
+	return this.find({$and: [ {read: { $nin: [userId] }}, {channelId: channelId} ]});
+};
+
+schema.statics.getLastChannelMessage = function(channelId) {
+	return this.findOne({channelId: channelId}).sort({created: -1});
 };
 
 schema.statics.setRead = function(data) {
@@ -111,7 +107,7 @@ schema.statics.addNew = function(message, callback) {
 				});
 			} else {
 				// set error
-				callback("MessageType is not created!", null);
+				callback('MessageType is not created!', null);
 			}
 		}
 

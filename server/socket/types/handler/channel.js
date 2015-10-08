@@ -11,7 +11,7 @@ var Channels = inherit({
 	 * @param {Object} socket.
 	 * @param {Object} Users.
 	 */
-	__constructor: function (socket, Users) {
+	__constructor: function(socket, Users) {
 		this._socket = socket;
 		this._users = Users;
 		this._session = socket.handshake.session;
@@ -136,9 +136,9 @@ var Channels = inherit({
 		var self = this;
 		var index;
 		if (this._handlers.length > 0) {
-			for (index in this._handlers) {
-				(function(event, index, callback) {
-					self._socket.on(event, function () {
+			for (index in this._handlers) { /* eslint guard-for-in: 1 */
+				(function(event, index, callback) { /* eslint no-loop-func: 1 */
+					self._socket.on(event, function() {
 						var args = arguments;
 						// Для того чтобы привести к одноми виду
 						if (!Object.keys(args).length) {
@@ -175,11 +175,10 @@ var Channels = inherit({
 	 * является вильтом
 	 * @return {Bool}
 	 */
-	_dataIsCorrect: function(event, data) {
-		console.log(event);
+	_dataIsCorrect: function(event) {
 		switch (event) {
-			default:
-				return true;
+		default:
+			return true;
 		}
 	}
 });
