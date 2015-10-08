@@ -6,6 +6,7 @@ var Channel = require('../../../models/channel').Channel;
 var Message = require('../../../models/message').Message;
 var joinAllSocket = require('../../../lib/sendselfsockets');
 var sessionStore = require('./../../../lib/database/sessionStore');
+var checkDataByParams = require('./helper');
 var Channels = inherit({
 	/**
 	 * @param {Object} socket.
@@ -145,8 +146,12 @@ var Channels = inherit({
 							args[0] = {};
 						}
 						// Проверяем все ли впорядке с входящими данными
-						if (self._dataIsCorrect(event, args[0])) {
+						var notError = self._dataIsCorrect(event, args[0]);
+						if (notError === true) {
 							callback.apply(self, args);
+						} else {
+							// новое событие об ошибке входящих данных
+							self._socket.emit('s.server.error', {event: event, error: notError});
 						}
 					});
 				})(this._handlers[index].name, index, this._handlers[index].callback);
@@ -176,11 +181,25 @@ var Channels = inherit({
 	 * @return {Bool}
 	 */
 	_dataIsCorrect: function(event, data) {
-		console.log(event);
+		var mustKeys;
 		switch (event) {
-			default:
-				return true;
+		case channelTypes.JOIN_CHANNEL:
+			mustKeys = {id: 'ObjectId'};
+			break;
+		case channelTypes.DELETE_CHANNEL:
+			mustKeys = {id: 'ObjectId'};
+			break;
+		case channelTypes.ADD_CHANNEL:
+			mustKeys = {username: 'String'};
+			break;
+		default:
+			mustKeys = {};
 		}
+
+		if (Object.keys(mustKeys).length > 0) {
+			return checkDataByParams(data, mustKeys);
+		}
+		return true;
 	}
 });
 
