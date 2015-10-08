@@ -6,6 +6,7 @@ var Channel = require('../../../models/channel').Channel;
 var Message = require('../../../models/message').Message;
 var joinAllSocket = require('../../../lib/sendselfsockets');
 var sessionStore = require('./../../../lib/database/sessionStore');
+var checkDataByParams = require('./helper');
 var Channels = inherit({
 	/**
 	 * @param {Object} socket.
@@ -176,11 +177,25 @@ var Channels = inherit({
 	 * @return {Bool}
 	 */
 	_dataIsCorrect: function(event, data) {
-		console.log(event);
+		var mustKeys;
 		switch (event) {
-			default:
-				return true;
+		case channelTypes.JOIN_CHANNEL:
+			mustKeys = {id: 'ObjectId'};
+			break;
+		case channelTypes.DELETE_CHANNEL:
+			mustKeys = {id: 'ObjectId'};
+			break;
+		case channelTypes.ADD_CHANNEL:
+			mustKeys = {username: 'String'};
+			break;
+		default:
+			mustKeys = {};
 		}
+
+		if (Object.keys(mustKeys).length > 0) {
+			return checkDataByParams(data, mustKeys);
+		}
+		return true;
 	}
 });
 

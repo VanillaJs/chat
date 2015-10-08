@@ -6,13 +6,15 @@ var userTypes = require('./../constants/user');
 var Message = require('../../../models/message').Message;
 var config = require('./../../../config');
 var sendStatus = require('../../../lib/channelstatus');
+var checkDataByParams = require('./helper');
 var User = inherit({
 	/**
 	 * @param {Object} socket.
 	 * @param {Object} Users.
 	 */
-	__constructor: function (socket, Users) {
+	__constructor: function(socket, Users) {
 		this._socket = socket;
+		this._error = {};
 		this._users = Users;
 		this._data = Users[socket.handshake.user._id];
 	},
@@ -85,18 +87,23 @@ var User = inherit({
 	bindSocketEvents: function() {
 		var self = this;
 		var index;
+		var notError
 		if (this._handlers.length > 0) {
 			for (index in this._handlers) {
 				(function(event, index, callback) {
-					self._socket.on(event, function () {
+					self._socket.on(event, function() {
 						var args = arguments;
 						// Для того чтобы привести к одноми виду
 						if (!Object.keys(args).length) {
 							args[0] = {};
 						}
 						// Проверяем все ли впорядке с входящими данными
-						if (self._dataIsCorrect(event, args[0])) {
+						var notError = self._dataIsCorrect(event, args[0]);
+						if (notError === true) {
 							callback.apply(self, args);
+						} else {
+							// новое событие об ошибке входящих данных
+							self._socket.emit('s.server.error', {event: event, error: notError});
 						}
 					});
 				})(this._handlers[index].name, index, this._handlers[index].callback);
@@ -129,12 +136,24 @@ var User = inherit({
 	 * @return {Bool}
 	 */
 	_dataIsCorrect: function(event, data) {
+		var mustKeys;
 		switch (event) {
 		case userTypes.SEND_MESSAGE:
-			return true;
+			mustKeys = {message_type: 'String', channelId: 'ObjectId', text: 'String', userId: 'ObjectId'};
+			break;
+		case userTypes.MESSAGE_BY_ROOM:
+			mustKeys = {channelId: 'ObjectId', page: 'Int'};
+			break;
+		case userTypes.READ_MESSAGE:
+			mustKeys = {userId: 'ObjectId', messages: 'Array'};
+			break;
 		default:
-			return true;
+			mustKeys = {};
 		}
+		if (Object.keys(mustKeys).length > 0) {
+			return checkDataByParams(data, mustKeys);
+		}
+		return true;
 	}
 });
 
