@@ -105,7 +105,6 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 
 schema.statics.getContactsByUserID = function(id, Users) {
 	var Channel = this;
-	var channels = {};
 
 	return Channel.find({ users: { $in: [id] } }).then(function(channelsData) {
 		if (channelsData.length > 0) {
@@ -114,10 +113,14 @@ schema.statics.getContactsByUserID = function(id, Users) {
 					return Channel.prepareChannel(id, channel, Users);
 				}))
 				.then(function(result) {
-					return result;
+					var channels = {};
+					result.forEach(function(channel) {
+						channels[channel._id] = channel;
+					});
+					return channels;
 				});
 		}
-		return Promise.resolve(channels);
+		return Promise.resolve({});
 	});
 };
 

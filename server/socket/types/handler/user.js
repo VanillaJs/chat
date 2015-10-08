@@ -124,12 +124,14 @@ var User = inherit({
 		};
 		this._socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	},
-	/*
+	/**
 	 * Функция для проверки фходящих данных
-	 * является вильтом
+	 * является фильтом
+	 * @param  {?}      event
+	 * @param  {Object} data
 	 * @return {Bool}
 	 */
-	_dataIsCorrect: function(event) {
+	_dataIsCorrect: function(event, data) { /* eslint no-unused-vars: 1 */
 		switch (event) {
 		case userTypes.SEND_MESSAGE:
 			return true;
