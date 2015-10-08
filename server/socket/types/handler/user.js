@@ -55,8 +55,9 @@ var User = inherit({
 			callback: function(message) {
 				// var status = false;
 				// save to database
+				var sendMessage;
 				if (message !== undefined) {
-					var sendMessage = this._sendMessage.bind(this);
+					sendMessage = this._sendMessage.bind(this);
 					message.userId = this._socket.handshake.user._id;
 					if (this._data.channel === config.get('defaultChannel')) {
 						message.message = message.text;
@@ -87,8 +88,8 @@ var User = inherit({
 		var self = this;
 		var index;
 		if (this._handlers.length > 0) {
-			for (index in this._handlers) {
-				(function(event, index, callback) {
+			for (index in this._handlers) { /* eslint guard-for-in: 1 */
+				(function(event, index, callback) { /* eslint no-loop-func: 1 */
 					self._socket.on(event, function() {
 						var args = arguments;
 						// Для того чтобы привести к одноми виду
@@ -133,8 +134,12 @@ var User = inherit({
 	 * является вильтом
 	 * @return {Bool}
 	 */
+<<<<<<< 6b06404ca519037256cf60d4c407bcec7ab180dc
 	_dataIsCorrect: function(event, data) {
 		var mustKeys;
+=======
+	_dataIsCorrect: function(event) {
+>>>>>>> partial server code update callbacks to promises, show last channel message in contact list, hide empty unread message block
 		switch (event) {
 		case userTypes.SEND_MESSAGE:
 			mustKeys = {message_type: 'String', channelId: 'ObjectId', text: 'String', userId: 'ObjectId'};

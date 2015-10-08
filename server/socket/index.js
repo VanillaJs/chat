@@ -99,17 +99,19 @@ module.exports = function(server) {
 				const putData = {userData: user, soketData: sockets, channel: channel || defaultChannel};
 				Users[user._id] = putData;
 			}
-			Channel.getContactsByUserID(user._id, Users, function getContactsByUserIDCallback(channelError, contacts) {
-				Users[user._id].contacts = contacts;
-				// если мы удалили канал и он каким-то образом остался в нем
-				if (!Users[user._id].contacts.hasOwnProperty(channel)) {
-					Users[user._id].channel = defaultChannel;
-				}
-				next(channelError);
-			});
+			Channel
+				.getContactsByUserID(user._id, Users)
+				.then(function(contacts) {
+					Users[user._id].contacts = contacts;
+					// если мы удалили канал и он каким-то образом остался в нем
+					if (!Users[user._id].contacts.hasOwnProperty(channel)) {
+						Users[user._id].channel = defaultChannel;
+					}
+					next();
+				})
+				.catch(next);
 		});
 	});
-
 
 	io.on('connection', function socketConnectionHandler(socket) {
 		require('./types/user')(socket, Users);

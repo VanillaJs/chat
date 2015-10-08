@@ -50,63 +50,74 @@ schema.statics.findOrCreate = function(type, userCreateId, userAddId, callback) 
 	});
 };
 
-schema.statics.prepareChannel = function(id, channel, Users) {
-	var customObject = {
+schema.statics.getChannelInitialData = function(channel) {
+	return {
 		_id: channel._id,
+		user: null,
+		type: channel.type,
 		name: channel.name,
 		is_online: false,
-		type: channel.type,
-		avatar: '',
-		user: null,
 		message_count: 0,
+		avatar: '',
 		color: '000'
 	};
-	var userID;
-	if (channel.type === 'user') {
-		channel.users.splice(channel.users.indexOf(id), 1);
-		customObject.user = channel.users[0];
-		if (channel.users.length > 0) {
-			userID = channel.users[0];
-			// Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
-			customObject.is_online = Users.hasOwnProperty(userID);
-			// нужно будет очень сильно подумать ) асинхронно могут данные и не подтянуться =)
-			User.getUserByID(userID, function(err, user) {
-				customObject.name = user.username;
-				customObject.avatar = user.avatar;
-				customObject.color = user.color;
-			});
-			Message.getUnreadMessagesByChannel(channel._id, id, function messagesCallback(err, length) {
-				if (!err) {
-					customObject.message_count = length;
-				}
-			});
-		}
-		channel.users.push(id);
-	} else {
-		customObject.avatar = '';
-	}
-
-	return customObject;
 };
 
-schema.statics.getContactsByUserID = function(id, Users, callback) {
-	var Channel = this;
-	var channels;
+/**
+ * prepareChannel
+ * @param  {String} id      User id
+ * @param  {Object} channel Channel data
+ * @param  {Object} Users   Global users object, contain all active chat users
+ * @return {Promise}
+ */
+schema.statics.prepareChannel = function(id, channel, Users) {
+	var userID;
+	var customObject = this.getChannelInitialData(channel);
+	if (channel.type === 'user') {
+		channel.users.splice(channel.users.indexOf(id), 1);
+		userID = customObject.user = channel.users[0];
+		channel.users.push(id);
+		// Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
+		customObject.is_online = Users.hasOwnProperty(userID);
 
-	Channel.find({ users: { $in: [id] } }, function(err, channelsData) {
-		if (!err) {
-			channels = {};
-			if (channelsData.length > 0) {
-				// Говнокодик
-				// проходим по всем каналам
-				channelsData.forEach(function(channel) {
-					channels[channel._id] = Channel.prepareChannel(id, channel, Users);
+		return Promise.all(
+			[
+				User.getUserByID(userID),
+				Message.getUnreadMessagesByChannel(channel._id, id),
+				Message.getLastChannelMessage(channel._id)
+			])
+			.then(function(result) {
+				var user = result[0];
+				var unreadMessages = result[1];
+				var lastMessage = result[2] ? result[2].message : '';
+				return Object.assign(customObject, {
+					name: user.username,
+					avatar: user.avatar,
+					color: user.color,
+					message_count: unreadMessages.length,
+					lastMessage: lastMessage
 				});
-			}
-			callback(null, channels);
-		} else {
-			callback(err);
+			});
+	}
+
+	return Promise.reslove(customObject);
+};
+
+schema.statics.getContactsByUserID = function(id, Users) {
+	var Channel = this;
+	var channels = {};
+
+	return Channel.find({ users: { $in: [id] } }).then(function(channelsData) {
+		if (channelsData.length > 0) {
+			return Promise
+				.all(channelsData.map(function(channel) {
+					return Channel.prepareChannel(id, channel, Users);
+				}))
+				.then(function(result) {
+					return result;
+				});
 		}
+		return Promise.resolve(channels);
 	});
 };
 
