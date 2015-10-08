@@ -9,28 +9,22 @@ var Users = {}; // Глобальный объект с пользователя
 
 function loadSession(sid, callback) {
 	sessionStore.load(sid, function(err, session) {
-		if (arguments.length === 0) {
+		if (err) {
 			// no arguments => no session
-			return callback(null, null);
+			callback(null);
 		}
 
-		return callback(null, session);
+		return callback(session);
 	});
 }
 
-function loadUser(session, callback) {
+
+function loadUser(session) {
 	if (!session.passport.user.user_id) {
-		return callback(null, null);
+		return null;
 	}
 
-	User.findById(session.passport.user.user_id)
-		.then(function(user) {
-			if (!user) {
-				return callback(null, null);
-			}
-			callback(null, user);
-		})
-		.catch(callback);
+	return User.findById(session.passport.user.user_id);
 }
 
 module.exports = function(server) {
@@ -41,41 +35,22 @@ module.exports = function(server) {
 	io.set('origins', config.get('app:socketOrigin'));
 	io.use(function(socket, next) {
 		var handshakeData = socket.request;
-		async.waterfall([
-			function(callback) {
-				// получить sid
-				var parser = cookieParser(secret);
-				parser(handshakeData, {}, function(err) {
-					var sid = handshakeData.signedCookies[sessionKey];
-					if (err) return callback(err);
 
+		new Promise(function(resolve, reject) {
+			var parser = cookieParser(secret);
+			parser(handshakeData, {}, function(err) {
+				var sid = handshakeData.signedCookies[sessionKey];
+				if (err) return reject(err);
 
-					loadSession(sid, callback);
-				});
-			},
-			function(session, callback) {
-				if (!session) {
-					return callback(new HttpError(401, 'No session'));
-				}
-				socket.handshake.session = session;
-				loadUser(session, callback);
-			},
-			function(user, callback) {
-				if (!user) {
-					return callback(new HttpError(403, 'Anonymous session may not connect'));
-				}
-				callback(null, user);
-			}
-		], function(err, user) {
+				loadSession(sid, resolve);
+			});
+		}).then(function(session) {
+			socket.handshake.session = session;
+			return loadUser(session);
+		}).then(function(user) {
 			var channel;
 			var defaultChannel;
 			var index;
-			if (err) {
-				if (err instanceof HttpError) {
-					return next(new Error('Not authorized'));
-				}
-				next(err);
-			}
 			channel = socket.handshake.session.passport.user.channel;
 			defaultChannel = config.get('defaultChannel');
 			socket.handshake.user = user;
@@ -110,7 +85,7 @@ module.exports = function(server) {
 					next();
 				})
 				.catch(next);
-		});
+		}).catch(next);
 	});
 
 	io.on('connection', function socketConnectionHandler(socket) {
