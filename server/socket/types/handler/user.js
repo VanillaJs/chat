@@ -87,7 +87,6 @@ var User = inherit({
 	bindSocketEvents: function() {
 		var self = this;
 		var index;
-		var notError
 		if (this._handlers.length > 0) {
 			for (index in this._handlers) {
 				(function(event, index, callback) {
