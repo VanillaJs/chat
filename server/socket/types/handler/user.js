@@ -42,12 +42,11 @@ var User = inherit({
 				// data.channelId
 				// data.page
 				var socket = this._socket;
-				Message.getListByParams(data.channelId, data.page).
-					then(function(messages) {
+				Message.getListByParams(data.channelId, data.page, function(err, messages) {
+					if (!err) {
 						socket.emit('s.user.message_by_room', {data: messages.reverse()});
-					}).catch(function(err) {
-						console.log(err);
-					});
+					}
+				});
 			}
 		},
 		{
@@ -56,9 +55,8 @@ var User = inherit({
 			callback: function(message) {
 				// var status = false;
 				// save to database
-				var sendMessage;
 				if (message !== undefined) {
-					sendMessage = this._sendMessage.bind(this);
+					var sendMessage = this._sendMessage.bind(this);
 					message.userId = this._socket.handshake.user._id;
 					if (this._data.channel === config.get('defaultChannel')) {
 						message.message = message.text;
@@ -66,12 +64,13 @@ var User = inherit({
 						sendMessage(true, message.channelId, message);
 					} else {
 						// пишем в базу
-						Message.addNew(message).
-							then(function(messageNew) {
+						Message.addNew(message, function(err, messageNew) {
+							if (!err) {
 								sendMessage(true, messageNew.channelId, messageNew);
-							}).catch(function(err) {
+							} else {
 								console.log(err);
-							});
+							}
+						});
 					}
 				}
 			}
@@ -88,17 +87,16 @@ var User = inherit({
 		var self = this;
 		var index;
 		if (this._handlers.length > 0) {
-			for (index in this._handlers) { /* eslint guard-for-in: 1 */
-				(function(event, index, callback) { /* eslint no-loop-func: 1 */
+			for (index in this._handlers) {
+				(function(event, index, callback) {
 					self._socket.on(event, function() {
 						var args = arguments;
-						var notError;
 						// Для того чтобы привести к одноми виду
 						if (!Object.keys(args).length) {
 							args[0] = {};
 						}
 						// Проверяем все ли впорядке с входящими данными
-						notError = self._dataIsCorrect(event, args[0]);
+						var notError = self._dataIsCorrect(event, args[0]);
 						if (notError === true) {
 							callback.apply(self, args);
 						} else {
@@ -130,11 +128,9 @@ var User = inherit({
 		};
 		this._socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	},
-	/**
+	/*
 	 * Функция для проверки фходящих данных
-	 * является фильтом
-	 * @param  {?}      event
-	 * @param  {Object} data
+	 * является вильтом
 	 * @return {Bool}
 	 */
 	_dataIsCorrect: function(event, data) {

@@ -13,12 +13,4 @@ var schema = new Schema({
 	}
 });
 
-schema.statics.findByType = function(type) {
-	return this.findOne({type: type});
-};
-
-schema.statics.getById = function(id) {
-	return this.findOne({'_id': id});
-};
-
 exports.MessageType = mongoose.model('MessageType', schema);

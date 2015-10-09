@@ -6,7 +6,7 @@ var checkValueByType = function(value, type) {
 	case 'String':
 		return _.trim(value).length > 0;
 	case 'Int':
-		return parseInt(value, 10) > 0;
+		return parseInt(value) > 0;
 	case 'Array':
 		return _.isArray(value);
 	default:

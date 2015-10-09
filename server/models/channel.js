@@ -17,101 +17,96 @@ var schema = new Schema({
 	users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
-schema.statics.findOrCreate = function(type, userCreateId, userAddId) {
+schema.statics.findOrCreate = function(type, userCreateId, userAddId, callback) {
 	var Channel = this;
 	var newChannelObj;
-	var newChannel = {};
+	var newChannel;
 	// если пользоваетель хочет добавить сама себя
-	if (userCreateId !== userAddId) {
-		return Channel.findOne({$and: [{users: {$in: [userCreateId]}}, {users: {$in: [userAddId]}}, {type: type}]}).
-			then(function(channel) {
-				if (!channel) {
-					newChannelObj = {
-						name: type + '_' + userCreateId + '_' + userAddId,
-						type: type,
-						users: [userCreateId, userAddId]
-					};
-					newChannel = new Channel(newChannelObj);
-					return newChannel.save();
-				}
-				return Promise.resolve({});
-			});
+	if (userCreateId === userAddId) {
+		return callback('Alredy Exist!');
 	}
 
-	return Promise.reslove(newChannel);
+	Channel.findOne( { $and: [ { users: { $in: [userCreateId] } }, { users: { $in: [userAddId] } }, {type: type} ] }, function(err, channel) {
+		if (!err) {
+			if (channel) {
+				callback('Alredy Exist!', null);
+			} else {
+				newChannelObj = {
+					name: type + '_' + userCreateId + '_' + userAddId,
+					type: type,
+					users: [userCreateId, userAddId]
+				};
+				newChannel = new Channel(newChannelObj);
+				newChannel.save(function(channelErr) {
+					if (err) {
+						return callback(channelErr);
+					}
+					callback(null, newChannel);
+				});
+			}
+		} else {
+			callback(err);
+		}
+	});
 };
 
-schema.statics.getChannelInitialData = function(channel) {
-	return {
+schema.statics.prepareChannel = function(id, channel, Users) {
+	var customObject = {
 		_id: channel._id,
-		user: null,
-		type: channel.type,
 		name: channel.name,
 		is_online: false,
-		message_count: 0,
+		type: channel.type,
 		avatar: '',
+		user: null,
+		message_count: 0,
 		color: '000'
 	};
-};
-
-/**
- * prepareChannel
- * @param  {String} id      User id
- * @param  {Object} channel Channel data
- * @param  {Object} Users   Global users object, contain all active chat users
- * @return {Promise}
- */
-schema.statics.prepareChannel = function(id, channel, Users) {
 	var userID;
-	var customObject = this.getChannelInitialData(channel);
 	if (channel.type === 'user') {
 		channel.users.splice(channel.users.indexOf(id), 1);
-		userID = customObject.user = channel.users[0];
-		channel.users.push(id);
-		// Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
-		customObject.is_online = Users.hasOwnProperty(userID);
-
-		return Promise.all(
-			[
-				User.getUserByID(userID),
-				Message.getUnreadMessagesByChannel(channel._id, id),
-				Message.getLastChannelMessage(channel._id)
-			])
-			.then(function(result) {
-				var user = result[0];
-				var unreadMessages = result[1];
-				var lastMessage = result[2] ? result[2].message : '';
-				return Object.assign(customObject, {
-					name: user.username,
-					avatar: user.avatar,
-					color: user.color,
-					message_count: unreadMessages.length,
-					lastMessage: lastMessage
-				});
+		customObject.user = channel.users[0];
+		if (channel.users.length > 0) {
+			userID = channel.users[0];
+			// Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
+			customObject.is_online = Users.hasOwnProperty(userID);
+			// нужно будет очень сильно подумать ) асинхронно могут данные и не подтянуться =)
+			User.getUserByID(userID, function(err, user) {
+				customObject.name = user.username;
+				customObject.avatar = user.avatar;
+				customObject.color = user.color;
 			});
+			Message.getUnreadMessagesByChannel(channel._id, id, function messagesCallback(err, length) {
+				if (!err) {
+					customObject.message_count = length;
+				}
+			});
+		}
+		channel.users.push(id);
+	} else {
+		customObject.avatar = '';
 	}
 
-	return Promise.reslove(customObject);
+	return customObject;
 };
 
-schema.statics.getContactsByUserID = function(id, Users) {
+schema.statics.getContactsByUserID = function(id, Users, callback) {
 	var Channel = this;
+	var channels;
 
-	return Channel.find({ users: { $in: [id] } }).then(function(channelsData) {
-		if (channelsData.length > 0) {
-			return Promise
-				.all(channelsData.map(function(channel) {
-					return Channel.prepareChannel(id, channel, Users);
-				}))
-				.then(function(result) {
-					var channels = {};
-					result.forEach(function(channel) {
-						channels[channel._id] = channel;
-					});
-					return channels;
+	Channel.find({ users: { $in: [id] } }, function(err, channelsData) {
+		if (!err) {
+			channels = {};
+			if (channelsData.length > 0) {
+				// Говнокодик
+				// проходим по всем каналам
+				channelsData.forEach(function(channel) {
+					channels[channel._id] = Channel.prepareChannel(id, channel, Users);
 				});
+			}
+			callback(null, channels);
+		} else {
+			callback(err);
 		}
-		return Promise.resolve({});
 	});
 };
 
