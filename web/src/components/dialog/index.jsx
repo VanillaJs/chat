@@ -19,17 +19,18 @@ class Dialog extends Component {
 	 * Fetch from server message history for active channel
 	 */
 
+	/*
 	componentDidMount() {
 		const node = this.refs.messageContainer.getDOMNode();
-		const container = this.refs.container;
 		let currentPosY = node.scrollTop;
 
-		node.addEventListener('scroll', function(e) {
+		node.addEventListener('scroll', function() {
 			if ((node.scrollTop < currentPosY) && (node.scrollTop === 0)) {
 			}
 			currentPosY = node.scrollTop;
 		});
 	}
+	*/
 
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
