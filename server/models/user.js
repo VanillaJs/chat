@@ -104,28 +104,15 @@ schema.methods.checkIsSocialExist = function(type) {
 	return ret;
 };
 
-schema.statics.findByParams = function(username, email, callback) {
+schema.statics.findByParams = function(username, email) {
 	var User = this;
-	async.waterfall([
-		function(callback) {
-			User.findOne({username: username}, callback);
-		},
-		function(user, callback) {
-			if (user) {
-				callback(null, user);
-			} else {
-				if (email !== null && email.length) {
-					User.findOne({email: email}, callback);
-				}
+	return User.findOne({username: username}).
+		then(function(user) {
+			if (!user) {
+				return User.findOne({email: email});
 			}
-		},
-		function(user, callback) {
-			if (user) {
-				callback(null, user);
-			} else {
-				callback('not found', null);
-			}
-		}], callback);
+			return Promise.resolve(user);
+		});
 };
 
 schema.statics.authorizeSocial = function(userData, callback) {

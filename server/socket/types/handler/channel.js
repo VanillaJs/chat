@@ -89,44 +89,37 @@ var Channels = inherit({
 			name: channelTypes.ADD_CHANNEL,
 			callback: function(user) {
 				var sendData = null;
+				var promises = [];
 				var socket = this._socket;
 				var Users = this._users;
+				var toUser;
 				var ifUserOnline = this._ifUserOnline.bind(this);
-				User.findByParams(user.username, user.username, function(err, user) {
-					var toUser;
-					if (user) {
-						if (err) {
-							// ошибка
-						} else {
-							// Если канал существует
-							Channel.findOrCreate('user', socket.handshake.user._id, user._id, function(err, channel) {
-								if (!err) {
-									sendData = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
-									Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-									if (ifUserOnline(user._id)) {
-										Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
-									}
-								}
-
-								if (channel) {
-									// Таймаут для того, что данные по пользователю приходят асинхронно
-									setTimeout(function() {
-										Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-										toUser = sendData;
-										if (ifUserOnline(user._id)) {
-											sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
-										}
-
-										socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
-									}, 50);
-								}
-							});
+				User.findByParams(user.username, user.username).
+					then(function(user) {
+						if (user) {
+							toUser = user;
+							return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
 						}
-					} else {
-						// пользователь не найден
-						socket.emit('s.channel.add', sendData);
-					}
-				});
+					}).then(function(channel) {
+						if (channel !== undefined) {
+							promises.push(Channel.prepareChannel(socket.handshake.user._id, channel, Users));
+							if (ifUserOnline(toUser._id)) {
+								promises.push(Channel.prepareChannel(toUser._id, channel, Users));
+							}
+							return Promise.all(promises);
+						}
+					}).then(function(result) {
+						sendData = result[0];
+						Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
+						if (ifUserOnline(toUser._id) && result[1]) {
+							Users[toUser._id].contacts[sendData._id] = result[1];
+							sendStatus(socket.handshake.user._id, Users, 's.channel.add', sendData, Users[toUser._id].contacts[sendData._id]);
+						}
+
+						socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
+					}).catch(function(err) {
+						console.log(err);
+					});
 			}
 		}
 	],

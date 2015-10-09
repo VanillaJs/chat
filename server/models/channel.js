@@ -17,37 +17,28 @@ var schema = new Schema({
 	users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
-schema.statics.findOrCreate = function(type, userCreateId, userAddId, callback) {
+schema.statics.findOrCreate = function(type, userCreateId, userAddId) {
 	var Channel = this;
 	var newChannelObj;
-	var newChannel;
+	var newChannel = {};
 	// если пользоваетель хочет добавить сама себя
-	if (userCreateId === userAddId) {
-		return callback('Alredy Exist!');
+	if (userCreateId !== userAddId) {
+		return Channel.findOne({$and: [{users: {$in: [userCreateId]}}, {users: {$in: [userAddId]}}, {type: type}]}).
+			then(function(channel) {
+				if (!channel) {
+					newChannelObj = {
+						name: type + '_' + userCreateId + '_' + userAddId,
+						type: type,
+						users: [userCreateId, userAddId]
+					};
+					newChannel = new Channel(newChannelObj);
+					return newChannel.save();
+				}
+				return Promise.resolve({});
+			});
 	}
 
-	Channel.findOne( { $and: [ { users: { $in: [userCreateId] } }, { users: { $in: [userAddId] } }, {type: type} ] }, function(err, channel) {
-		if (!err) {
-			if (channel) {
-				callback('Alredy Exist!', null);
-			} else {
-				newChannelObj = {
-					name: type + '_' + userCreateId + '_' + userAddId,
-					type: type,
-					users: [userCreateId, userAddId]
-				};
-				newChannel = new Channel(newChannelObj);
-				newChannel.save(function(channelErr) {
-					if (err) {
-						return callback(channelErr);
-					}
-					callback(null, newChannel);
-				});
-			}
-		} else {
-			callback(err);
-		}
-	});
+	return Promise.reslove(newChannel);
 };
 
 schema.statics.getChannelInitialData = function(channel) {
