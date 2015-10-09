@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import cx from 'classnames';
-import './channeladd.sass';
+import './index.sass';
 
 class ContactAdd extends Component {
 	static propTypes = {
@@ -28,7 +28,7 @@ class ContactAdd extends Component {
 
 	render() {
 		return (
-			<div className={cx({'contacts-add': true, 'is-active': this.state.active})}>
+			<div className={cx({'contacts-add': true, 'contacts-add--active': this.state.active})}>
 				<div onClick={::this._toggle} className="contacts-add__button">
 					<span className="contacts-add__icon">
 						<i className="fa fa-plus-circle"></i>
@@ -36,10 +36,10 @@ class ContactAdd extends Component {
 					<p className="contacts-add__text">Add friend or group</p>
 				</div>
 				<div className="contacts-add__form">
-					<h6>Добавление контакта</h6>
-					<input ref="input" type="text" />
-					<button onClick={::this._addContact}>OK</button>
-					<span className="close" onClick={::this._toggle}>&times;</span>
+					<h6 className="contacts-add__input-header">Contact name:</h6>
+					<input className="contacts-add__input" ref="input" type="text" />
+					<button className="contacts-add__input-button" onClick={::this._addContact}>OK</button>
+					<span className="contacts-add__input-close" onClick={::this._toggle}>&times;</span>
 				</div>
 			</div>
 		);
