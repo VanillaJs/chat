@@ -13,7 +13,7 @@ class ChannelList extends Component {
 	render() {
 		const {changeChannel, channels} = this.props;
 		return (
-			<ul className="channels__add">
+			<ul className="channels-list">
 				{Object.keys(channels).map(key => {
 					return (
 						<Channel
@@ -21,6 +21,7 @@ class ChannelList extends Component {
 							online={channels[key].is_online === true}
 							active={channels[key]._id === this.props.currentChannelId}
 							channel={channels[key]}
+							lastMessage={channels[key].lastMessage}
 							unread={parseInt(channels[key].message_count, 10)}
 							changeChannel={changeChannel} />
 					);

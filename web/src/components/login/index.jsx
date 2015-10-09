@@ -58,6 +58,9 @@ class Login extends Component {
 					<p className="login-form__field">
 						<a href="/login-fb">Facebook</a>
 					</p>
+					<p className="login-form__field">
+						<a href="/login-vk">VK</a>
+					</p>
 
 					<button className="login-form__submit" type="submit">Login</button>
 				</div>

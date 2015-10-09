@@ -9,8 +9,6 @@ const defaultData = {
 };
 
 function updateChannelMessages(state, channelId, message, userId, page = 1) {
-
-
 	if (!state[channelId]) {
 		state[channelId] = {listMessages: [], page: 1};
 	}
@@ -33,7 +31,6 @@ export function messages(state = defaultData, action) {
 		return assign({}, updateChannelMessages(state, action.data.channelId, action.data.text, action.data.userId));
 
 	case types.ADD_REMOTE_MESSAGE:
-
 		if (!action.message) {
 			return state;
 		}

@@ -23,16 +23,14 @@ export function setActiveChannel(id) {
 	};
 }
 
-export function setOnlineChannel(data) {
-	const channel = data.channel;
+export function setOnlineChannel({channel}) {
 	return {
 		type: channelActionType.SET_CHANNEL_ONLINE,
 		channel
 	};
 }
 
-export function setOfflineChannel(data) {
-	const channel = data.channel;
+export function setOfflineChannel({channel}) {
 	return {
 		type: channelActionType.SET_CHANNEL_OFFLINE,
 		channel
@@ -62,11 +60,11 @@ export function setContactList(contacts) {
 	};
 }
 
-export function removeFromChannelList(data) {
+export function removeFromChannelList({id, is_delete}) {
 	return {
 		type: channelActionType.CHANNEL_REMOVE,
-		id: data.id,
-		is_delete: data.is_delete
+		id,
+		is_delete
 	};
 }
 
