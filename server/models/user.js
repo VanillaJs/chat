@@ -1,5 +1,4 @@
 var crypto = require('crypto');
-var async = require('async');
 var util = require('util');
 var mongoose = require('./../lib/database/mongoose');
 var Schema = mongoose.Schema;
@@ -115,7 +114,7 @@ schema.statics.findByParams = function(username, email) {
 		});
 };
 
-schema.statics.authorizeSocial = function(userData, callback) {
+schema.statics.authorizeSocial = function(userData) {
 	var User = this;
 	/**
 	 * 1. Получить пользователя с таким username из базы данных
@@ -124,37 +123,29 @@ schema.statics.authorizeSocial = function(userData, callback) {
 	 *      Нет - создаем нового
 	 * 3. Авторизация успешна
 	 */
-	async.waterfall([
-		function(callback) {
-			User.findOne({email: userData.email}, callback);
-		},
-		function(user, callback) {
-			var newUser;
+	return User.findOne({email: userData.email}).
+		then(function(user) {
+			var returnUser;
 			if (user) {
-				if (user.checkIsSocialExist(userData.authType.name)) {
-					callback(null, user);
-				} else {
+				if (!user.checkIsSocialExist(userData.authType.name)) {
 					user.authType.push(userData.authType);
 					user.save();
 				}
+
+				returnUser = user;
 			} else {
-				newUser = new User(userData);
-				newUser.save(function(err) {
-					if (err) {
-						return callback(err);
-					}
-					callback(null, newUser);
-				});
+				returnUser = new User(userData);
+				returnUser.save();
 			}
-		}
-	], callback);
+			return returnUser;
+		});
 };
 
 schema.statics.getUserByID = function(id) {
 	return this.findById(id);
 };
 
-schema.statics.authorize = function(username, password, callback) {
+schema.statics.authorize = function(username, password) {
 	/**
 	 * 1. Получить пользователя с таким username из базы данных
 	 * 2. Такой пользователь найден?
@@ -164,22 +155,16 @@ schema.statics.authorize = function(username, password, callback) {
 	*/
 	var User = this;
 
-	async.waterfall([
-		function(callback) {
-			User.findOne({username: username}, callback);
-		},
-		function(user, callback) {
+	return User.findOne({username: username}).
+		then(function(user) {
 			if (user) {
 				if (user.checkPassword(password)) {
-					callback(null, user);
-				} else {
-					callback(new AuthError('Пароль не верен'));
+					return user;
 				}
-			} else {
-				callback(new AuthError('Пароль или логин не верен'));
 			}
-		}
-	], callback);
+
+			return Promise.reject(new AuthError('Пароль или логин не верен'));
+		});
 };
 
 exports.User = mongoose.model('User', schema);

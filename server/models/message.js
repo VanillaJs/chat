@@ -1,4 +1,3 @@
-var async = require('async');
 var MessageType = require('./messagetype').MessageType;
 var mongoose = require('./../lib/database/mongoose');
 var Schema = mongoose.Schema;
@@ -32,22 +31,15 @@ var schema = new Schema({
 	}
 });
 
-schema.statics.getListByParams = function(channelId, pageNum, callback) {
+schema.statics.getListByParams = function(channelId, pageNum) {
 	var Message = this;
 	var limit = 10;
 	var skip = limit * pageNum - limit;
-	async.waterfall([
-		function(callback) {
-			if (skip > 0) {
-				Message.find({channelId: channelId}, callback).sort({created: -1}).skip(skip).limit(limit);
-			} else {
-				Message.find({channelId: channelId}, callback).sort({created: -1}).limit(limit);
-			}
-		},
-		function(messages, callback) {
-			callback(null, messages);
-		}
-	], callback);
+	var promise = Message.find({channelId: channelId}).sort({created: -1}).limit(limit);
+	if (skip > 0) {
+		promise.skip(skip);
+	}
+	return promise;
 };
 
 schema.statics.getUnreadMessagesByChannel = function(channelId, userId) {
@@ -71,30 +63,19 @@ schema.statics.setRead = function(data) {
 	});
 };
 
-schema.statics.addNew = function(message, callback) {
+schema.statics.addNew = function(message) {
 	var Message = this;
-	async.waterfall([
-		function(callback) {
-			MessageType.findOne({name: message.message_type}, callback);
-		},
-		function(messageType, callback) {
-			var newMessageType;
+	var newMessageType;
+	var newMessageObj = {};
+	var newMessage = {};
+	return MessageType.findOne({name: message.message_type}).
+		then(function(messageType) {
 			if (!messageType) {
 				newMessageType = new MessageType({name: message.message_type, type: message.message_type});
-				newMessageType.save(function(err) {
-					if (err) {
-						return callback(err);
-					}
-					callback(null, newMessageType);
-				});
-			} else {
-				callback(null, messageType);
+				return newMessageType.save();
 			}
-		},
-		function(messageType, callback) {
-			var newMessageObj;
-			var newMessage;
-
+			return messageType;
+		}).then(function(messageType) {
 			if (messageType) {
 				newMessageObj = {
 					channelId: message.channelId,
@@ -104,19 +85,11 @@ schema.statics.addNew = function(message, callback) {
 					read: [message.userId]
 				};
 				newMessage = new Message(newMessageObj);
-				newMessage.save(function(err) {
-					if (err) {
-						return callback(err);
-					}
-					callback(null, newMessage);
-				});
-			} else {
-				// set error
-				callback('MessageType is not created!', null);
+				return newMessage.save();
 			}
-		}
-
-	], callback);
+			// set error
+			Promise.reject('MessageType is not created!');
+		});
 };
 
 exports.Message = mongoose.model('Message', schema);

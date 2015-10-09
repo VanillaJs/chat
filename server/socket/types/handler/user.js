@@ -42,11 +42,12 @@ var User = inherit({
 				// data.channelId
 				// data.page
 				var socket = this._socket;
-				Message.getListByParams(data.channelId, data.page, function(err, messages) {
-					if (!err) {
+				Message.getListByParams(data.channelId, data.page).
+					then(function(messages) {
 						socket.emit('s.user.message_by_room', {data: messages.reverse()});
-					}
-				});
+					}).catch(function(err) {
+						console.log(err);
+					});
 			}
 		},
 		{
@@ -65,13 +66,12 @@ var User = inherit({
 						sendMessage(true, message.channelId, message);
 					} else {
 						// пишем в базу
-						Message.addNew(message, function(err, messageNew) {
-							if (!err) {
+						Message.addNew(message).
+							then(function(messageNew) {
 								sendMessage(true, messageNew.channelId, messageNew);
-							} else {
+							}).catch(function(err) {
 								console.log(err);
-							}
-						});
+							});
 					}
 				}
 			}
