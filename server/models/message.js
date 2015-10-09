@@ -111,7 +111,7 @@ schema.statics.addNew = function(message, callback) {
 				});
 			} else {
 				// set error
-				callback("MessageType is not created!", null);
+				callback('MessageType is not created!', null);
 			}
 		}
 

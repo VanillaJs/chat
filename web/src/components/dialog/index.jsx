@@ -11,9 +11,26 @@ class Dialog extends Component {
 		fetchChannelMessages: PropTypes.func
 	}
 
+	constructor(props) {
+		super(props);
+		this.reverseMessage = false;
+	}
 	/**
 	 * Fetch from server message history for active channel
 	 */
+
+	componentDidMount() {
+		const node = this.refs.messageContainer.getDOMNode();
+		const container = this.refs.container;
+		let currentPosY = node.scrollTop;
+
+		node.addEventListener('scroll', function(e) {
+			if ((node.scrollTop < currentPosY) && (node.scrollTop === 0)) {
+			}
+			currentPosY = node.scrollTop;
+		});
+	}
+
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
 		const {channels: newChannels, user} = nextProps;
@@ -31,7 +48,13 @@ class Dialog extends Component {
 	componentDidUpdate() {
 		if (this.shouldScrollBottom) {
 			const node = this.refs.messageContainer.getDOMNode();
-			node.scrollTop = node.scrollHeight;
+
+			if (this.reverseMessage) {
+				node.scrollTop = 0;
+				this.reverseMessage = false;
+			} else {
+				node.scrollTop = node.scrollHeight;
+			}
 		}
 	}
 
@@ -40,6 +63,7 @@ class Dialog extends Component {
 			let page = this.props.messages[this.props.channels.current].page;
 			page += 1;
 			this.props.fetchChannelMessages(this.props.user._id, this.props.channels.current, page);
+			this.reverseMessage = true;
 		}
 	}
 
