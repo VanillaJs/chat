@@ -1,7 +1,7 @@
 import assign from 'object-assign';
 import channelActionType from '../constants/channels';
 import userActionType from '../constants/user';
-import messageActionType from '../constants/messages';
+import {PREPEND_MESSAGES} from '../constants/messages';
 const defaultChannelsData = {
 	current: null,
 	contacts: {
@@ -40,7 +40,7 @@ export function channels(state = defaultChannelsData, action) {
 		return state;
 
 	case userActionType.SET_USER_DATA:
-		action.contacts['Lobby'] = defaultChannelsData.contacts.Lobby; /* eslint dot-notation: 1 */
+		action.contacts['Lobby'] = defaultChannelsData.contacts.Lobby;
 		return assign({}, state, {contacts: action.contacts});
 
 	case channelActionType.SET_CHANNEL_ONLINE:
@@ -57,6 +57,12 @@ export function channels(state = defaultChannelsData, action) {
 		}
 		return state;
 
+	case PREPEND_MESSAGES:
+		if (state.contacts[action.channelId]) {
+			state.contacts[action.channelId].inited = true;
+			return assign({}, state);
+		}
+		return state;
 	case channelActionType.READ_MESSAGES:
 		if (state.contacts[action.channelId] && action.readLength > 0) {
 			state.contacts[action.channelId].message_count = state.contacts[action.channelId].message_count - action.readLength;
@@ -73,17 +79,6 @@ export function channels(state = defaultChannelsData, action) {
 			return assign({}, state);
 		}
 		return state;
-
-	case messageActionType.ADD_MESSAGE:
-	case messageActionType.ADD_REMOTE_MESSAGE:
-		const messageData = action.data || action.message;
-		if (!messageData) {
-			return state;
-		}
-		const {channelId, text, message} = messageData;
-		state.contacts[channelId].lastMessage = text || message;
-		return assign({}, state);
-
 	default:
 		return state;
 	}

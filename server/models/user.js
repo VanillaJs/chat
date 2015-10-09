@@ -1,4 +1,5 @@
 var crypto = require('crypto');
+var async = require('async');
 var util = require('util');
 var mongoose = require('./../lib/database/mongoose');
 var Schema = mongoose.Schema;
@@ -103,18 +104,31 @@ schema.methods.checkIsSocialExist = function(type) {
 	return ret;
 };
 
-schema.statics.findByParams = function(username, email) {
+schema.statics.findByParams = function(username, email, callback) {
 	var User = this;
-	return User.findOne({username: username}).
-		then(function(user) {
-			if (!user) {
-				return User.findOne({email: email});
+	async.waterfall([
+		function(callback) {
+			User.findOne({username: username}, callback);
+		},
+		function(user, callback) {
+			if (user) {
+				callback(null, user);
+			} else {
+				if (email !== null && email.length) {
+					User.findOne({email: email}, callback);
+				}
 			}
-			return Promise.resolve(user);
-		});
+		},
+		function(user, callback) {
+			if (user) {
+				callback(null, user);
+			} else {
+				callback('not found', null);
+			}
+		}], callback);
 };
 
-schema.statics.authorizeSocial = function(userData) {
+schema.statics.authorizeSocial = function(userData, callback) {
 	var User = this;
 	/**
 	 * 1. Получить пользователя с таким username из базы данных
@@ -123,29 +137,50 @@ schema.statics.authorizeSocial = function(userData) {
 	 *      Нет - создаем нового
 	 * 3. Авторизация успешна
 	 */
-	return User.findOne({email: userData.email}).
-		then(function(user) {
-			var returnUser;
+	async.waterfall([
+		function(callback) {
+			User.findOne({email: userData.email}, callback);
+		},
+		function(user, callback) {
+			var newUser;
 			if (user) {
-				if (!user.checkIsSocialExist(userData.authType.name)) {
+				if (user.checkIsSocialExist(userData.authType.name)) {
+					callback(null, user);
+				} else {
 					user.authType.push(userData.authType);
 					user.save();
 				}
-
-				returnUser = user;
 			} else {
-				returnUser = new User(userData);
-				returnUser.save();
+				newUser = new User(userData);
+				newUser.save(function(err) {
+					if (err) {
+						return callback(err);
+					}
+					callback(null, newUser);
+				});
 			}
-			return returnUser;
-		});
+		}
+	], callback);
 };
 
-schema.statics.getUserByID = function(id) {
-	return this.findById(id);
+schema.statics.getUserByID = function(id, callback) {
+	var User = this;
+
+	async.waterfall([
+		function(callback) {
+			User.findById(id, callback);
+		},
+		function(user, callback) {
+			if (user) {
+				callback(null, user);
+			} else {
+				callback('User is not fined!');
+			}
+		}
+	], callback);
 };
 
-schema.statics.authorize = function(username, password) {
+schema.statics.authorize = function(username, password, callback) {
 	/**
 	 * 1. Получить пользователя с таким username из базы данных
 	 * 2. Такой пользователь найден?
@@ -155,16 +190,22 @@ schema.statics.authorize = function(username, password) {
 	*/
 	var User = this;
 
-	return User.findOne({username: username}).
-		then(function(user) {
+	async.waterfall([
+		function(callback) {
+			User.findOne({username: username}, callback);
+		},
+		function(user, callback) {
 			if (user) {
 				if (user.checkPassword(password)) {
-					return user;
+					callback(null, user);
+				} else {
+					callback(new AuthError('Пароль не верен'));
 				}
+			} else {
+				callback(new AuthError('Пароль или логин не верен'));
 			}
-
-			return Promise.reject(new AuthError('Пароль или логин не верен'));
-		});
+		}
+	], callback);
 };
 
 exports.User = mongoose.model('User', schema);
