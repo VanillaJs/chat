@@ -36,7 +36,7 @@ class Sidebar extends Component {
 		const filteredChannels = {};
 		const {channels: {contacts}} = this.props;
 		Object.keys(contacts)
-					.filter(key => contacts[key].name.indexOf(text) !== -1)
+					.filter(key => contacts[key].name.toLowerCase().indexOf(text.toLowerCase()) !== -1)
 					.forEach(key => filteredChannels[key] = contacts[key]);
 		this.setState({filteredChannels, filterText: text});
 	}

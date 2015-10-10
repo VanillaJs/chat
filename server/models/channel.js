@@ -34,7 +34,7 @@ schema.statics.findOrCreate = function(type, userCreateId, userAddId) {
 					newChannel = new Channel(newChannelObj);
 					return newChannel.save();
 				}
-				return Promise.resolve({});
+				return Promise.resolve(channel);
 			});
 	}
 
