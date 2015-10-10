@@ -43,7 +43,6 @@ export function channels(state = defaultChannelsData, action) {
 
 	case userActionType.SET_USER_DATA:
 		assign(state.contacts,  action.contacts);
-
 		return assign({}, state, {contacts: state.contacts});
 
 	case channelActionType.SET_CHANNEL_ONLINE:
