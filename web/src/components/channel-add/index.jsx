@@ -5,11 +5,19 @@ import './index.sass';
 class ContactAdd extends Component {
 	static propTypes = {
 		sendAddContact: PropTypes.func
-	};
+	}
 
 	constructor(props) {
 		super(props);
 		this.state = {active: false};
+	}
+
+	componentDidMount() {
+		this.refs.input.getDOMNode().addEventListener('keyup', event => {
+			if (event.keyCode === 13) {
+				this._addContact(event);
+			}
+		});
 	}
 
 	_addContact(event) {

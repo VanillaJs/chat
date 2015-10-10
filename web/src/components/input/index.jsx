@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import UserPic from '../user-pic';
 import './input.sass';
 import trim from 'lodash/string/trim';
+
 class Input extends Component {
 	static propTypes = {
 		addMessage: PropTypes.func,
