@@ -17,6 +17,9 @@ class ContactAdd extends Component {
 			if (event.keyCode === 13) {
 				this._addContact(event);
 			}
+			if (event.keyCode === 27) {
+				this._toggle(event);
+			}
 		});
 	}
 

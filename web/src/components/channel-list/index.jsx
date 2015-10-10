@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import Channel from '../channel';
-
 import './index.sass';
 
 class ChannelList extends Component {
