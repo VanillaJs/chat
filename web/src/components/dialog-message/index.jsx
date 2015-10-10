@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import moment from 'moment';
+import {markdown} from '../../text-processor/process';
 import UserPic from '../user-pic';
 import './dialog-message.sass';
 
@@ -46,6 +47,10 @@ class DialogMessage extends Component {
 			}
 		}
 
+		const htmlMessage = {
+			__html: markdown(message.message)
+		};
+
 		return (
 			<div className="dialog-message">
 				<UserPic
@@ -54,7 +59,9 @@ class DialogMessage extends Component {
 					color={userColor}/>
 				<div className="dialog-message__content">
 					<p className="dialog-message__sender">{userName}</p>
-					<p className="dialog-message__text">{message.message}</p>
+					<div
+						className="dialog-message__text"
+						dangerouslySetInnerHTML={htmlMessage} />
 				</div>
 					<time className="dialog-message__time">{moment(message.created).format('hh:mm')}</time>
 			</div>
