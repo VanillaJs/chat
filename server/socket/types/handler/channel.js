@@ -78,8 +78,12 @@ var Channels = inherit({
 			// обработчик при присоединениии к каналу
 			name: channelTypes.JOIN_CHANNEL,
 			callback: function(channelTo) {
+				var mess = {};
 				if (this._data.channel === config.get('defaultChannel')) {
-					var mess = this._getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
+					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
+					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
+				} else if (channelTo === config.get('defaultChannel')) {
+					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Join channel (STOP TROLLING)', config.get('defaultChannel'));
 					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
 				}
 				this._socket.leave(this._data.channel);
