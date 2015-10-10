@@ -114,7 +114,7 @@ var Channels = inherit({
 						}
 						Promise.reject('User not fined!');
 					}).then(function(channel) {
-						if (channel !== undefined) {
+						if (channel !== undefined && !Users[socket.handshake.user._id].contacts.hasOwnProperty(channel._id)) {
 							promises.push(Channel.prepareChannel(socket.handshake.user._id, channel, Users));
 
 							if (ifUserOnline(toUser._id)) {
