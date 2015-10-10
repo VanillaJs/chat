@@ -40,7 +40,7 @@ export function channels(state = defaultChannelsData, action) {
 		return state;
 
 	case userActionType.SET_USER_DATA:
-		action.contacts['Lobby'] = defaultChannelsData.contacts.Lobby;
+		action.contacts['Lobby'] = defaultChannelsData.contacts.Lobby; /* eslint dot-notation: 1 */
 		return assign({}, state, {contacts: action.contacts});
 
 	case channelActionType.SET_CHANNEL_ONLINE:

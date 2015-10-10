@@ -41,8 +41,8 @@ class Register extends Component {
 		return (
 			<form className="register-form" ref="form" onSubmit={::this.onSubmit} action="." method="POST">
 				<div className="register-form__header">
-					<h1>Registration</h1>
 					<Link to={'/login'}>Login</Link>
+					<h1>Register</h1>
 				</div>
 				<div className="register-form__content">
 					{this.state.error ? this.renderError() : ''}
