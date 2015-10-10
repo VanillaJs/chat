@@ -21,13 +21,14 @@ export function addRemoteMessage({userId, message}) {
 	};
 }
 
-export function prependChannelMessages(channelId, messages, userId, page) {
+export function prependChannelMessages(channelId, messages, userId, page, reverse) {
 	return {
 		type: messageActionType.PREPEND_MESSAGES,
 		channelId,
 		messages,
 		userId,
-		page
+		page,
+		reverse
 	};
 }
 
@@ -53,15 +54,15 @@ export function setReadMessages(userId, data, channelId) {
 	};
 }
 
-export function fetchChannelMessages(userId, channelId, page = 1) {
+export function fetchChannelMessages(userId, channelId, page = 1, reverse = false) {
 	return dispatch => {
 		if (channelId.toString() === 'Lobby') {
-			dispatch(prependChannelMessages(channelId, [], userId, page));
+			dispatch(prependChannelMessages(channelId, [], userId, page, reverse));
 		} else {
 			transport.socket.emit('c.user.get_message_by_room', {channelId: channelId, page: page});
 
 			transport.socket.on('s.user.message_by_room', function listener(res) {
-				dispatch(prependChannelMessages(channelId, res.data, userId, page));
+				dispatch(prependChannelMessages(channelId, res.data, userId, page, reverse));
 
 				dispatch(setReadMessages(userId, res.data, channelId));
 				transport.socket.removeListener('s.user.message_by_room', listener);
