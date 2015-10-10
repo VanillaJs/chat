@@ -9,7 +9,6 @@ const defaultData = {
 };
 
 function updateChannelMessages(state, channelId, message, userId, reverse = false, page = 1) {
-
 	if (!state[channelId]) {
 		state[channelId] = {listMessages: [], page: 1};
 	}

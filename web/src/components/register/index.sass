@@ -1,20 +1,22 @@
 .register-form
 	position: absolute
+	top: 20%
 	left: 50%
-	top: 50%
 	width: 400px
 	box-shadow: 0 0 5px #999
-	background: #EEE
+	background: #FFF
 	border-radius: 5px
-	transform: translate(-50%, -50%)
+	transform: translateX(-50%)
 
 	&__header
 		display: flex
+		align-items: baseline
 		padding: 15px
 
 		h1
-			font-size: 1.1rem
 			width: 50%
+			padding-left: 15px
+			font-size: 1.1rem
 		a
 			display: block
 			width: 50%
@@ -32,9 +34,14 @@
 		padding: 5px 15px
 		color: #EEDFE2
 		background: #FF494B
-		font-size: 1rem
+		font-size: 1.2rem
 		border: 0
+		border-radius: 3px
 		cursor: pointer
+		transition: background 0.2s
+
+		&:hover
+			background: darken(#FF494B, 10%)
 
 	input
 		width: 100%
