@@ -128,6 +128,7 @@ var User = inherit({
 			userId: message.userId,
 			message: message
 		};
+		this._socket.emit('s.user.send_message', sendData);
 		this._socket.broadcast.to(channelId).emit('s.user.send_message', sendData);
 	},
 	/**
