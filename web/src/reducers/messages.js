@@ -13,7 +13,7 @@ function updateChannelMessages(state, channelId, message, userId, reverse = fals
 		state[channelId] = {listMessages: [], page: 1};
 	}
 
-	const messageList = typeof message === 'string' ? [{message, userId, channelId, _id: state[channelId].listMessages.length + 1}] : message;
+	const messageList =  message;
 
 	if (state[channelId].page !== page) {
 		state[channelId].page = page;
@@ -36,15 +36,15 @@ export function messages(state = defaultData, action) {
 	switch (action.type) {
 
 	case types.ADD_MESSAGE:
-		return assign({}, updateChannelMessages(state, action.data.channelId, action.data.text, action.data.userId));
+		return state;
 
 	case types.ADD_REMOTE_MESSAGE:
 
 		if (!action.message) {
 			return state;
 		}
-		const {channelId, message, userId} = action.message;
-		return assign({}, updateChannelMessages(state, channelId, message, userId));
+		const {channelId, userId} = action.message;
+		return assign({}, updateChannelMessages(state, channelId, action.message, userId));
 
 	case types.PREPEND_MESSAGES:
 		return assign({}, updateChannelMessages(state, action.channelId, action.messages, action.userId, action.reverse, action.page));
