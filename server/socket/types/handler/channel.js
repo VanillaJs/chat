@@ -82,9 +82,6 @@ var Channels = inherit({
 				if (this._data.channel === config.get('defaultChannel')) {
 					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
 					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
-				} else if (channelTo === config.get('defaultChannel')) {
-					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Join channel (STOP TROLLING)', config.get('defaultChannel'));
-					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
 				}
 				this._socket.leave(this._data.channel);
 				this._users[this._socket.handshake.user._id].channel = channelTo.id;
@@ -92,6 +89,10 @@ var Channels = inherit({
 				this._updateChannel(this._session.id, channelTo.id);
 				// добавил переключение по комнатам в одной сессии у всех пользователей
 				joinAllSocket(this._users[this._socket.handshake.user._id], 's.channel.join', {channel: channelTo.id});
+				if (channelTo.id === config.get('defaultChannel')) {
+					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Join channel (STOP TROLLING)', config.get('defaultChannel'));
+					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
+				}
 				this._socket.emit('s.channel.join', {channel: channelTo.id});
 			}
 		},
