@@ -126,7 +126,7 @@ var User = inherit({
 
 		sendData = {
 			status: true,
-			chnnelId: channelId,
+			channelId: channelId,
 			userId: message.userId,
 			message: message
 		};

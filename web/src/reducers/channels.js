@@ -5,7 +5,7 @@ import messageActionType from '../constants/messages';
 const defaultChannelsData = {
 	current: null,
 	contacts: {
-		Lobby: {
+		FBD3b5A8A7A560E168B3890A: {
 			_id: 'FBD3b5A8A7A560E168B3890A',
 			avatar: '/img/avatar-1.png',
 			color: '90C3D4',
@@ -42,7 +42,7 @@ export function channels(state = defaultChannelsData, action) {
 		return state;
 
 	case userActionType.SET_USER_DATA:
-		action.contacts[defaultChannelsData.contacts.Lobby._id] = defaultChannelsData.contacts.Lobby;
+		action.contacts[defaultChannelsData.contacts.FBD3b5A8A7A560E168B3890A._id] = defaultChannelsData.contacts.FBD3b5A8A7A560E168B3890A;
 		return assign({}, state, {contacts: action.contacts});
 
 	case channelActionType.SET_CHANNEL_ONLINE:

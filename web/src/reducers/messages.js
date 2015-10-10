@@ -1,12 +1,6 @@
 import assign from 'object-assign';
 import types from '../constants/messages';
 import uniq from 'lodash/array/uniq'; // нужна для выборки только уникальных
-const defaultData = {
-	Lobby: {
-		listMessages: [],
-		page: 1
-	}
-};
 
 function updateChannelMessages(state, channelId, message, userId, reverse = false, page = 1) {
 	if (!state[channelId]) {
@@ -32,7 +26,7 @@ function updateChannelMessages(state, channelId, message, userId, reverse = fals
 }
 
 
-export function messages(state = defaultData, action) {
+export function messages(state = {}, action) {
 	switch (action.type) {
 
 	case types.ADD_MESSAGE:
