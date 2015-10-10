@@ -4,8 +4,11 @@ import './index.sass';
 
 class ContactAdd extends Component {
 	static propTypes = {
-		sendAddContact: PropTypes.func
-	}
+		sendAddContact: PropTypes.func,
+		setError: PropTypes.func,
+		removeError: PropTypes.func,
+		ui: PropTypes.object
+	};
 
 	constructor(props) {
 		super(props);
@@ -31,14 +34,21 @@ class ContactAdd extends Component {
 			this.props.sendAddContact(elm.value);
 			this._toggle();
 			elm.value = '';
+		} else {
+			this.refs.input.getDOMNode().placeholder = 'Enter not empty username';
 		}
 	}
 
 	_toggle() {
+		this.refs.input.getDOMNode().placeholder = 'Enter username';
 		this.setState({active: !this.state.active});
 	}
 
 	render() {
+		const {ui: {errors: {addChannel}}} = this.props;
+		console.log("bool" ,addChannel);
+		const errorModificator = addChannel ? '--error' : '';
+
 		return (
 			<div className={cx({'contacts-add': true, 'contacts-add--active': this.state.active})}>
 				<div onClick={::this._toggle} className="contacts-add__button">
@@ -49,7 +59,7 @@ class ContactAdd extends Component {
 				</div>
 				<div className="contacts-add__form">
 					<h6 className="contacts-add__input-header">Добавление контакта</h6>
-					<input className="contacts-add__input" ref="input" type="text" />
+					<input className={'contacts-add__input' + errorModificator} ref="input" type="text" placeholder="Enter username"/>
 					<button className="contacts-add__input-button" onClick={::this._addContact}>OK</button>
 					<span className="contacts-add__input-close" onClick={::this._toggle}>&times;</span>
 				</div>

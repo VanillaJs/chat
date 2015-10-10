@@ -124,6 +124,10 @@ var Channels = inherit({
 						}
 						Promise.reject('Channel not created!');
 					}).then(function(result) {
+						if (result) {
+							socket.emit('s.channel.add', null);
+							return;
+						}
 						sendData = result[0];
 						Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
 						if (ifUserOnline(toUser._id) && result[1]) {
@@ -133,6 +137,7 @@ var Channels = inherit({
 
 						socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
 					}).catch(function(err) {
+						console.log("??????????????");
 						console.log(err);
 					});
 			}

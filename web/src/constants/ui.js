@@ -1,0 +1,4 @@
+export default {
+	SET_ERROR: 'SET_ERROR',
+	REMOVE_ERROR: 'REMOVE_ERROR'
+};
