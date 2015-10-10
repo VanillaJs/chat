@@ -78,8 +78,9 @@ var Channels = inherit({
 			// обработчик при присоединениии к каналу
 			name: channelTypes.JOIN_CHANNEL,
 			callback: function(channelTo) {
+				var mess;
 				if (this._data.channel === config.get('defaultChannel')) {
-					var mess = this._getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
+					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
 					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
 				}
 				this._socket.leave(this._data.channel);
@@ -161,7 +162,7 @@ var Channels = inherit({
 	},
 	_getSystemMessage: function(mess, channelId) {
 		var message = {
-			_id: mongoose.Types.ObjectId(),
+			_id: mongoose.Types.ObjectId(), /* eslint new-cap: 1 */
 			message: mess,
 			userId: 'Server (trolling) =)',
 			channelId: channelId
