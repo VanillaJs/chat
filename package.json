@@ -36,6 +36,7 @@
     "forever-monitor": "^1.7.0",
     "inherit": "^2.2.2",
     "jade": "^1.11.0",
+    "marked": "^0.3.5",
     "mime": "~1.2.7  ",
     "mongoose": "^4.1.7",
     "morgan": "^1.0.1",
