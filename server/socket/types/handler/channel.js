@@ -1,5 +1,4 @@
 var inherit = require('inherit');
-var mongoose = require('mongoose');
 var config = require('./../../../config');
 var channelTypes = require('./../constants/channel');
 var sendStatus = require('../../../lib/channelstatus');
@@ -7,6 +6,7 @@ var User = require('../../../models/user').User;
 var Channel = require('../../../models/channel').Channel;
 var Message = require('../../../models/message').Message;
 var joinAllSocket = require('../../../lib/sendselfsockets');
+var getSystemMessage = require('../../../lib/getsystemmessage');
 var sessionStore = require('./../../../lib/database/sessionStore');
 var checkDataByParams = require('./helper');
 var sendToAll = require('../../../lib/sendtoall');
@@ -80,7 +80,7 @@ var Channels = inherit({
 			callback: function(channelTo) {
 				var mess = {};
 				if (this._data.channel === config.get('defaultChannel')) {
-					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
+					mess = getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
 					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
 				}
 				this._socket.leave(this._data.channel);
@@ -90,7 +90,7 @@ var Channels = inherit({
 				// добавил переключение по комнатам в одной сессии у всех пользователей
 				joinAllSocket(this._users[this._socket.handshake.user._id], 's.channel.join', {channel: channelTo.id});
 				if (channelTo.id === config.get('defaultChannel')) {
-					mess = this._getSystemMessage(this._socket.handshake.user.username + ' Join channel (STOP TROLLING)', config.get('defaultChannel'));
+					mess = getSystemMessage(this._socket.handshake.user.username + ' Join channel (STOP TROLLING)', config.get('defaultChannel'));
 					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
 				}
 				this._socket.emit('s.channel.join', {channel: channelTo.id});
@@ -163,20 +163,6 @@ var Channels = inherit({
 				})(this._handlers[index].name, index, this._handlers[index].callback);
 			}
 		}
-	},
-	_getSystemMessage: function(mess, channelId) {
-		var message = {
-			_id: mongoose.Types.ObjectId(),
-			message: mess,
-			userId: 'Server (trolling) =)',
-			channelId: channelId
-		};
-		return {
-			status: true,
-			channelId: channelId,
-			userId: message.userId,
-			message: message
-		};
 	},
 	/*
 	 * Функция обноваляет сессию
