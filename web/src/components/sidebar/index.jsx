@@ -43,7 +43,6 @@ class Sidebar extends Component {
 
 	render() {
 		const {channels, dispatch, user} = this.props;
-		console.log(channels.contacts);
 		return (
 			<aside className="sidebar">
 				<UserInfo user={user}/>
