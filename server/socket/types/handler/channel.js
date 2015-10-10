@@ -112,14 +112,17 @@ var Channels = inherit({
 							toUser = user;
 							return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
 						}
+						Promise.reject('User not fined!');
 					}).then(function(channel) {
 						if (channel !== undefined) {
 							promises.push(Channel.prepareChannel(socket.handshake.user._id, channel, Users));
+
 							if (ifUserOnline(toUser._id)) {
 								promises.push(Channel.prepareChannel(toUser._id, channel, Users));
 							}
 							return Promise.all(promises);
 						}
+						Promise.reject('Channel not created!');
 					}).then(function(result) {
 						sendData = result[0];
 						Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
