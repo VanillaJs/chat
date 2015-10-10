@@ -81,7 +81,7 @@ class Dialog extends Component {
 	render() {
 		const {messages, channels, user} = this.props;
 		let isOnline = false;
-		const disabled = this.anotherMessagesExist() ? ' messages-container__button--show ' : '';
+		const disabled = this.anotherMessagesExist() ? ' messages-container--show' : '';
 		if ((channels.contacts[channels.current] !== undefined) && (channels.contacts[channels.current].is_online === true)) {
 			isOnline = true;
 		}
@@ -92,8 +92,8 @@ class Dialog extends Component {
 		return (
 			<div ref="container" className="dialog">
 				<DialogDetails online={isOnline}/>
-				<ul ref="messageContainer" className="messages-container">
-					<button className={'messages-container__button' + disabled} onClick={this.loadNewMessages.bind(this)}>Load more messages</button>
+				<ul ref="messageContainer" className={'messages-container' + disabled}>
+					<button className="messages-container__button" onClick={this.loadNewMessages.bind(this)}>Load more messages</button>
 					{messagesList.map(hash => {
 						return <DialogMessage key={hash._id} message={hash} user={user} channels={channels} />;
 					})}

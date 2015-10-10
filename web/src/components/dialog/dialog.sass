@@ -2,10 +2,20 @@
 	padding-top: 80px
 
 .messages-container
-	padding-top: 80px
+	padding-top: 10px
 	height: calc(100vh - 275px)
 	overflow: auto
 	position: relative
+	transition: all 0.4s ease 0.2s
+
+	&--show
+		padding-top: 50px
+
+		.messages-container__button
+			top: 10px
+			z-index: 1
+			height: 30px
+			opacity: 1
 
 .messages-container__button
 	position: absolute
@@ -14,8 +24,8 @@
 	z-index: -1
 	left: 50%
 	line-height: 0px
-	height: 0
-	opacity: 0
+	height: 0px
+	line-height: 0px
 	margin-left: -100px
 	display: block
 	font-size: 14px
@@ -24,11 +34,5 @@
 	border: none
 	cursor: pointer
 	width: 200px
-
-	&--show
-		opacity: 1
-		top: 10px
-		z-index: 1
-		height: 30px
-		line-height: 30px
-		transition: all 1s ease
+	opacity: 0
+	transition: all 0.7s ease

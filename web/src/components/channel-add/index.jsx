@@ -48,7 +48,7 @@ class ContactAdd extends Component {
 					<p className="contacts-add__text">Add friend or group</p>
 				</div>
 				<div className="contacts-add__form">
-					<h6 className="contacts-add__input-header">Добавление контакта</h6>
+					<h6 className="contacts-add__input-header">Add contact</h6>
 					<input className="contacts-add__input" ref="input" type="text" />
 					<button className="contacts-add__input-button" onClick={::this._addContact}>OK</button>
 					<span className="contacts-add__input-close" onClick={::this._toggle}>&times;</span>
