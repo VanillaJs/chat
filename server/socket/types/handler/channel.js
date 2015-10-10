@@ -12,7 +12,7 @@ var Channels = inherit({
 	 * @param {Object} socket.
 	 * @param {Object} Users.
 	 */
-	__constructor: function (socket, Users) {
+	__constructor: function(socket, Users) {
 		this._socket = socket;
 		this._users = Users;
 		this._session = socket.handshake.session;
@@ -89,44 +89,37 @@ var Channels = inherit({
 			name: channelTypes.ADD_CHANNEL,
 			callback: function(user) {
 				var sendData = null;
+				var promises = [];
 				var socket = this._socket;
 				var Users = this._users;
+				var toUser;
 				var ifUserOnline = this._ifUserOnline.bind(this);
-				User.findByParams(user.username, user.username, function(err, user) {
-					var toUser;
-					if (user) {
-						if (err) {
-							// ошибка
-						} else {
-							// Если канал существует
-							Channel.findOrCreate('user', socket.handshake.user._id, user._id, function(err, channel) {
-								if (!err) {
-									sendData = Channel.prepareChannel(socket.handshake.user._id, channel, Users);
-									Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-									if (ifUserOnline(user._id)) {
-										Users[user._id].contacts[sendData._id] = Channel.prepareChannel(user._id, channel, Users);
-									}
-								}
-
-								if (channel) {
-									// Таймаут для того, что данные по пользователю приходят асинхронно
-									setTimeout(function() {
-										Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
-										toUser = sendData;
-										if (ifUserOnline(user._id)) {
-											sendStatus(socket.handshake.user._id, Users, 's.channel.add', toUser, Users[user._id].contacts[sendData._id]);
-										}
-
-										socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
-									}, 50);
-								}
-							});
+				User.findByParams(user.username, user.username).
+					then(function(user) {
+						if (user) {
+							toUser = user;
+							return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
 						}
-					} else {
-						// пользователь не найден
-						socket.emit('s.channel.add', sendData);
-					}
-				});
+					}).then(function(channel) {
+						if (channel !== undefined) {
+							promises.push(Channel.prepareChannel(socket.handshake.user._id, channel, Users));
+							if (ifUserOnline(toUser._id)) {
+								promises.push(Channel.prepareChannel(toUser._id, channel, Users));
+							}
+							return Promise.all(promises);
+						}
+					}).then(function(result) {
+						sendData = result[0];
+						Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
+						if (ifUserOnline(toUser._id) && result[1]) {
+							Users[toUser._id].contacts[sendData._id] = result[1];
+							sendStatus(socket.handshake.user._id, Users, 's.channel.add', sendData, Users[toUser._id].contacts[sendData._id]);
+						}
+
+						socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
+					}).catch(function(err) {
+						console.log(err);
+					});
 			}
 		}
 	],
@@ -137,16 +130,17 @@ var Channels = inherit({
 		var self = this;
 		var index;
 		if (this._handlers.length > 0) {
-			for (index in this._handlers) {
-				(function(event, index, callback) {
-					self._socket.on(event, function () {
+			for (index in this._handlers) { /* eslint guard-for-in: 1 */
+				(function(event, index, callback) { /* eslint no-loop-func: 1 */
+					self._socket.on(event, function() {
 						var args = arguments;
+						var notError;
 						// Для того чтобы привести к одноми виду
 						if (!Object.keys(args).length) {
 							args[0] = {};
 						}
 						// Проверяем все ли впорядке с входящими данными
-						var notError = self._dataIsCorrect(event, args[0]);
+						notError = self._dataIsCorrect(event, args[0]);
 						if (notError === true) {
 							callback.apply(self, args);
 						} else {
@@ -183,17 +177,17 @@ var Channels = inherit({
 	_dataIsCorrect: function(event, data) {
 		var mustKeys;
 		switch (event) {
-		case channelTypes.JOIN_CHANNEL:
-			mustKeys = {id: 'ObjectId'};
-			break;
-		case channelTypes.DELETE_CHANNEL:
-			mustKeys = {id: 'ObjectId'};
-			break;
-		case channelTypes.ADD_CHANNEL:
-			mustKeys = {username: 'String'};
-			break;
-		default:
-			mustKeys = {};
+			case channelTypes.JOIN_CHANNEL:
+				mustKeys = {id: 'ObjectId'};
+				break;
+			case channelTypes.DELETE_CHANNEL:
+				mustKeys = {id: 'ObjectId'};
+				break;
+			case channelTypes.ADD_CHANNEL:
+				mustKeys = {username: 'String'};
+				break;
+			default:
+				mustKeys = {};
 		}
 
 		if (Object.keys(mustKeys).length > 0) {

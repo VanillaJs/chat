@@ -10,15 +10,9 @@ var AuthFacebookStrategy = require('passport-facebook').Strategy;
 var AuthVKStrategy = require('passport-vkontakte').Strategy;
 
 passport.use('local', new AuthLocalStrategy(
-		function(username, password, done) {
-			User.authorize(username, password, function(err, user) {
-				if (err) {
-					if (err instanceof AuthError) {
-						return done(new HttpError(403, err.message));
-					}
-
-					return done(err);
-				}
+	function(username, password, done) {
+		User.authorize(username, password).
+			then(function(user) {
 				return done(null, {
 					user_id: user._id,
 					username: user.username,
@@ -26,8 +20,16 @@ passport.use('local', new AuthLocalStrategy(
 					profileUrl: 'url_to_profile',
 					channel: config.get('defaultChannel')
 				});
+			}).catch(function(err) {
+				if (err) {
+					if (err instanceof AuthError) {
+						return done(new HttpError(403, err.message));
+					}
+
+					return done(err);
+				}
 			});
-		}
+	}
 ));
 
 passport.use('facebook', new AuthFacebookStrategy(
@@ -52,22 +54,22 @@ passport.use('facebook', new AuthFacebookStrategy(
 			authType: {name: 'facebook', idType: profile._json.id}
 
 		};
-		User.authorizeSocial( userData, function(err, user) {
-			if (err) {
+
+		User.authorizeSocial(userData).
+			then(function(user) {
+				return done(null, {
+					user_id: user._id,
+					username: user.username,
+					photoUrl: 'url_to_avatar',
+					profileUrl: 'url_to_profile',
+					channel: config.get('defaultChannel')
+				});
+			}).catch(function(err) {
 				if (err instanceof AuthError) {
 					return done(new HttpError(403, err.message));
 				}
-
 				return done(err);
-			}
-			return done(null, {
-				user_id: user._id,
-				username: user.username,
-				photoUrl: 'url_to_avatar',
-				profileUrl: 'url_to_profile',
-				channel: config.get('defaultChannel')
 			});
-		});
 	}
 ));
 
@@ -94,22 +96,21 @@ passport.use('vk', new AuthVKStrategy(
 			authType: {name: 'vk', idType: profile._json.id}
 
 		};
-		User.authorizeSocial( userData, function(err, user) {
-			if (err) {
+		User.authorizeSocial(userData).
+			then(function(user) {
+				return done(null, {
+					user_id: user._id,
+					username: user.username,
+					photoUrl: 'url_to_avatar',
+					profileUrl: 'url_to_profile',
+					channel: config.get('defaultChannel')
+				});
+			}).catch(function(err) {
 				if (err instanceof AuthError) {
 					return done(new HttpError(403, err.message));
 				}
-
 				return done(err);
-			}
-			return done(null, {
-				user_id: user._id,
-				username: user.username,
-				photoUrl: 'url_to_avatar',
-				profileUrl: 'url_to_profile',
-				channel: config.get('defaultChannel')
 			});
-		});
 	}
 ));
 
