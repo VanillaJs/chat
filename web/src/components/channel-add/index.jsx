@@ -19,6 +19,7 @@ class ContactAdd extends Component {
 		if (elm.value.trim() !== '') {
 			this.props.sendAddContact(elm.value);
 			this._toggle();
+			elm.value = '';
 		}
 	}
 
