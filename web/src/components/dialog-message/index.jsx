@@ -35,7 +35,7 @@ class DialogMessage extends Component {
 				userAvatar = user.avatar;
 				userOnline = true;
 			} else {
-				if (message.channelId.toString() === 'FBD3b5A8A7A560E168B3890A') {
+				if (message.channelId.toString() === '1bd3b5a8a7a560e168b3890a') {
 					userName = message.userId;
 				} else {
 					userName = channels.contacts[message.channelId].name;
