@@ -1,4 +1,32 @@
 .messages-container
 	margin-top: 80px
-	height: calc(100vh - 260px)
+	padding-top: 50px
+	height: calc(100vh - 275px)
 	overflow: auto
+	position: relative
+
+.messages-container__button
+	position: absolute
+	top: -50px
+	background: none
+	z-index: -1
+	left: 50%
+	line-height: 0px
+	height: 0
+	opacity: 0
+	margin-left: -100px
+	display: block
+	font-size: 14px
+	background-color: #ff494b
+	color: #fff
+	border: none
+	transition: all 1s ease
+	cursor: pointer
+	width: 200px
+
+	&--show
+		opacity: 1
+		top: 10px
+		z-index: 1
+		height: 30px
+		line-height: 30px

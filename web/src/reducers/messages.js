@@ -8,8 +8,7 @@ const defaultData = {
 	}
 };
 
-function updateChannelMessages(state, channelId, message, userId, page = 1) {
-
+function updateChannelMessages(state, channelId, message, userId, reverse = false, page = 1) {
 
 	if (!state[channelId]) {
 		state[channelId] = {listMessages: [], page: 1};
@@ -20,7 +19,15 @@ function updateChannelMessages(state, channelId, message, userId, page = 1) {
 	if (state[channelId].page !== page) {
 		state[channelId].page = page;
 	}
-	state[channelId].listMessages = uniq(state[channelId].listMessages.concat(messageList), '_id');
+	let listMessagesArr = [];
+	if (reverse) {
+		// prepend
+		listMessagesArr = messageList.concat(state[channelId].listMessages);
+	} else {
+		// append
+		listMessagesArr = state[channelId].listMessages.concat(messageList);
+	}
+	state[channelId].listMessages = uniq(listMessagesArr, '_id');
 
 	return state;
 }
@@ -41,7 +48,7 @@ export function messages(state = defaultData, action) {
 		return assign({}, updateChannelMessages(state, channelId, message, userId));
 
 	case types.PREPEND_MESSAGES:
-		return assign({}, updateChannelMessages(state, action.channelId, action.messages, action.userId, action.page));
+		return assign({}, updateChannelMessages(state, action.channelId, action.messages, action.userId, action.reverse, action.page));
 
 	default:
 		return state;

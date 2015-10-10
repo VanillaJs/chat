@@ -11,9 +11,28 @@ class Dialog extends Component {
 		fetchChannelMessages: PropTypes.func
 	}
 
+	constructor(props) {
+		super(props);
+		this.reverseMessage = false;
+		this.loadMessagesByButton = true;
+	}
 	/**
 	 * Fetch from server message history for active channel
 	 */
+
+	/*
+	componentDidMount() {
+		const node = this.refs.messageContainer.getDOMNode();
+		let currentPosY = node.scrollTop;
+
+		node.addEventListener('scroll', function() {
+			if ((node.scrollTop < currentPosY) && (node.scrollTop === 0)) {
+			}
+			currentPosY = node.scrollTop;
+		});
+	}
+	*/
+
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
 		const {channels: newChannels, user} = nextProps;
@@ -31,21 +50,38 @@ class Dialog extends Component {
 	componentDidUpdate() {
 		if (this.shouldScrollBottom) {
 			const node = this.refs.messageContainer.getDOMNode();
-			node.scrollTop = node.scrollHeight;
+
+			if (this.reverseMessage) {
+				node.scrollTop = 0;
+				this.reverseMessage = false;
+			} else {
+				node.scrollTop = node.scrollHeight;
+			}
 		}
+	}
+
+	anotherMessagesExist() {
+		if (this.props.messages[this.props.channels.current] !== undefined) {
+			return (this.props.messages[this.props.channels.current].listMessages.length < this.props.channels.contacts[this.props.channels.current].total_messages);
+		}
+		return true;
 	}
 
 	loadNewMessages() {
 		if (this.props.messages[this.props.channels.current] !== undefined) {
 			let page = this.props.messages[this.props.channels.current].page;
 			page += 1;
-			this.props.fetchChannelMessages(this.props.user._id, this.props.channels.current, page);
+			this.reverseMessage = true;
+			if (this.anotherMessagesExist()) {
+				this.props.fetchChannelMessages(this.props.user._id, this.props.channels.current, page, true);
+			}
 		}
 	}
 
 	render() {
 		const {messages, channels, user} = this.props;
 		let isOnline = false;
+		const disabled = this.anotherMessagesExist() ? ' messages-container__button--show ' : '';
 		if ((channels.contacts[channels.current] !== undefined) && (channels.contacts[channels.current].is_online === true)) {
 			isOnline = true;
 		}
@@ -56,8 +92,8 @@ class Dialog extends Component {
 		return (
 			<div ref="container" className="dialog">
 				<DialogDetails online={isOnline}/>
-				<button onClick={this.loadNewMessages.bind(this)}>LoadMessages</button>
 				<ul ref="messageContainer" className="messages-container">
+					<button className={'messages-container__button' + disabled} onClick={this.loadNewMessages.bind(this)}>Load more messages</button>
 					{messagesList.map(hash => {
 						return <DialogMessage key={hash._id} message={hash} user={user} channels={channels} />;
 					})}
