@@ -38,7 +38,7 @@ schema.statics.findOrCreate = function(type, userCreateId, userAddId) {
 			});
 	}
 
-	return Promise.reslove(newChannel);
+	return Promise.resolve(newChannel);
 };
 
 schema.statics.getChannelInitialData = function(channel) {
@@ -73,6 +73,7 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 		// Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
 		customObject.is_online = Users.hasOwnProperty(userID);
 
+		console.log('prepare.channel');
 		return Promise.all(
 			[
 				User.getUserByID(userID),
@@ -96,7 +97,7 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 			});
 	}
 
-	return Promise.reslove(customObject);
+	return Promise.resolve(customObject);
 };
 
 schema.statics.getContactsByUserID = function(id, Users) {

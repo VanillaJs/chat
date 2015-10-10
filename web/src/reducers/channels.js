@@ -5,8 +5,8 @@ import messageActionType from '../constants/messages';
 const defaultChannelsData = {
 	current: null,
 	contacts: {
-		Lobby: {
-			_id: 'FBD3b5A8A7A560E168B3890A',
+		'1bd3b5a8a7a560e168b3890a': {
+			_id: '1bd3b5a8a7a560e168b3890a',
 			avatar: '/img/avatar-1.png',
 			color: '90C3D4',
 			inited: true,
@@ -42,8 +42,8 @@ export function channels(state = defaultChannelsData, action) {
 		return state;
 
 	case userActionType.SET_USER_DATA:
-		action.contacts[defaultChannelsData.contacts.Lobby._id] = defaultChannelsData.contacts.Lobby;
-		return assign({}, state, {contacts: action.contacts});
+		assign(state.contacts,  action.contacts);
+		return assign({}, state, {contacts: state.contacts});
 
 	case channelActionType.SET_CHANNEL_ONLINE:
 		if (state.contacts.hasOwnProperty(action.channel)) {

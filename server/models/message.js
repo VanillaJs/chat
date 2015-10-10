@@ -57,6 +57,9 @@ schema.statics.getLastChannelMessage = function(channelId) {
 	return MessageType
 			.findByType('text')
 			.then(function(textType) {
+				if (!textType) {
+					return {};
+				}
 				return _this.findOne({channelId: channelId, messageTypeId: textType._id}).sort({created: -1});
 			});
 };

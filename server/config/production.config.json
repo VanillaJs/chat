@@ -1,6 +1,6 @@
 {
   "port": 1723,
-  "defaultChannel": "FBD3b5A8A7A560E168B3890A",
+  "defaultChannel": "1bd3b5a8a7a560e168b3890a",
   "app":{
     "serverUrl":"http://62.76.13.85:1723",
     "socketOrigin":"http://62.76.13.85:*"

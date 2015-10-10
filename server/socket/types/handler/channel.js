@@ -1,12 +1,15 @@
 var inherit = require('inherit');
+var config = require('./../../../config');
 var channelTypes = require('./../constants/channel');
 var sendStatus = require('../../../lib/channelstatus');
 var User = require('../../../models/user').User;
 var Channel = require('../../../models/channel').Channel;
 var Message = require('../../../models/message').Message;
 var joinAllSocket = require('../../../lib/sendselfsockets');
+var getSystemMessage = require('../../../lib/getsystemmessage');
 var sessionStore = require('./../../../lib/database/sessionStore');
 var checkDataByParams = require('./helper');
+var sendToAll = require('../../../lib/sendtoall');
 var Channels = inherit({
 	/**
 	 * @param {Object} socket.
@@ -75,12 +78,21 @@ var Channels = inherit({
 			// обработчик при присоединениии к каналу
 			name: channelTypes.JOIN_CHANNEL,
 			callback: function(channelTo) {
+				var mess = {};
+				if (this._data.channel === config.get('defaultChannel')) {
+					mess = getSystemMessage(this._socket.handshake.user.username + ' Left channel', config.get('defaultChannel'));
+					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
+				}
 				this._socket.leave(this._data.channel);
 				this._users[this._socket.handshake.user._id].channel = channelTo.id;
 				// Обновление сессии
 				this._updateChannel(this._session.id, channelTo.id);
 				// добавил переключение по комнатам в одной сессии у всех пользователей
 				joinAllSocket(this._users[this._socket.handshake.user._id], 's.channel.join', {channel: channelTo.id});
+				if (channelTo.id === config.get('defaultChannel')) {
+					mess = getSystemMessage(this._socket.handshake.user.username + ' Join channel (STOP TROLLING)', config.get('defaultChannel'));
+					sendToAll(this._users, 's.user.send_message', mess, this._socket.handshake.user._id, config.get('defaultChannel'));
+				}
 				this._socket.emit('s.channel.join', {channel: channelTo.id});
 			}
 		},
@@ -100,14 +112,17 @@ var Channels = inherit({
 							toUser = user;
 							return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
 						}
+						Promise.reject('User not fined!');
 					}).then(function(channel) {
 						if (channel !== undefined) {
 							promises.push(Channel.prepareChannel(socket.handshake.user._id, channel, Users));
+
 							if (ifUserOnline(toUser._id)) {
 								promises.push(Channel.prepareChannel(toUser._id, channel, Users));
 							}
 							return Promise.all(promises);
 						}
+						Promise.reject('Channel not created!');
 					}).then(function(result) {
 						sendData = result[0];
 						Users[socket.handshake.user._id].contacts[sendData._id] = sendData;

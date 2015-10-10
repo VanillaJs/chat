@@ -105,10 +105,10 @@ schema.methods.checkIsSocialExist = function(type) {
 
 schema.statics.findByParams = function(username, email) {
 	var User = this;
-	return User.findOne({username: username}).
+	return User.findOne({username: { $regex: username, $options: '-i'}}).
 		then(function(user) {
 			if (!user) {
-				return User.findOne({email: email});
+				return User.findOne({email: { $regex: email, $options: '-i'}});
 			}
 			return Promise.resolve(user);
 		});
