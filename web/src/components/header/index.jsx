@@ -6,7 +6,7 @@ class Header extends Component {
 		return (
 			<header className="header">
 				<a className="header__logo" href="#">Vanilla js</a>
-				<a className="header__settings-link" href="#">Settings</a>
+				<a className="header__logout-link" href="/logout">Logout</a>
 			</header>
 		);
 	}
