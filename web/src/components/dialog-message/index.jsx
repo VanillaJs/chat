@@ -35,12 +35,14 @@ class DialogMessage extends Component {
 				userAvatar = user.avatar;
 				userOnline = true;
 			} else {
-				if (message.channelId.toString() !== 'Lobby') {
+				if (message.channelId.toString() === 'FBD3b5A8A7A560E168B3890A') {
+					userName = message.userId;
+				} else {
 					userName = channels.contacts[message.channelId].name;
-					userColor = channels.contacts[message.channelId].color;
-					userAvatar = channels.contacts[message.channelId].avatar;
-					userOnline = channels.contacts[message.channelId].is_online;
 				}
+				userColor = channels.contacts[message.channelId].color;
+				userAvatar = channels.contacts[message.channelId].avatar;
+				userOnline = channels.contacts[message.channelId].is_online;
 			}
 		}
 

@@ -177,17 +177,17 @@ var Channels = inherit({
 	_dataIsCorrect: function(event, data) {
 		var mustKeys;
 		switch (event) {
-			case channelTypes.JOIN_CHANNEL:
-				mustKeys = {id: 'ObjectId'};
-				break;
-			case channelTypes.DELETE_CHANNEL:
-				mustKeys = {id: 'ObjectId'};
-				break;
-			case channelTypes.ADD_CHANNEL:
-				mustKeys = {username: 'String'};
-				break;
-			default:
-				mustKeys = {};
+		case channelTypes.JOIN_CHANNEL:
+			mustKeys = {id: 'ObjectId'};
+			break;
+		case channelTypes.DELETE_CHANNEL:
+			mustKeys = {id: 'ObjectId'};
+			break;
+		case channelTypes.ADD_CHANNEL:
+			mustKeys = {username: 'String'};
+			break;
+		default:
+			mustKeys = {};
 		}
 
 		if (Object.keys(mustKeys).length > 0) {

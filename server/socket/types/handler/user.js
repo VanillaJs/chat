@@ -1,6 +1,7 @@
 /**
  * Created by timofey on 06.10.15.
  */
+var mongoose = require('mongoose');
 var inherit = require('inherit');
 var userTypes = require('./../constants/user');
 var Message = require('../../../models/message').Message;
@@ -61,6 +62,7 @@ var User = inherit({
 					sendMessage = this._sendMessage.bind(this);
 					message.userId = this._socket.handshake.user._id;
 					if (this._data.channel === config.get('defaultChannel')) {
+						message._id = mongoose.Types.ObjectId(); /* eslint new-cap: 1 */
 						message.message = message.text;
 						message.userId = this._socket.handshake.user.username;
 						sendMessage(true, message.channelId, message);
@@ -141,17 +143,17 @@ var User = inherit({
 	_dataIsCorrect: function(event, data) {
 		var mustKeys;
 		switch (event) {
-			case userTypes.SEND_MESSAGE:
-				mustKeys = {message_type: 'String', channelId: 'ObjectId', text: 'String', userId: 'ObjectId'};
-				break;
-			case userTypes.MESSAGE_BY_ROOM:
-				mustKeys = {channelId: 'ObjectId', page: 'Int'};
-				break;
-			case userTypes.READ_MESSAGE:
-				mustKeys = {userId: 'ObjectId', messages: 'Array'};
-				break;
-			default:
-				mustKeys = {};
+		case userTypes.SEND_MESSAGE:
+			mustKeys = {message_type: 'String', channelId: 'ObjectId', text: 'String', userId: 'ObjectId'};
+			break;
+		case userTypes.MESSAGE_BY_ROOM:
+			mustKeys = {channelId: 'ObjectId', page: 'Int'};
+			break;
+		case userTypes.READ_MESSAGE:
+			mustKeys = {userId: 'ObjectId', messages: 'Array'};
+			break;
+		default:
+			mustKeys = {};
 		}
 		if (Object.keys(mustKeys).length > 0) {
 			return checkDataByParams(data, mustKeys);
