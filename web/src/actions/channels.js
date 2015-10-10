@@ -51,6 +51,7 @@ export function fetchChannelList() {
 
 export function changeChannel(id) {
 	return () => {
+		console.log(id);
 		transport.socket.emit('c.channel.join', {id});
 	};
 }

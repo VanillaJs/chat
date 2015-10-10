@@ -6,7 +6,7 @@ const defaultChannelsData = {
 	current: null,
 	contacts: {
 		Lobby: {
-			_id: 'Lobby',
+			_id: 'FBD3b5A8A7A560E168B3890A',
 			avatar: '/img/avatar-1.png',
 			color: '90C3D4',
 			inited: true,
@@ -14,7 +14,9 @@ const defaultChannelsData = {
 			message_count: 0,
 			name: 'GLOBAL ROOM',
 			type: 'room',
-			user: 'Lobby'
+			user: 'Lobby',
+			lastMessage: '',
+			total_messages: 0
 		}
 	}
 };
@@ -40,7 +42,7 @@ export function channels(state = defaultChannelsData, action) {
 		return state;
 
 	case userActionType.SET_USER_DATA:
-		action.contacts['Lobby'] = defaultChannelsData.contacts.Lobby; /* eslint dot-notation: 1 */
+		action.contacts[defaultChannelsData.contacts.Lobby._id] = defaultChannelsData.contacts.Lobby;
 		return assign({}, state, {contacts: action.contacts});
 
 	case channelActionType.SET_CHANNEL_ONLINE:
