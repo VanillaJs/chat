@@ -8,7 +8,8 @@ class Channel extends Component {
 		changeChannel: PropTypes.func.isRequired,
 		active: PropTypes.bool,
 		unread: PropTypes.number,
-		lastMessage: PropTypes.string
+		lastMessage: PropTypes.string,
+		current: PropTypes.string
 	}
 	constructor(props) {
 		super(props);
@@ -16,7 +17,9 @@ class Channel extends Component {
 
 	changeChannel(event) {
 		event.preventDefault();
-		this.props.changeChannel(this.props.channel._id);
+		if (this.props.channel._id !== this.props.current) {
+			this.props.changeChannel(this.props.channel._id);
+		}
 	}
 
 	render() {
