@@ -1,4 +1,5 @@
 import userActionType from '../constants/user';
+import videoStream from '../video-stream';
 import transport from '../socket';
 
 export function setUserData(user, contacts) {
@@ -16,11 +17,11 @@ export function setUserId(id) {
 	};
 }
 
-
 export function fetchUserData() {
 	return dispatch => {
 		transport.socket.on('s.user.set_data', function handler({data, contacts}) {
 			dispatch(setUserData(data, contacts));
+			videoStream.init(data._id);
 			transport.socket.removeEventListener(handler);
 		});
 		transport.socket.emit('c.user.get_data');

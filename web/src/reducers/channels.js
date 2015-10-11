@@ -2,6 +2,7 @@ import assign from 'object-assign';
 import channelActionType from '../constants/channels';
 import userActionType from '../constants/user';
 import messageActionType from '../constants/messages';
+
 const defaultChannelsData = {
 	current: null,
 	contacts: {

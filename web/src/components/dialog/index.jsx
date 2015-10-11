@@ -16,22 +16,6 @@ class Dialog extends Component {
 		this.reverseMessage = false;
 		this.loadMessagesByButton = true;
 	}
-	/**
-	 * Fetch from server message history for active channel
-	 */
-
-	/*
-	componentDidMount() {
-		const node = this.refs.messageContainer.getDOMNode();
-		let currentPosY = node.scrollTop;
-
-		node.addEventListener('scroll', function() {
-			if ((node.scrollTop < currentPosY) && (node.scrollTop === 0)) {
-			}
-			currentPosY = node.scrollTop;
-		});
-	}
-	*/
 
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;

@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {requestVideoCall} from '../../actions/channels';
 import './dialog-details.sass';
 
 @connect(store => ({
@@ -9,10 +10,22 @@ import './dialog-details.sass';
 class DialogDetails extends Component {
 	static propTypes = {
 		channels: PropTypes.object.isRequired,
-		online: PropTypes.bool
+		online: PropTypes.bool,
+		dispatch: PropTypes.func.isRequired
 	}
+
 	constructor(props) {
 		super(props);
+	}
+
+	_getChannelType() {
+		const {channels: {current, contacts}} = this.props;
+		return contacts[current].type;
+	}
+
+	_onCall() {
+		const {channels: {current, contacts}, dispatch} = this.props;
+		dispatch(requestVideoCall(contacts[current].user));
 	}
 
 	render() {
@@ -27,6 +40,8 @@ class DialogDetails extends Component {
 					<p className="dialog-details__name">{userName}</p>
 					<p className={'dialog-details__status ' + 'dialog-details__status' + onlineModificator}>{this.props.online ? 'online' : 'offline'}</p>
 				</div>
+				{userName && this._getChannelType() === 'user' && this.props.online ?
+						<i onClick={::this._onCall} className="fa fa-video-camera dialog-details__call"></i> : ''}
 			</div>
 		);
 	}
