@@ -4,6 +4,7 @@ import {addRemoteMessage} from './actions/messages';
 
 import {setActiveChannel, setOfflineChannel, setOnlineChannel, addContact, removeFromChannelList, setPrivateToChannel} from './actions/channels';
 import {setUserId} from './actions/user';
+import {setError} from './actions/ui';
 
 const transport = {
 	init: function() {
@@ -20,7 +21,11 @@ const transport = {
 		socket.on('s.channel.offline', data => { dispatch(setOfflineChannel(data)); });
 		socket.on('s.user.send_message', data => { dispatch(addRemoteMessage(data)); });
 		socket.on('s.channel.add', data => {
-			dispatch(addContact(data));
+			if (data !== null) {
+				dispatch(addContact(data));
+			} else {
+				dispatch(setError('addChannel'));
+			}
 		});
 		socket.on('s.channel.delete', data => {
 			dispatch(removeFromChannelList(data));

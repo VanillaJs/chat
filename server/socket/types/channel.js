@@ -1,6 +1,6 @@
 /* eslint id-length: 1*/
 var sendStatus = require('../../lib/channelstatus');
-var Handler = require('./handler/channel')
+var Handler = require('./handler/channel');
 var sendToAll = require('../../lib/sendtoall');
 var config = require('./../../config');
 var getSystemMessage = require('../../lib/getsystemmessage');
