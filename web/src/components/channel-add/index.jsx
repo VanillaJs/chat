@@ -56,7 +56,7 @@ class ContactAdd extends Component {
 			elm.value = '';
 		} else {
 			this.setState({active: false});
-			this.props.removeError('addChannel')
+			this.props.removeError('addChannel');
 		}
 	}
 
