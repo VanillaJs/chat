@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import UserPic from '../user-pic';
 import './input.sass';
-import trim from 'lodash/string/trim';
 
 class Input extends Component {
 	static propTypes = {
@@ -14,9 +13,24 @@ class Input extends Component {
 	componentDidMount() {
 		this.refs.messageInput.getDOMNode().addEventListener('keyup', event => {
 			if (event.keyCode === 13) {
-				this.submitMessage(event);
+				if (event.ctrlKey) {
+					this.insertNewline(event);
+				} else {
+					this.submitMessage(event);
+				}
 			}
 		});
+	}
+
+	insertNewline(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		const elm = this.refs.messageInput.getDOMNode();
+		const value = elm.value;
+		const start = elm.selectionStart;
+		elm.value = `${value.slice(0, start)}\n${value.slice(elm.selectionEnd)}`;
+		elm.selectionStart = elm.selectionEnd = start + 1;
 	}
 
 	submitMessage(event) {
@@ -24,13 +38,11 @@ class Input extends Component {
 		event.stopPropagation();
 
 		const elm = this.refs.messageInput.getDOMNode();
-		const text = trim(elm.value);
+		const text = elm.value.trim();
 		if (text.length > 0) {
 			const {addMessage, activeChannelId, user} = this.props;
-			if (text) {
-				addMessage('text', text, activeChannelId, user._id);
-				elm.value = '';
-			}
+			addMessage('text', text, activeChannelId, user._id);
+			elm.value = '';
 		}
 	}
 
