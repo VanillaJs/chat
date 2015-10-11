@@ -110,9 +110,10 @@ var Channels = inherit({
 					then(function(user) {
 						if (user) {
 							toUser = user;
-							return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
+						} else {
+							throw new Error('User not found');
 						}
-						Promise.reject('User not fined!');
+						return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
 					}).then(function(channel) {
 						if (channel !== undefined) {
 							promises.push(Channel.prepareChannel(socket.handshake.user._id, channel, Users));
@@ -122,12 +123,7 @@ var Channels = inherit({
 							}
 							return Promise.all(promises);
 						}
-						Promise.reject('Channel not created!');
 					}).then(function(result) {
-						if (result) {
-							socket.emit('s.channel.add', null);
-							return;
-						}
 						sendData = result[0];
 						Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
 						if (ifUserOnline(toUser._id) && result[1]) {
@@ -137,7 +133,7 @@ var Channels = inherit({
 
 						socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
 					}).catch(function(err) {
-						console.log("??????????????");
+						socket.emit('s.channel.add', null);
 						console.log(err);
 					});
 			}
