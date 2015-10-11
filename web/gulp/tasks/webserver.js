@@ -8,9 +8,10 @@ gulp.task('webserver', function webserverTask() {
 			target: 'localhost:3000',
 			ws: true
 		},
+		ghostMode: false,
 		open: true,
 		ui: false,
-		online: false,
+		online: true,
 		notify: false,
 		minify: false
 	});

@@ -1,5 +1,7 @@
 import channelActionType from '../constants/channels';
+import {activateVideoPanel} from '../actions/ui';
 import transport from '../socket';
+import videoStream from '../video-stream';
 
 export function setChannels(list) {
 	return {
@@ -36,6 +38,21 @@ export function setOfflineChannel(data) {
 	return {
 		type: channelActionType.SET_CHANNEL_OFFLINE,
 		channel
+	};
+}
+
+export function requestVideoCall(contactId) {
+	return dispatch => {
+		videoStream
+			.requestLocalStream()
+			.then(localStream => videoStream.requestRemoteStream(contactId, localStream))
+			.then(([localStream, remoteStream]) => {
+				dispatch(activateVideoPanel(localStream, remoteStream));
+			})
+			.catch(error => {
+				videoStream.stop();
+				console.log(error);
+			});
 	};
 }
 
@@ -99,4 +116,3 @@ export function fetchContactList() {
 		});
 	};
 }
-
