@@ -1,9 +1,9 @@
 {
-  "port": 1723,
+  "port": 80,
   "defaultChannel": "1bd3b5a8a7a560e168b3890a",
   "app":{
-    "serverUrl":"http://62.76.13.85:1723",
-    "socketOrigin":"http://62.76.13.85:*"
+    "serverUrl":"http://vanillajs.ru/",
+    "socketOrigin":"http://vanillajs.ru:*"
   },
   "mongoose": {
     "uri": "mongodb://127.0.0.1:27017",
