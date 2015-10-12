@@ -110,9 +110,10 @@ var Channels = inherit({
 					then(function(user) {
 						if (user) {
 							toUser = user;
-							return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
+						} else {
+							throw new Error('User not found');
 						}
-						return Promise.reject('User not fined!');
+						return Channel.findOrCreate('user', socket.handshake.user._id, user._id);
 					}).then(function(channel) {
 						if (channel !== undefined && !Users[socket.handshake.user._id].contacts.hasOwnProperty(channel._id)) {
 							promises.push(Channel.prepareChannel(socket.handshake.user._id, channel, Users));
@@ -122,7 +123,6 @@ var Channels = inherit({
 							}
 							return Promise.all(promises);
 						}
-						return Promise.reject('Channel not created!');
 					}).then(function(result) {
 						sendData = result[0];
 						Users[socket.handshake.user._id].contacts[sendData._id] = sendData;
@@ -133,6 +133,7 @@ var Channels = inherit({
 
 						socket.emit('s.channel.add', {channel: sendData._id, custom: sendData});
 					}).catch(function(err) {
+						socket.emit('s.channel.add', null);
 						console.log(err);
 					});
 			}
