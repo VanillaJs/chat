@@ -11,9 +11,9 @@ class Input extends Component {
 	}
 
 	componentDidMount() {
-		this.refs.messageInput.getDOMNode().addEventListener('keyup', event => {
+		this.refs.messageInput.getDOMNode().addEventListener('keydown', event => {
 			if (event.keyCode === 13) {
-				if (event.ctrlKey) {
+				if (event.ctrlKey || event.metaKey) {
 					this.insertNewline(event);
 				} else {
 					this.submitMessage(event);

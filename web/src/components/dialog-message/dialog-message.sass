@@ -4,20 +4,21 @@
 	width: 100%
 	@include default-markdown-styles()
 
-	.dialog-message + &_long
+	&--long
 		margin-top: 25px
 
-	&_short
+	&--short
 		margin-top: 10px
 		padding-left: 50px
 
-	&__inner
-		position: relative
+		& .dialog-message__content
+			width: 90%
 
 	&__content
 		display: inline-block
-		width: calc(100% - 50px)
-		padding: 0 50px 0 12px
+		vertical-align: top
+		width: calc(90% - 50px)
+		padding-left: 15px
 
 	&__sender
 		font-size: 14px
@@ -27,7 +28,9 @@
 		font-size: 13px
 
 	&__time
-		position: absolute
-		right: 10px
-		top: 5px
-		font-size: 11px
+		display: inline-block
+		vertical-align: middle
+		width: 10%
+		padding-right: 20px
+		text-align: right
+		font-size: 10px

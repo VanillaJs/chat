@@ -47,13 +47,13 @@ class DialogMessage extends Component {
 		};
 
 		return (
-			<div className="dialog-message__inner">
+			<div className="dialog-message__inner-wrap">
 				<div className="dialog-message__content">
 					<div
 						className="dialog-message__text"
 						dangerouslySetInnerHTML={htmlMessage} />
 				</div>
-				<time className="dialog-message__time">{moment(message.created).format('HH:mm')}</time>
+				<time className="dialog-message__time">{moment(message.created).format('DD/MM HH:mm')}</time>
 			</div>
 		);
 	}
@@ -66,7 +66,7 @@ class DialogMessage extends Component {
 		};
 
 		return (
-			<div className="dialog-message__inner">
+			<div className="dialog-message__inner-wrap">
 				{this.renderUserPic()}
 				<div className="dialog-message__content">
 					<p className="dialog-message__sender">{this._getUsername()}</p>
@@ -74,13 +74,13 @@ class DialogMessage extends Component {
 						className="dialog-message__text"
 						dangerouslySetInnerHTML={htmlMessage} />
 				</div>
-				<time className="dialog-message__time">{moment(message.created).format('HH:mm')}</time>
+				<time className="dialog-message__time">{moment(message.created).format('DD/MM HH:mm')}</time>
 			</div>
 		);
 	}
 
 	render() {
-		const cls = 'dialog-message dialog-message_' + ((this.props.short) ? 'short' : 'long');
+		const cls = 'dialog-message dialog-message--' + ((this.props.short) ? 'short' : 'long');
 		const message = this.props.short ? this.renderShort() : this.renderFull();
 		return (
 			<li className={cls}>
