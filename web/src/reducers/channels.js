@@ -1,15 +1,16 @@
 import assign from 'object-assign';
+import {defaultChannelId} from '../config';
 import channelActionType from '../constants/channels';
 import userActionType from '../constants/user';
 import messageActionType from '../constants/messages';
+
 const defaultChannelsData = {
 	current: null,
 	contacts: {
-		'1bd3b5a8a7a560e168b3890a': {
-			_id: '1bd3b5a8a7a560e168b3890a',
+		[defaultChannelId]: {
+			_id: defaultChannelId,
 			avatar: '/img/avatar-1.png',
 			color: '90C3D4',
-			inited: true,
 			is_online: true,
 			message_count: 0,
 			name: 'GLOBAL ROOM',

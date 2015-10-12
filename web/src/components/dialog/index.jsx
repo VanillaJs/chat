@@ -16,22 +16,6 @@ class Dialog extends Component {
 		this.reverseMessage = false;
 		this.loadMessagesByButton = true;
 	}
-	/**
-	 * Fetch from server message history for active channel
-	 */
-
-	/*
-	componentDidMount() {
-		const node = this.refs.messageContainer.getDOMNode();
-		let currentPosY = node.scrollTop;
-
-		node.addEventListener('scroll', function() {
-			if ((node.scrollTop < currentPosY) && (node.scrollTop === 0)) {
-			}
-			currentPosY = node.scrollTop;
-		});
-	}
-	*/
 
 	componentWillReceiveProps(nextProps) {
 		const {fetchChannelMessages, channels} = this.props;
@@ -91,11 +75,12 @@ class Dialog extends Component {
 		}
 		return (
 			<div ref="container" className="dialog">
-				<DialogDetails online={isOnline}/>
+				<DialogDetails online={isOnline} />
 				<ul ref="messageContainer" className={'messages-container' + disabled}>
 					<button className="messages-container__button" onClick={this.loadNewMessages.bind(this)}>Load more messages</button>
-					{messagesList.map(hash => {
-						return <DialogMessage key={hash._id} message={hash} user={user} channels={channels} />;
+					{messagesList.map((message, index) => {
+						const isShort = (index > 0 && message.userId === messagesList[index - 1].userId) ? true : false;
+						return <DialogMessage key={message._id} short={isShort} message={message} user={user} channels={channels} />;
 					})}
 				</ul>
 			</div>

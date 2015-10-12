@@ -1,8 +1,43 @@
-@mixin back-color($bgr)
-	background-color: $bgr
-
 @mixin default-button-theme()
 	background: #ff4a4a
 	color: #FFF
 	border: 0
 	cursor: pointer
+
+@mixin default-markdown-styles()
+	table
+		th
+			font-weight: bold
+		th, td
+			padding: 5px 10px
+			border: 1px solid #CCC
+
+	ul
+		li
+			padding-left: 15px
+
+			&:before
+				content: ''
+				display: inline-block
+				width: 5px
+				height: 5px
+				margin-right: 10px
+				margin-left: -15px
+				background: #ff494b
+
+	ol
+		li
+			list-style-type: decimal
+			margin-left: 20px
+
+	img
+		display: block
+		max-width: 100%
+		max-height: 200px
+
+	code
+		display: block
+		padding: 10px
+		background: #CCC
+		white-space: pre
+		font-family: Consolas, 'Courier New', monospace

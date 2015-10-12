@@ -1,13 +1,24 @@
+@import '~components/mixins';
+
 .dialog-message
 	width: 100%
-	margin-bottom: 25px
+	@include default-markdown-styles()
+
+	&--long
+		margin-top: 25px
+
+	&--short
+		margin-top: 10px
+		padding-left: 50px
+
+		& .dialog-message__content
+			width: 90%
 
 	&__content
 		display: inline-block
 		vertical-align: top
-		width: 80%
-		padding-left: 12px
-		font-size: 0
+		width: calc(90% - 50px)
+		padding-left: 15px
 
 	&__sender
 		font-size: 14px
@@ -20,8 +31,6 @@
 		display: inline-block
 		vertical-align: middle
 		width: 10%
+		padding-right: 20px
 		text-align: right
-		font-size: 11px
-
-	&--short
-		margin-left: 50px
+		font-size: 10px
