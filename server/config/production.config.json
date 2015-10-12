@@ -2,7 +2,7 @@
   "port": 80,
   "defaultChannel": "1bd3b5a8a7a560e168b3890a",
   "app":{
-    "serverUrl":"http://vanillajs.ru",
+    "serverUrl":"http://vanillajs.ru", 
     "socketOrigin":"http://vanillajs.ru:*"
   },
   "mongoose": {
