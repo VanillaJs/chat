@@ -21,22 +21,22 @@ class DialogMessage extends Component {
 		return user._id.toString() === message.userId.toString() ? user.username : contacts[message.channelId].name;
 	}
 
-	renderUserPic() {
+	_getUserData() {
 		const {channels: {contacts}, message, user} = this.props;
-		let [userColor, userAvatar, userOnline] = ['90C3D4', '/img/avatar-1.png', true];
-
-		if ( contacts[message.channelId] !== undefined) {
-			const userData = user._id.toString() === message.userId.toString() ? user : contacts[message.channelId];
-			userColor = userData.color;
-			userAvatar = userData.avatar;
-			userOnline = userData.is_online || true;
+		if (!contacts[message.channelId]) {
+			return {};
 		}
+		return (user._id.toString() === message.userId.toString()) ? Object.assign(user, {'is_online': true}) : contacts[message.channelId];
+	}
+
+	renderUserPic() {
+		const {color = '90C3D4', avatar = '/img/avatar-1.png', is_online: online = true} = this._getUserData();
 
 		return (
 			<UserPic
-				online={userOnline}
-				avatar={userAvatar}
-				color={userColor} />
+				online={online}
+				avatar={avatar}
+				color={color} />
 		);
 	}
 

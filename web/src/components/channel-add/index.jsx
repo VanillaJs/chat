@@ -4,7 +4,9 @@ import './index.sass';
 
 class ContactAdd extends Component {
 	static propTypes = {
-		sendAddContact: PropTypes.func
+		sendAddContact: PropTypes.func,
+		removeError: PropTypes.func,
+		ui: PropTypes.object
 	}
 
 	constructor(props) {
