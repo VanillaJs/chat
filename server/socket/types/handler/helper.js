@@ -3,6 +3,8 @@ var checkValueByType = function(value, type) {
 	switch (type) {
 	case 'ObjectId':
 		return (/^[0-9a-fA-F]{24}$/).test(value);
+	case 'Email':
+		return (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i).test(value);
 	case 'String':
 		return _.trim(value).length > 0;
 	case 'Int':

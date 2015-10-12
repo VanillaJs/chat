@@ -5,6 +5,9 @@ var mongoose = require('mongoose');
 var inherit = require('inherit');
 var userTypes = require('./../constants/user');
 var Message = require('../../../models/message').Message;
+var sendToAllSocket = require('../../../lib/sendselfsockets');
+var assign = require('lodash/object/assign');
+var UserModel = require('../../../models/user').User;
 var config = require('./../../../config');
 var sendStatus = require('../../../lib/channelstatus');
 var checkDataByParams = require('./helper');
@@ -27,6 +30,25 @@ var User = inherit({
 			name: userTypes.READ_MESSAGE,
 			callback: function(data) {
 				Message.setRead(data);
+			}
+		},
+		{
+			// обработчик обновления данных пользователя
+			name: userTypes.UPDATE_DATA,
+			callback: function(data) {
+				var socket = this._socket;
+				var users = this._users;
+				UserModel.getUserByID(data._id).
+					then(function(user) {
+						delete data['_id'];
+						assign(user, data);
+						return user.save();
+					}).then(function(user) {
+						assign(users[socket.handshake.user._id].userData, user);
+						sendToAllSocket(users[socket.handshake.user._id], 's.user.update_data', user);
+					}).catch(function(err) {
+						console.log(err);
+					});
 			}
 		},
 		{
@@ -151,6 +173,9 @@ var User = inherit({
 			break;
 		case userTypes.READ_MESSAGE:
 			mustKeys = {userId: 'ObjectId', messages: 'Array'};
+			break;
+		case userTypes.UPDATE_DATA:
+			mustKeys = {_id: 'ObjectId', username: 'String', email: 'Email', avatar: 'String', color: 'String'};
 			break;
 		default:
 			mustKeys = {};

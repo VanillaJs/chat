@@ -8,6 +8,8 @@ import ChannelAdd from '../channel-add';
 import ChannelList from '../channel-list';
 import {sendAddContact} from '../../actions/channels';
 import {changeChannel} from '../../actions/channels';
+import {toggleEditable} from '../../actions/user';
+import UserInfoForm from '../user-info-form';
 import './sidebar.sass';
 
 @connect(store => ({
@@ -24,12 +26,24 @@ class Sidebar extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {filterText: ''};
+		this.state = {filterText: '', editable: false};
 	}
 
 	getOnlineCount() {
 		const {channels: {contacts}} = this.props;
 		return Object.keys(contacts).filter(key => contacts[key].is_online).length;
+	}
+
+	modifyInfo() {
+		this.state.editable = true;
+		this.setState(this.state);
+		this.props.dispatch(toggleEditable(true));
+	}
+
+	modifyInfoDisable() {
+		this.state.editable = false;
+		this.setState(this.state);
+		this.props.dispatch(toggleEditable(false));
 	}
 
 	_onFilterChange(text) {
@@ -43,9 +57,12 @@ class Sidebar extends Component {
 
 	render() {
 		const {channels, dispatch, user} = this.props;
+		const formClickModificator = user.edit ? '--active' : '';
 		return (
 			<aside className="sidebar">
-				<UserInfo user={user}/>
+				<div onClick={::this.modifyInfoDisable} className={'wrap-popup__background' + formClickModificator}></div>
+				<UserInfoForm dispatch={dispatch} user={user}  modificator={' changeinfo-form' + formClickModificator}/>
+				<UserInfo user={user} modifyInfo={::this.modifyInfo}/>
 				<UserDetail
 					contactsCount={Object.keys(this.props.channels.contacts).length}
 					onlineContacts={this.getOnlineCount()} />

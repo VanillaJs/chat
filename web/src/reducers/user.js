@@ -8,7 +8,10 @@ const defaultUserData = {
 export function user(state = defaultUserData, action) {
 	switch (action.type) {
 	case userActionType.SET_USER_DATA:
-		return assign({}, action.user);
+	case userActionType.UPDATE_USER_DATA:
+		return assign({}, state, action.user);
+	case userActionType.SET_EDITABLE:
+		return assign(state, {edit: action.val});
 	case userActionType.SET_ID:
 		return assign({}, state, {_id: action.id});
 

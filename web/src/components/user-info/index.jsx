@@ -4,19 +4,24 @@ import './userinfo.sass';
 
 class UserInfo extends Component {
 	static propTypes = {
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		modifyInfo: PropTypes.func.isRequired
 	}
 	constructor(props) {
 		super(props);
-		this.state = {active: false};
+		this.state = {active: false, formActive: false};
 	}
 
 	onMouseOver() {
-		this.setState({active: true});
+		if (!this.state.active) {
+			this.setState({active: true});
+		}
 	}
 
 	onMouseOut() {
-		this.setState({active: false});
+		if (this.state.active) {
+			this.setState({active: false});
+		}
 	}
 
 	render() {
@@ -48,7 +53,7 @@ class UserInfo extends Component {
 				Welcome <span className="user-info__name">{userName}</span>
 			</p>
 			<div className="user-info__icon-settings">
-				<i className={'fa fa-cog ' + hoverModificator}></i>
+				<i onClick={this.props.modifyInfo} className={'fa fa-cog ' + hoverModificator}></i>
 			</div>
 		</div>
 		);
