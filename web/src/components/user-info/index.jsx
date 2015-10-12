@@ -9,7 +9,7 @@ class UserInfo extends Component {
 	}
 	constructor(props) {
 		super(props);
-		this.state = {active: false, formActive: false};
+		this.state = {active: false};
 	}
 
 	onMouseOver() {
