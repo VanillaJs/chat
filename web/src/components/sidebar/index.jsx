@@ -8,20 +8,23 @@ import ChannelAdd from '../channel-add';
 import ChannelList from '../channel-list';
 import {sendAddContact} from '../../actions/channels';
 import {changeChannel} from '../../actions/channels';
+import {setError, removeError} from '../../actions/ui';
 import {toggleEditable} from '../../actions/user';
 import UserInfoForm from '../user-info-form';
 import './sidebar.sass';
 
 @connect(store => ({
 	channels: store.channels,
-	user: store.user
+	user: store.user,
+	ui: store.ui
 }))
 
 class Sidebar extends Component {
 	static propTypes = {
 		dispatch: PropTypes.func.isRequired,
 		channels: PropTypes.object.isRequired,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		ui: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -56,7 +59,7 @@ class Sidebar extends Component {
 	}
 
 	render() {
-		const {channels, dispatch, user} = this.props;
+		const {channels, dispatch, user, ui} = this.props;
 		const formClickModificator = user.edit ? '--active' : '';
 		return (
 			<aside className="sidebar">
@@ -66,7 +69,9 @@ class Sidebar extends Component {
 				<UserDetail
 					contactsCount={Object.keys(this.props.channels.contacts).length}
 					onlineContacts={this.getOnlineCount()} />
-				<ChannelAdd {...bindActionCreators({sendAddContact}, dispatch)} />
+				<ChannelAdd
+					ui={ui}
+					{...bindActionCreators({sendAddContact, setError, removeError}, dispatch)} />
 				<ChannelFilter onTextChange={::this._onFilterChange} />
 				<ChannelList
 					channels={this.state.filterText ? this.state.filteredChannels : channels.contacts}
