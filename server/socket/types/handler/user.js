@@ -121,6 +121,12 @@ var User = inherit({
 			if (this._users[toUser.user].channel.toString() !== channelId.toString()) {
 				// отправляем ему сообщение
 				sendStatus(this._socket.handshake.user._id, this._users, 's.user.send_private', toUser, {message_count: 1});
+			} else {
+
+				Message.update({_id: message._id}, { $push: { read: toUser.user } }, function(err, message) {
+					console.log(err);
+					console.log(message);
+				});
 			}
 		}
 
