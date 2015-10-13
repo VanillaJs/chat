@@ -4,7 +4,9 @@ import './index.sass';
 
 class ContactAdd extends Component {
 	static propTypes = {
-		sendAddContact: PropTypes.func
+		sendAddContact: PropTypes.func,
+		removeError: PropTypes.func,
+		ui: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -70,7 +72,7 @@ class ContactAdd extends Component {
 					<span className="contacts-add__icon">
 						<i className="fa fa-plus-circle"></i>
 					</span>
-					<p className="contacts-add__text">Add friend or group</p>
+					<p className="contacts-add__text">Add friend</p>
 				</div>
 				<div className="contacts-add__form">
 					<input className={'contacts-add__input' + errorModificator} ref="input" type="text" placeholder="Enter username"/>

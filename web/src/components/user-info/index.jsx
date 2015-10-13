@@ -4,7 +4,8 @@ import './userinfo.sass';
 
 class UserInfo extends Component {
 	static propTypes = {
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		modifyInfo: PropTypes.func.isRequired
 	}
 	constructor(props) {
 		super(props);
@@ -12,11 +13,15 @@ class UserInfo extends Component {
 	}
 
 	onMouseOver() {
-		this.setState({active: true});
+		if (!this.state.active) {
+			this.setState({active: true});
+		}
 	}
 
 	onMouseOut() {
-		this.setState({active: false});
+		if (this.state.active) {
+			this.setState({active: false});
+		}
 	}
 
 	render() {
@@ -37,7 +42,7 @@ class UserInfo extends Component {
 		}
 
 		return (
-		<div className="user-info" onMouseOver={::this.onMouseOver} onMouseOut={::this.onMouseOut}>
+		<div className="user-info" onClick={this.props.modifyInfo} onMouseOver={::this.onMouseOver} onMouseOut={::this.onMouseOut}>
 			<div className="user-info__image">
 				<UserPic
 					online={userOnline}

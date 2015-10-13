@@ -9,11 +9,11 @@ const defaultChannelsData = {
 	contacts: {
 		[defaultChannelId]: {
 			_id: defaultChannelId,
-			avatar: '/img/avatar-1.png',
+			avatar: '/img/avatar-8.png',
 			color: '90C3D4',
 			is_online: true,
 			message_count: 0,
-			name: 'GLOBAL ROOM',
+			name: 'TROLLING ROOM',
 			type: 'room',
 			user: 'Lobby',
 			lastMessage: '',
