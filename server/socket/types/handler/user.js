@@ -40,7 +40,7 @@ var User = inherit({
 				var users = this._users;
 				UserModel.getUserByID(data._id).
 					then(function(user) {
-						delete data['_id'];
+						delete data['_id']; /* eslint dot-notation: 0 */
 						assign(user, data);
 						return user.save();
 					}).then(function(user) {
@@ -144,7 +144,6 @@ var User = inherit({
 				// отправляем ему сообщение
 				sendStatus(this._socket.handshake.user._id, this._users, 's.user.send_private', toUser, {message_count: 1});
 			} else {
-
 				Message.update({_id: message._id}, { $push: { read: toUser.user } }, function(err, message) {
 					console.log(err);
 					console.log(message);
