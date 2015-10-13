@@ -63,8 +63,7 @@ class Sidebar extends Component {
 		const formClickModificator = user.edit ? '--active' : '';
 		return (
 			<aside className="sidebar">
-				<div onClick={::this.modifyInfoDisable} className={'wrap-popup__background' + formClickModificator}></div>
-				<UserInfoForm dispatch={dispatch} user={user}  modificator={' changeinfo-form' + formClickModificator}/>
+				<UserInfoForm  modificator={formClickModificator} modifyInfoDisable={::this.modifyInfoDisable} dispatch={dispatch} user={user} modificator={' changeinfo-form' + formClickModificator}/>
 				<UserInfo user={user} modifyInfo={::this.modifyInfo}/>
 				<UserDetail
 					contactsCount={Object.keys(this.props.channels.contacts).length}

@@ -7,7 +7,8 @@ class UserInfoForm extends Component {
 	static propTypes = {
 		dispatch: PropTypes.func.isRequired,
 		modificator: PropTypes.string,
-		user: PropTypes.object.isRequired
+		user: PropTypes.object.isRequired,
+		modifyInfoDisable: PropTypes.func
 	};
 	constructor() {
 		super();
@@ -85,47 +86,49 @@ class UserInfoForm extends Component {
 		}
 
 		return (
-			<form className={'changeinfo-form' + this.props.modificator} ref="form" onSubmit={::this.onSubmit} action="." method="POST">
-				{this.state.error ? this.renderError() : ''}
-				<span className="changeinfo-form__close">Close</span>
-				<UserPic
-					avatar={this.props.user.avatar}
-					color={this.props.user.color} />
-				<div className="changeinfo-form__content">
-					<div className="changeinfo-form__field">
-						<p className="changeinfo-form__field-title">Profile picture:</p>
-						<div className="changeinfo-form__field-item">
-							{userAvatar}
+			<div onClick={this.props.modifyInfoDisable} className={'changeinfo-form__background' + this.props.modificator}>
+				<form className={'changeinfo-form' + this.props.modificator} ref="form" onSubmit={::this.onSubmit} action="." method="POST">
+					{this.state.error ? this.renderError() : ''}
+					<span onClick={this.props.modifyInfoDisable} className="changeinfo-form__close">Close</span>
+					<UserPic
+						avatar={this.props.user.avatar}
+						color={this.props.user.color} />
+					<div className="changeinfo-form__content">
+						<div className="changeinfo-form__field">
+							<p className="changeinfo-form__field-title">Profile picture:</p>
+							<div className="changeinfo-form__field-item">
+								{userAvatar}
+							</div>
 						</div>
-					</div>
-					<div className="changeinfo-form__field">
-						<p className="changeinfo-form__field-title">Profile color:</p>
-						<div className="changeinfo-form__field-item">
-							{userColors}
+						<div className="changeinfo-form__field">
+							<p className="changeinfo-form__field-title">Profile color:</p>
+							<div className="changeinfo-form__field-item">
+								{userColors}
+							</div>
 						</div>
-					</div>
-					<div className="changeinfo-form__field">
-						<p className="changeinfo-form__field-title">Username:</p>
-						<div className="changeinfo-form__field-item">
-							<input className="changeinfo-form__input" ref="username" type="text" name="username" onChange={this.handleChange.bind(this)} value={this.state.user.username}/>
+						<div className="changeinfo-form__field">
+							<p className="changeinfo-form__field-title">Username:</p>
+							<div className="changeinfo-form__field-item">
+								<input className="changeinfo-form__input" ref="username" type="text" name="username" onChange={this.handleChange.bind(this)} value={this.state.user.username}/>
+							</div>
 						</div>
-					</div>
-					<div className="changeinfo-form__field">
-						<p className="changeinfo-form__field-title">Mail:</p>
-						<div className="changeinfo-form__field-item">
-							<input className="changeinfo-form__input" ref="email" type="text" name="email" onChange={this.handleChange.bind(this)} value={this.state.user.email}/>
+						<div className="changeinfo-form__field">
+							<p className="changeinfo-form__field-title">Mail:</p>
+							<div className="changeinfo-form__field-item">
+								<input className="changeinfo-form__input" ref="email" type="text" name="email" onChange={this.handleChange.bind(this)} value={this.state.user.email}/>
+							</div>
 						</div>
-					</div>
-					<div className="changeinfo-form__field">
-						<p className="changeinfo-form__field-title">Password:</p>
-						<div className="changeinfo-form__field-item">
-							<input className="changeinfo-form__input" ref="password" type="password" name="password" onChange={this.handleChange.bind(this)} placeholder="******"/>
+						<div className="changeinfo-form__field">
+							<p className="changeinfo-form__field-title">Password:</p>
+							<div className="changeinfo-form__field-item">
+								<input className="changeinfo-form__input" ref="password" type="password" name="password" onChange={this.handleChange.bind(this)} placeholder="******"/>
+							</div>
 						</div>
-					</div>
 
-					<button className="changeinfo-form__submit" type="submit">Save</button>
-				</div>
-			</form>
+						<button className="changeinfo-form__submit" type="submit">Save</button>
+					</div>
+				</form>
+			</div>
 		);
 	}
 }

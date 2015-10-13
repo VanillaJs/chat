@@ -26,6 +26,7 @@ class ChannelList extends Component {
 							changeChannel={changeChannel} />
 					);
 				})}
+			<div className="sidebar__shadow"></div>
 			</ul>
 		);
 	}
