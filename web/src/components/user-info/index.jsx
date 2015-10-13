@@ -42,7 +42,7 @@ class UserInfo extends Component {
 		}
 
 		return (
-		<div className="user-info" onMouseOver={::this.onMouseOver} onMouseOut={::this.onMouseOut}>
+		<div className="user-info" onClick={this.props.modifyInfo} onMouseOver={::this.onMouseOver} onMouseOut={::this.onMouseOut}>
 			<div className="user-info__image">
 				<UserPic
 					online={userOnline}
@@ -53,7 +53,7 @@ class UserInfo extends Component {
 				Welcome <span className="user-info__name">{userName}</span>
 			</p>
 			<div className="user-info__icon-settings">
-				<i onClick={this.props.modifyInfo} className={'fa fa-cog ' + hoverModificator}></i>
+				<i className={'fa fa-cog ' + hoverModificator}></i>
 			</div>
 		</div>
 		);

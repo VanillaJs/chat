@@ -7,12 +7,12 @@ const defaultChannelsData = {
 	contacts: {
 		'1bd3b5a8a7a560e168b3890a': {
 			_id: '1bd3b5a8a7a560e168b3890a',
-			avatar: '/img/avatar-1.png',
+			avatar: '/img/avatar-8.png',
 			color: '90C3D4',
 			inited: true,
 			is_online: true,
 			message_count: 0,
-			name: 'GLOBAL ROOM',
+			name: 'TROLLING ROOM',
 			type: 'room',
 			user: 'Lobby',
 			lastMessage: '',
