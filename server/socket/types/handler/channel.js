@@ -41,7 +41,8 @@ var Channels = inherit({
 				}
 				if (this._data.soketData.length === 0) {
 					sendStatus(this._socket.handshake.user._id, this._users, 's.channel.offline');
-					delete this._socket[this._socket.handshake.user._id];
+					// hot fix for remove user offline
+					delete this._users[this._socket.handshake.user._id];
 				}
 			}
 		},

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import './styles.sass';
+import './index.sass';
 
 class WelcomePage extends Component {
 	static propTypes = {
