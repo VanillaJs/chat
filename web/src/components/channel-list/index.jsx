@@ -12,22 +12,24 @@ class ChannelList extends Component {
 	render() {
 		const {changeChannel, channels} = this.props;
 		return (
-			<ul className="channels__add">
-				{Object.keys(channels).map(key => {
-					return (
-						<Channel
-							key={channels[key]._id}
-							online={channels[key].is_online === true}
-							active={channels[key]._id === this.props.currentChannelId}
-							channel={channels[key]}
-							current={this.props.currentChannelId}
-							lastMessage={channels[key].lastMessage}
-							unread={parseInt(channels[key].message_count, 10)}
-							changeChannel={changeChannel} />
-					);
-				})}
-			<div className="sidebar__shadow"></div>
-			</ul>
+			<div className="channels__wrap">
+				<ul className="channels__add">
+					{Object.keys(channels).map(key => {
+						return (
+							<Channel
+								key={channels[key]._id}
+								online={channels[key].is_online === true}
+								active={channels[key]._id === this.props.currentChannelId}
+								channel={channels[key]}
+								current={this.props.currentChannelId}
+								lastMessage={channels[key].lastMessage}
+								unread={parseInt(channels[key].message_count, 10)}
+								changeChannel={changeChannel} />
+						);
+					})}
+				</ul>
+				<div className="channels__shadow"></div>
+			</div>
 		);
 	}
 }
