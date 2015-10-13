@@ -78,6 +78,7 @@ class Dialog extends Component {
 				<DialogDetails online={isOnline} />
 				<ul ref="messageContainer" className={'messages-container' + disabled}>
 					<button className="messages-container__button" onClick={this.loadNewMessages.bind(this)}>Load more messages</button>
+					<hr className="messages-container__start-line"/>
 					{messagesList.map((message, index) => {
 						const isShort = (index > 0 && message.userId === messagesList[index - 1].userId) ? true : false;
 						return <DialogMessage key={message._id} short={isShort} message={message} user={user} channels={channels} />;
