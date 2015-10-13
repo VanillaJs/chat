@@ -6,7 +6,6 @@ import './index.sass';
 class UserInfoForm extends Component {
 	static propTypes = {
 		dispatch: PropTypes.func.isRequired,
-		modificator: PropTypes.string,
 		user: PropTypes.object.isRequired,
 		modifyInfoDisable: PropTypes.func
 	};
@@ -86,8 +85,9 @@ class UserInfoForm extends Component {
 		}
 
 		return (
-			<div onClick={this.props.modifyInfoDisable} className={'changeinfo-form__background' + this.props.modificator}>
-				<form className={'changeinfo-form' + this.props.modificator} ref="form" onSubmit={::this.onSubmit} action="." method="POST">
+			<div className="changeinfo-form__wrap">
+				<div onClick={this.props.modifyInfoDisable} className={'changeinfo-form__background' + (this.props.user.edit ? ' changeinfo-form__background--active' : '')}></div>
+				<form className={'changeinfo-form' + (this.props.user.edit ? ' changeinfo-form--active' : '')} ref="form" onSubmit={::this.onSubmit} action="." method="POST">
 					{this.state.error ? this.renderError() : ''}
 					<span onClick={this.props.modifyInfoDisable} className="changeinfo-form__close">Close</span>
 					<UserPic
@@ -124,7 +124,6 @@ class UserInfoForm extends Component {
 								<input className="changeinfo-form__input" ref="password" type="password" name="password" onChange={this.handleChange.bind(this)} placeholder="******"/>
 							</div>
 						</div>
-
 						<button className="changeinfo-form__submit" type="submit">Save</button>
 					</div>
 				</form>

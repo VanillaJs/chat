@@ -14,7 +14,7 @@ class UserDetail extends Component {
 		return (
 		<div className="user-detail">
 			<p className="user-detail__item"><span className="user-detail__number user-detail__number-contacts">{this.props.contactsCount}</span> contacts</p>
-			<p className="user-detail__item"><span className="user-detail__number user-detail__number-groups">1</span> groups</p>
+			<p className="user-detail__item"><span className="user-detail__number user-detail__number-groups">1</span> group</p>
 			<p className="user-detail__item"><span className="user-detail__number user-detail__number-online">{this.props.onlineContacts}</span> online</p>
 			<p className="user-detail__item user-detail__disabled"><span className="user-detail__number user-detail__number-unread">31</span> unread</p>
 			<div className="user-detail__item user-detail__menu user-detail__disabled"><i className="fa fa-angle-down"></i></div>
