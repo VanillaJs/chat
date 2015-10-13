@@ -52,30 +52,24 @@ module.exports = function(server) {
 			.then(function(user) {
 				var channel;
 				var defaultChannel;
-				var index;
 				channel = socket.handshake.session.passport.user.channel;
 				defaultChannel = config.get('defaultChannel');
 				socket.handshake.user = user;
 				// Если пользователь уже присутствует
-				if (Users.hasOwnProperty(user._id)) {
-					if (Users[user._id].soketData.length) {
-						// проверяем какие сокеты уже отвалились
-						for (index in Users[user._id].soketData) {
-							if (Users[user._id].soketData[index].disconnected) {
-								// удаляем их
-								Users[user._id].soketData.splice(index, 1);
-							}
-						}
-					}
+				if (Users.hasOwnProperty(user._id) && Users[user._id].soketData.length) {
+					// проверяем какие сокеты уже отвалились
+					// удаляем их
+					Users[user._id].soketData = Users[user._id].soketData.filter(function(item) {
+						return !item.disconnected;
+					});
 					// добавляем текущее соединение
 					Users[user._id].soketData.push(socket);
 				} else {
-					// Если пользователя нет , то добавляем его
-					const sockets = [];
-					sockets.push(socket);
-					const putData = {userData: user, soketData: sockets, channel: channel || defaultChannel};
+					// Если пользователя нет, то добавляем его
+					const putData = {userData: user, soketData: [socket], channel: channel || defaultChannel};
 					Users[user._id] = putData;
 				}
+
 				Channel
 					.getContactsByUserID(user._id, Users)
 					.then(function(contacts) {
@@ -85,8 +79,7 @@ module.exports = function(server) {
 							Users[user._id].channel = defaultChannel;
 						}
 						next();
-					})
-					.catch(next);
+					});
 			})
 			.catch(next);
 	});

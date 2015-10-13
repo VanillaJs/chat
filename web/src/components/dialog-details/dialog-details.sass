@@ -1,3 +1,5 @@
+@import '~components/vars';
+
 .dialog-details
 	position: absolute
 	left: 0
@@ -9,6 +11,20 @@
 	&__name
 		font-weight: 700
 		font-size: 16px
+
+	&__call
+		position: absolute
+		top: 5px
+		right: 5px
+		padding: 5px 10px
+		background: $pink-color
+		font-size: 1rem
+		cursor: pointer
+		color: #FFF
+		transition: background 0.5s
+
+		&:hover
+			background: lighten($pink-color, 15%)
 
 	&__status
 		display: inline-block

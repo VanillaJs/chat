@@ -40,7 +40,7 @@ var User = inherit({
 				var users = this._users;
 				UserModel.getUserByID(data._id).
 					then(function(user) {
-						delete data['_id'];
+						delete data['_id']; /* eslint dot-notation: 0 */
 						assign(user, data);
 						return user.save();
 					}).then(function(user) {
