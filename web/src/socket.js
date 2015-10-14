@@ -6,9 +6,12 @@ import {setActiveChannel, setOfflineChannel, setOnlineChannel, addContact, remov
 import {setUserId} from './actions/user';
 import {setError} from './actions/ui';
 
-let socket;
-
 const transport = {
+	init: function() {
+		transport.socket = io.connect({transports: ['websocket', 'polling']});
+		transport.bindActionsToSocketEvents();
+	},
+
 	bindActionsToSocketEvents: function() {
 		const socket = this.socket;
 		socket.on('s.user.set_user_id', data => { dispatch(setUserId(data)); });
@@ -29,21 +32,5 @@ const transport = {
 		});
 	}
 };
-
-export function init() {
-	socket = io.connect({transports: ['websocket', 'polling']});
-}
-
-export function onSetUser(handler) {
-	socket.on('s.user.set_user_id', handler);
-}
-
-export function onSendPrivate(handler) {
-	socket.on('s.user.send_private', handler);
-}
-
-export function onJoin(handler) {
-	socket.on('s.user.set_user_id', handler);
-}
 
 export default transport;
