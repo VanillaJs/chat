@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-// import './index.sass';
+import './index.sass';
 
 class UserPic extends Component {
 	static propTypes = {
