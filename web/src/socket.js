@@ -46,9 +46,4 @@ export function onJoin(handler) {
 	socket.on('s.user.set_user_id', handler);
 }
 
-export function onSetUser(handler) {
-	socket.on('s.user.set_user_id', handler);
-}
-
-
 export default transport;

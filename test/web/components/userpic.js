@@ -23,15 +23,13 @@ function setup() {
 	};
 }
 
-describe('components', () => {
+describe('UserPic tests', () => {
 	jsdomReact();
+	it('should render correctly', () => {
+		const {props, output} = setup();
 
-	describe('UserPic', () => {
-		it('should render correctly', () => {
-			const {props, output} = setup();
-
-			const [img, span] = output.props.children;
-			expect(img.props.src).toBe(props.avatar);
-		});
+		const [img, span] = output.props.children;
+		expect(img.props.src).toBe(props.avatar);
+		expect(span.props.children).toBe('Online');
 	});
 });

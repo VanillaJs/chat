@@ -9,7 +9,7 @@
     "server:prod": "NODE_ENV=production node app.js",
     "clean": "rm -rf web/build",
     "test": "mocha $(find test -name '*.js') --sort",
-    "test:web": "mocha --compilers js:babel/register --recursive ./test/web",
+    "test:web": "mocha --compilers js:babel/register,sass:./test/sass-compiler.js --recursive ./test/web",
     "build": "npm run clean && gulp --gulpfile web/gulpfile.js build",
     "lint": "eslint ./**/*.{js,jsx} --ignore-path .gitignore",
     "gulp": "gulp --gulpfile web/gulpfile.js",
