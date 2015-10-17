@@ -1,8 +1,15 @@
 var nconf = require('nconf');
-var path = require('path');
-var ENV = process.env.NODE_ENV || 'develop';
-nconf.argv()
-    .env()
-    .file({file: path.join(__dirname, ENV + '.config.json')});
+var defaultConfig = require('./default');
+var local;
+
+try {
+	local = require('./local.js');
+} catch (e) {
+	local = {};
+}
+
+nconf.overrides(local);
+nconf.env().argv();
+nconf.defaults(defaultConfig);
 
 module.exports = nconf;

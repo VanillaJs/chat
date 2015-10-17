@@ -4,8 +4,9 @@ var Handler = require('./handler/channel');
 var sendToAll = require('../../lib/sendtoall');
 var config = require('./../../config');
 var getSystemMessage = require('../../lib/getsystemmessage');
+var Users = require('../index').Users;
 
-module.exports = function(socket, Users) {
+module.exports = function(socket) {
 	// Вход пользователя в комнату чата
 	var handlerChannel;
 	var mess;
@@ -21,6 +22,6 @@ module.exports = function(socket, Users) {
 
 	socket.emit('s.channel.join', {channel: channel});
 
-	handlerChannel = new Handler(socket, Users);
+	handlerChannel = new Handler(socket);
 	handlerChannel.bindSocketEvents();
 };

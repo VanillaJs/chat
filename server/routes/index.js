@@ -1,6 +1,5 @@
-
-var checkAuth = require('./../middleware/checkAuth');
-var passport = require('./../lib/passport');
+var checkAuth = require('../middleware/checkAuth');
+var passport = require('../lib/passport');
 
 module.exports = function(app) {
 	app.get('/', checkAuth, require('./frontpage').get);

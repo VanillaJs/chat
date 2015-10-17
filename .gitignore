@@ -1,12 +1,11 @@
+*.iml
 .idea
 .DS_Store
 node_modules
-*/node_modules
 bower_components
-*/build
+static
 logs
 server/pids
-node-debug.log
 layout
-*.iml
+node-debug.log
 npm-debug.log

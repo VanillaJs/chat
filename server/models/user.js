@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 var schema;
 
-// <editor-fold desc='ошибка авторизации'>
 function AuthError(message) {
 	Error.apply(this, arguments);
 	Error.captureStackTrace(this, AuthError);
@@ -18,9 +17,7 @@ util.inherits(AuthError, Error);
 AuthError.prototype.name = 'AuthError';
 
 exports.AuthError = AuthError;
-// </editor-fold>
 
-// схема модели пользователя
 schema = new Schema(
 	{
 		username: {
@@ -155,15 +152,15 @@ schema.statics.authorize = function(username, password) {
 	 */
 	var User = this;
 
-	return User.findOne({username: username}).
-		then(function(user) {
+	return User.findOne({username: username})
+		.then(function(user) {
 			if (user) {
 				if (user.checkPassword(password)) {
 					return user;
 				}
 			}
 
-			return Promise.reject(new AuthError('Пароль или логин не верен'));
+			return Promise.reject(new AuthError('Login or password is incorrect'));
 		});
 };
 

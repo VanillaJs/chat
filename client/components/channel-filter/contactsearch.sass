@@ -1,0 +1,26 @@
+.contacts-filter
+	position: relative
+	margin: 0 auto
+	padding: 18px 0
+
+	&__input
+		position: relative
+		width: 100%
+		padding: 8px 6px
+		border: 3px solid transparentize(#FFF, 0.5)
+		background-clip: padding-box
+		font-size: 0.8rem
+
+		&:focus
+			border-color: transparentize(#316BBF, 0.4)
+
+	&__close
+		position: absolute
+		right: 5px
+		top: 14px
+		font-size: 2rem
+		color: #555555
+		cursor: pointer
+
+	&_empty &__close
+		display: none

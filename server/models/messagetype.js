@@ -9,6 +9,7 @@ var schema = new Schema({
 	},
 	type: {
 		type: String,
+		enum: ['text', 'image', 'audio'],
 		required: true
 	}
 });

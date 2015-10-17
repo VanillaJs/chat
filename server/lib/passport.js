@@ -11,9 +11,9 @@ var AuthVKStrategy = require('passport-vkontakte').Strategy;
 
 passport.use('local', new AuthLocalStrategy(
 	function(username, password, done) {
-		User.authorize(username, password).
-			then(function(user) {
-				return done(null, {
+		User.authorize(username, password)
+			.then(function(user) {
+				done(null, {
 					user_id: user._id,
 					username: user.username,
 					photoUrl: 'url_to_avatar',

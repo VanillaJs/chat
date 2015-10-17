@@ -10,12 +10,14 @@ var getSystemMessage = require('../../../lib/getsystemmessage');
 var sessionStore = require('./../../../lib/database/sessionStore');
 var checkDataByParams = require('./helper');
 var sendToAll = require('../../../lib/sendtoall');
+var Users = require('../../index').Users;
+
 var Channels = inherit({
 	/**
 	 * @param {Object} socket.
 	 * @param {Object} Users.
 	 */
-	__constructor: function(socket, Users) {
+	__constructor: function(socket) {
 		this._socket = socket;
 		this._users = Users;
 		this._session = socket.handshake.session;

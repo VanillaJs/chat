@@ -11,12 +11,13 @@ var UserModel = require('../../../models/user').User;
 var config = require('./../../../config');
 var sendStatus = require('../../../lib/channelstatus');
 var checkDataByParams = require('./helper');
+var Users = require('../../index').Users;
+
 var User = inherit({
 	/**
 	 * @param {Object} socket.
-	 * @param {Object} Users.
 	 */
-	__constructor: function(socket, Users) {
+	__constructor: function(socket) {
 		this._socket = socket;
 		this._users = Users;
 		this._data = Users[socket.handshake.user._id];

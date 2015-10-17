@@ -3,7 +3,6 @@ var Message = require('./message').Message;
 var mongoose = require('./../lib/database/mongoose');
 var Schema = mongoose.Schema;
 
-// схема модели пользователя
 var schema = new Schema({
 	name: {
 		type: String,
@@ -73,7 +72,6 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 		// Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
 		customObject.is_online = Users.hasOwnProperty(userID);
 
-		console.log('prepare.channel');
 		return Promise.all(
 			[
 				User.getUserByID(userID),

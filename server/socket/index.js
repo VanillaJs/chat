@@ -1,10 +1,13 @@
 var cookieParser = require('cookie-parser');
-var cookie = require('cookie');
-var config = require('./../config');
-var sessionStore = require('./../lib/database/sessionStore');
-var User = require('./../models/user').User;
-var Channel = require('./../models/channel').Channel;
-var Users = {}; // Глобальный объект с пользователями и подключенными сокетами
+var config = require('../config');
+var sessionStore = require('../lib/database/sessionStore');
+var User = require('../models/user').User;
+var Channel = require('../models/channel').Channel;
+var Users;
+
+var cookieMiddleware = cookieParser(config.get('session:secret'));
+
+module.exports.Users = Users = {};
 
 function loadSession(sid) {
 	return new Promise(function(resolve, reject) {
@@ -26,22 +29,15 @@ function loadUser(session) {
 	return User.findById(session.passport.user.user_id);
 }
 
-module.exports = function(server) {
-	var secret = config.get('session:secret');
-	var sessionKey = config.get('session:key');
+module.exports.socket = function(server) {
 	var io = require('socket.io').listen(server);
 
 	io.set('origins', config.get('app:socketOrigin'));
 
-	io.use(function(socket, next) {
-		var req = socket.request;
-		req.cookies = cookie.parse(req.headers.cookie);
-		req.signedCookies = cookieParser.signedCookies(req.cookies, secret);
-		next();
-	});
+	io.use((socket, next) => cookieMiddleware(socket.request, null, next));
 
 	io.use(function(socket, next) {
-		var sid = socket.request.signedCookies[sessionKey];
+		var sid = socket.request.signedCookies[config.get('session:key')];
 
 		loadSession(sid)
 			.then(function(session) {
@@ -81,17 +77,16 @@ module.exports = function(server) {
 						next();
 					});
 			})
-			.catch(next);
+			.catch(err => {
+				console.log(err.stack || err);
+				next();
+			});
 	});
 
 	io.on('connection', function socketConnectionHandler(socket) {
-		require('./types/user')(socket, Users);
-		require('./types/channel')(socket, Users);
-		// генерирую событие списка комнат getContsctsList
-		// Обработка пользовательских событий
+		require('./types/user')(socket);
+		require('./types/channel')(socket);
 	});
-
-	io.Users = Users;
 
 	return io;
 };
