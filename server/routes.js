@@ -1,9 +1,9 @@
-var checkAuth = require('../middleware/checkAuth');
-var passport = require('../lib/passport');
+var checkAuth = require('./middleware/express/checkAuth');
+var passport = require('./lib/passport');
 
 module.exports = function(app) {
-	app.get('/', checkAuth, require('./frontpage').get);
-	app.get('/login', require('./frontpage').get);
+	app.get('/', checkAuth, require('./views/default').get);
+	app.get('/login', require('./views/default').get);
 
 	app.post('/login', function(req, res) {
 		passport.authenticate('local', function(err, user) {
@@ -23,8 +23,8 @@ module.exports = function(app) {
 	});
 
 	app.get('/login-fb', passport.authenticate('facebook', {scope: 'email'}));
-	app.get('/register', require('./frontpage').get);
-	app.post('/register', require('./register').post);
+	app.get('/register', require('./views/default').get);
+	app.post('/register', require('./views/register').post);
 
 	app.get('/login-fb-callback*',
 			passport.authenticate('facebook',
@@ -56,5 +56,5 @@ module.exports = function(app) {
 			res.redirect('/');
 		});
 
-	app.get('/logout', checkAuth, require('./logout').get);
+	app.get('/logout', checkAuth, require('./views/logout').get);
 };

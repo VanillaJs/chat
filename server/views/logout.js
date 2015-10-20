@@ -5,10 +5,10 @@ exports.get = function(req, res, next) {
 	var connectedSockets = io.Users[uid].soketData;
 
 	req.session.destroy(function(err) {
-		connectedSockets.forEach(function(scoket, index) {
-			if (scoket.handshake.session.id === sid) {
-				scoket.emit('logout');
-				scoket.disconnect();
+		connectedSockets.forEach(function(socket, index) {
+			if (socket.handshake.session.id === sid) {
+				socket.emit('logout');
+				socket.disconnect();
 				connectedSockets.splice(index, 1);
 			}
 			// удаление пользователя из глобального скопа если нет сокетов с другими сессиями

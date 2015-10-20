@@ -1,6 +1,5 @@
-var User = require('./user').User;
-var Message = require('./message').Message;
-var mongoose = require('./../lib/database/mongoose');
+var mongoose = require('../lib/database/mongoose');
+var models = mongoose.models;
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
@@ -8,9 +7,22 @@ var schema = new Schema({
 		type: String,
 		required: true
 	},
+	displayName: {
+		type: String,
+		required: true
+	},
+	ownerId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	},
 	type: {
 		type: String,
 		enum: ['room', 'user'],
+		required: true
+	},
+	private: {
+		type: Boolean,
+		default: false,
 		required: true
 	},
 	users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
@@ -20,7 +32,7 @@ schema.statics.findOrCreate = function(type, userCreateId, userAddId) {
 	var Channel = this;
 	var newChannelObj;
 	var newChannel = {};
-	// если пользоваетель хочет добавить сама себя
+
 	if (userCreateId !== userAddId) {
 		return Channel.findOne({$and: [{users: {$in: [userCreateId]}}, {users: {$in: [userAddId]}}, {type: type}]}).
 			then(function(channel) {
@@ -59,25 +71,22 @@ schema.statics.getChannelInitialData = function(channel) {
  * prepareChannel
  * @param  {String} id      User id
  * @param  {Object} channel Channel data
- * @param  {Object} Users   Global users object, contain all active chat users
  * @return {Promise}
  */
-schema.statics.prepareChannel = function(id, channel, Users) {
+schema.statics.prepareChannel = function(id, channel) {
 	var userID;
 	var customObject = this.getChannelInitialData(channel);
 	if (channel.type === 'user') {
 		channel.users.splice(channel.users.indexOf(id), 1);
 		userID = customObject.user = channel.users[0];
 		channel.users.push(id);
-		// Знаю , что плохо передавать глобальный объект , но ничего пока не поделаешь
-		customObject.is_online = Users.hasOwnProperty(userID);
 
 		return Promise.all(
 			[
-				User.getUserByID(userID),
-				Message.getUnreadMessagesByChannel(channel._id, id),
-				Message.getLastChannelMessage(channel._id),
-				Message.getMessagesCountByChannel(channel._id)
+				models.User.getUserByID(userID),
+				models.Message.getUnreadMessagesByChannel(channel._id, id),
+				models.Message.getLastChannelMessage(channel._id),
+				models.Message.getMessagesCountByChannel(channel._id)
 			])
 			.then(function(result) {
 				var user = result[0];
@@ -98,14 +107,14 @@ schema.statics.prepareChannel = function(id, channel, Users) {
 	return Promise.resolve(customObject);
 };
 
-schema.statics.getContactsByUserID = function(id, Users) {
+schema.statics.getContactsByUserID = function(id) {
 	var Channel = this;
 
 	return Channel.find({ users: { $in: [id] } }).then(function(channelsData) {
 		if (channelsData.length > 0) {
 			return Promise
 				.all(channelsData.map(function(channel) {
-					return Channel.prepareChannel(id, channel, Users);
+					return Channel.prepareChannel(id, channel);
 				}))
 				.then(function(result) {
 					var channels = {};
@@ -119,4 +128,4 @@ schema.statics.getContactsByUserID = function(id, Users) {
 	});
 };
 
-exports.Channel = mongoose.model('Channel', schema);
+module.exports = mongoose.model('Channel', schema);

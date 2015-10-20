@@ -1,33 +1,30 @@
-// var config = require('nconf');
 var passport = require('passport');
 var AuthLocalStrategy = require('passport-local').Strategy;
-var config = require('./../config'); // все прарметры конфига
-var User = require('./../models/user').User;
-var HttpError = require('./../error').HttpError;
-var AuthError = require('./../models/user').AuthError;
+var models = require('mongoose').models;
+var config = require('../config');
+var HttpError = require('../error').HttpError;
+var AuthError = require('../error').AuthError;
 
 var AuthFacebookStrategy = require('passport-facebook').Strategy;
 var AuthVKStrategy = require('passport-vkontakte').Strategy;
 
 passport.use('local', new AuthLocalStrategy(
 	function(username, password, done) {
-		User.authorize(username, password)
+		models.User.authorize(username, password)
 			.then(function(user) {
 				done(null, {
 					user_id: user._id,
 					username: user.username,
 					photoUrl: 'url_to_avatar',
 					profileUrl: 'url_to_profile',
-					channel: config.get('defaultChannel')
+					channel: config.get('DEFAULT_CHANNEL_ID')
 				});
-			}).catch(function(err) {
-				if (err) {
-					if (err instanceof AuthError) {
-						return done(new HttpError(403, err.message));
-					}
-
-					return done(err);
+			})
+			.catch(function(err) {
+				if (err instanceof AuthError) {
+					done(new HttpError(403, err.message));
 				}
+				done(err);
 			});
 	}
 ));
@@ -55,20 +52,20 @@ passport.use('facebook', new AuthFacebookStrategy(
 
 		};
 
-		User.authorizeSocial(userData).
+		models.User.authorizeSocial(userData).
 			then(function(user) {
 				return done(null, {
 					user_id: user._id,
 					username: user.username,
 					photoUrl: 'url_to_avatar',
 					profileUrl: 'url_to_profile',
-					channel: config.get('defaultChannel')
+					channel: config.get('DEFAULT_CHANNEL_ID')
 				});
 			}).catch(function(err) {
 				if (err instanceof AuthError) {
-					return done(new HttpError(403, err.message));
+					done(new HttpError(403, err.message));
 				}
-				return done(err);
+				done(err);
 			});
 	}
 ));
@@ -96,20 +93,20 @@ passport.use('vk', new AuthVKStrategy(
 			authType: {name: 'vk', idType: profile._json.id}
 
 		};
-		User.authorizeSocial(userData).
+		models.User.authorizeSocial(userData).
 			then(function(user) {
-				return done(null, {
+				done(null, {
 					user_id: user._id,
 					username: user.username,
 					photoUrl: 'url_to_avatar',
 					profileUrl: 'url_to_profile',
-					channel: config.get('defaultChannel')
+					channel: config.get('DEFAULT_CHANNEL_ID')
 				});
 			}).catch(function(err) {
 				if (err instanceof AuthError) {
-					return done(new HttpError(403, err.message));
+					done(new HttpError(403, err.message));
 				}
-				return done(err);
+				done(err);
 			});
 	}
 ));

@@ -4,7 +4,8 @@ import store from './store';
 import Sidebar from './components/sidebar';
 import Main from './components/main';
 import {fetchUserData} from './actions/user';
-import './components/page.sass';
+
+import './styles/page.sass';
 
 export default class App extends Component {
 	componentWillMount() {

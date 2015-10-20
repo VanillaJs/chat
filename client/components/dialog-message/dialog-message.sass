@@ -1,8 +1,9 @@
-@import '~components/mixins';
+@import '~styles/mixins';
 
 .dialog-message
 	position: relative
 	width: 100%
+	padding-right: 45px
 	@include default-markdown-styles()
 
 	&--long
@@ -15,6 +16,9 @@
 
 		& .dialog-message__content
 			width: 90%
+
+	&__inner-wrap
+		position: relative
 
 	&__date
 		position: absolute
@@ -36,7 +40,7 @@
 		display: inline-block
 		vertical-align: top
 		width: calc(90% - 50px)
-		padding-left: 15px
+		padding-left: 10px
 
 	&__sender
 		font-size: 14px
@@ -46,10 +50,8 @@
 		font-size: 13px
 
 	&__time
-		display: inline-block
-		vertical-align: middle
-		width: 10%
-		padding-right: 20px
-		text-align: right
+		position: absolute
+		top: 0
+		right: -40px
 		font-size: 10px
-		color: #999
+		color: #CCC

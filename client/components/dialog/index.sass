@@ -2,11 +2,14 @@
 	padding-top: 70px
 
 .messages-container
-	height: calc(100vh - 275px)
+	overflow: auto
+	position: absolute
+	top: 65px
+	left: 0
+	width: 100%
+	max-height: calc(100% - 130px)
 	padding-top: 30px
 	padding-bottom: 10px
-	overflow: auto
-	position: relative
 	transition: all 0.4s ease 0.2s
 
 	&--show

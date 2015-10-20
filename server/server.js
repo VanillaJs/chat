@@ -59,16 +59,15 @@ app.use(session({
 	store: require('./lib/database/sessionStore'),
 	saveUninitialized: false
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(require('./middleware/loadUser'));
+app.use(require('./middleware/express/loadUser'));
 app.use(compression());
 
 require('./routes')(app);
 
-app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/express/sendHttpError'));
 app.use(function httpErrorHandler(err, req, res, next) {
 	var error = err;
 	if (typeof error === 'number') {

@@ -21,6 +21,9 @@ var config = {
 	},
 
 	plugins: [
+		new webpack.DefinePlugin({
+			DEBUG: !IS_PRODUCTION
+		}),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.NoErrorsPlugin(),
 		new ExtractTextPlugin('css/default.css')

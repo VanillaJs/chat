@@ -1,17 +1,10 @@
-/**
- * Created by timofey on 06.10.15.
- */
 var mongoose = require('mongoose');
+var models = mongoose.models;
 var inherit = require('inherit');
-var userTypes = require('./../constants/user');
-var Message = require('../../../models/message').Message;
-var sendToAllSocket = require('../../../lib/sendselfsockets');
-var assign = require('lodash/object/assign');
-var UserModel = require('../../../models/user').User;
-var config = require('./../../../config');
-var sendStatus = require('../../../lib/channelstatus');
+var userTypes = require('../constants/user');
+var config = require('../../../config');
 var checkDataByParams = require('./helper');
-var Users = require('../../index').Users;
+var manager = require('../../manager');
 
 var User = inherit({
 	/**
@@ -19,8 +12,7 @@ var User = inherit({
 	 */
 	__constructor: function(socket) {
 		this._socket = socket;
-		this._users = Users;
-		this._data = Users[socket.handshake.user._id];
+		this._user = manager.users.getById(socket.handshake.user._id);
 	},
 	/*
 	 * Обработчики для данного типа событий
@@ -30,24 +22,24 @@ var User = inherit({
 			// обработчик сообщений (делает их прочитанными)
 			name: userTypes.READ_MESSAGE,
 			callback: function(data) {
-				Message.setRead(data);
+				models.Message.setRead(data);
 			}
 		},
 		{
 			// обработчик обновления данных пользователя
 			name: userTypes.UPDATE_DATA,
 			callback: function(data) {
-				var socket = this._socket;
-				var users = this._users;
-				UserModel.getUserByID(data._id).
-					then(function(user) {
+				models.User.getUserByID(data._id)
+					.then(user => {
 						delete data['_id']; /* eslint dot-notation: 0 */
-						assign(user, data);
+						Object.assign(user, data);
 						return user.save();
-					}).then(function(user) {
-						assign(users[socket.handshake.user._id].userData, user);
-						sendToAllSocket(users[socket.handshake.user._id], 's.user.update_data', user);
-					}).catch(function(err) {
+					})
+					.then(user => {
+						Object.assign(this._user.userData, user);
+						manager.joinAllSocket('s.user.update_data', this._user, user);
+					})
+					.catch(function(err) {
 						console.log(err);
 					});
 			}
@@ -56,7 +48,7 @@ var User = inherit({
 			// обработчик для получения данных пользователем
 			name: userTypes.GET_DATA,
 			callback: function() {
-				this._socket.emit('s.user.set_data', {data: this._data.userData, contacts: this._data.contacts});
+				this._socket.emit('s.user.set_data', {data: this._user.userData, contacts: this._user.contacts});
 			}
 		},
 		{
@@ -66,10 +58,11 @@ var User = inherit({
 				// data.channelId
 				// data.page
 				var socket = this._socket;
-				Message.getListByParams(data.channelId, data.page).
-					then(function(messages) {
+				models.Message.getListByParams(data.channelId, data.page)
+					.then(messages => {
 						socket.emit('s.user.message_by_room', {data: messages.reverse()});
-					}).catch(function(err) {
+					})
+					.catch(err => {
 						console.log(err);
 					});
 			}
@@ -80,21 +73,19 @@ var User = inherit({
 			callback: function(message) {
 				// var status = false;
 				// save to database
-				var sendMessage;
 				if (message !== undefined) {
-					sendMessage = this._sendMessage.bind(this);
 					message.userId = this._socket.handshake.user._id;
-					if (this._data.channel === config.get('defaultChannel')) {
-						message._id = mongoose.Types.ObjectId(); /* eslint new-cap: 1 */
+					if (this._data.channel === config.get('DEFAULT_CHANNEL_ID')) {
+						message._id = mongoose.Types.ObjectId(); /* eslint new-cap: 0 */
 						message.message = message.text;
 						message.userId = this._socket.handshake.user.username;
-						sendMessage(true, message.channelId, message);
+						this._sendMessage(true, message.channelId, message);
 					} else {
-						// пишем в базу
-						Message.addNew(message).
-							then(function(messageNew) {
-								sendMessage(true, messageNew.channelId, messageNew);
-							}).catch(function(err) {
+						models.Message.addNew(message)
+							.then(messageNew => {
+								this._sendMessage(true, messageNew.channelId, messageNew);
+							})
+							.catch(function(err) {
 								console.log(err);
 							});
 					}
@@ -110,30 +101,22 @@ var User = inherit({
 	 * логика может быть любая
 	 */
 	bindSocketEvents: function() {
-		var self = this;
-		var index;
-		if (this._handlers.length > 0) {
-			for (index in this._handlers) { /* eslint guard-for-in: 1 */
-				(function(event, index, callback) { /* eslint no-loop-func: 1 */
-					self._socket.on(event, function() {
-						var args = arguments;
-						var notError;
-						// Для того чтобы привести к одноми виду
-						if (!Object.keys(args).length) {
-							args[0] = {};
-						}
-						// Проверяем все ли впорядке с входящими данными
-						notError = self._dataIsCorrect(event, args[0]);
-						if (notError === true) {
-							callback.apply(self, args);
-						} else {
-							// новое событие об ошибке входящих данных
-							self._socket.emit('s.server.error', {event: event, error: notError});
-						}
-					});
-				})(this._handlers[index].name, index, this._handlers[index].callback);
-			}
-		}
+		var _this = this;
+		_this._handlers.forEach(handler => {
+			_this._socket.on(handler.name, function() {
+				var args = arguments;
+				var notError;
+				if (!Object.keys(args).length) {
+					args[0] = {};
+				}
+				notError = _this._dataIsCorrect(handler.name, args[0]);
+				if (notError === true) {
+					handler.callback.apply(_this, args);
+				} else {
+					_this._socket.emit('s.server.error', {event: handler.name, error: notError});
+				}
+			});
+		});
 	},
 	_sendMessage: function(status, channelId, message) {
 		var sendData;
@@ -143,9 +126,9 @@ var User = inherit({
 			// проверяем, что он не находится в этом канале
 			if (this._users[toUser.user].channel.toString() !== channelId.toString()) {
 				// отправляем ему сообщение
-				sendStatus(this._socket.handshake.user._id, this._users, 's.user.send_private', toUser, {message_count: 1});
+				manager.sendStatus('s.user.send_private', this._socket.handshake.user._id, this._users, toUser, {message_count: 1});
 			} else {
-				Message.update({_id: message._id}, { $push: { read: toUser.user } }, function(err, message) {
+				models.Message.update({_id: message._id}, { $push: { read: toUser.user } }, function(err, message) {
 					console.log(err);
 					console.log(message);
 				});

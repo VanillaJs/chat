@@ -1,8 +1,7 @@
-var MessageType = require('./messagetype').MessageType;
-var mongoose = require('./../lib/database/mongoose');
+var mongoose = require('../lib/database/mongoose');
 var Schema = mongoose.Schema;
+var MessageType = require('./Messagetype');
 
-// схема модели Сообщений
 var schema = new Schema({
 	channelId: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -48,7 +47,6 @@ schema.statics.getMessagesCountByChannel = function(channelId) {
 };
 
 schema.statics.getUnreadMessagesByChannel = function(channelId, userId) {
-	// будет логика запросв
 	return this.find({$and: [ {read: { $nin: [userId] }}, {channelId: channelId} ]});
 };
 
@@ -95,9 +93,9 @@ schema.statics.addNew = function(message) {
 				newMessage = new Message(newMessageObj);
 				return newMessage.save();
 			}
-			// set error
+
 			Promise.reject('MessageType is not created!');
 		});
 };
 
-exports.Message = mongoose.model('Message', schema);
+module.exports = mongoose.model('Message', schema);

@@ -39,7 +39,6 @@ class UserInfoForm extends Component {
 	}
 
 	renderInput(name, value, id) {
-		// времени нет разбираться как правильно ((
 		let input = <input className="changeinfo-form__radio-input" type="radio" onChange={this.handleChange.bind(this)} name={name} value={value} id={id}/>;
 		let style;
 
@@ -72,8 +71,8 @@ class UserInfoForm extends Component {
 
 	render() {
 		const colors = ['31b0c3', 'fdc689', 'f8a232', 'ee4a23', 'f6a4c9', '8c6239', '39b54a'];
-		const avatars = ['/img/avatar-1.png', '/img/avatar-2.png', '/img/avatar-3.png',
-										 '/img/avatar-4.png', '/img/avatar-5.png', '/img/avatar-6.png', '/img/avatar-7.png'];
+		const avatars = ['/static/images/avatar/1.png', '/static/images/avatar/2.png', '/static/images/avatar/3.png',
+										 '/static/images/avatar/4.png', '/static/images/avatar/5.png', '/static/images/avatar/6.png', '/static/images/avatar/7.png'];
 		const userAvatar = [];
 		const userColors = [];
 		/* eslint guard-for-in: 0 */

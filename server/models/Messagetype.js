@@ -1,7 +1,6 @@
-var mongoose = require('./../lib/database/mongoose');
+var mongoose = require('../lib/database/mongoose');
 var Schema = mongoose.Schema;
 
-// схема модели Типов сообщений
 var schema = new Schema({
 	name: {
 		type: String,
@@ -22,4 +21,4 @@ schema.statics.getById = function(id) {
 	return this.findOne({'_id': id});
 };
 
-exports.MessageType = mongoose.model('MessageType', schema);
+module.exports = mongoose.model('MessageType', schema);
