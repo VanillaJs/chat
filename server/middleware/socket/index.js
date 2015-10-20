@@ -1,5 +1,5 @@
 var cookieParser = require('cookie-parser');
-var models = require('../../models');
+var models = require('mongoose').models;
 var config = require('../../config');
 var expressCookieMiddleware = cookieParser(config.get('session:secret'));
 var sessionStore = require('../../lib/database/sessionStore');

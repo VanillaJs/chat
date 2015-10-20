@@ -3,5 +3,3 @@
 ### VanillaJS Team
 
 * wiki: https://github.com/VanillaJs/chat/wiki
-
-* build: `./build/sh` -> http://localhost:3000/

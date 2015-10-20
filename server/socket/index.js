@@ -2,6 +2,8 @@ var config = require('../config');
 var middleware = require('../middleware/socket');
 var models = require('../models');
 var manager = require('./manager');
+var UserHandler = require('./handlers/user');
+var ChannelHandler = require('./handlers/channel');
 var DEFAULT_CHANNEL_ID = config.get('DEFAULT_CHANNEL_ID');
 
 module.exports.socket = function(server) {
@@ -41,9 +43,10 @@ module.exports.socket = function(server) {
 	});
 
 	io.on('connection', function socketConnectionHandler(socket) {
-		console.log(socket.id);
-		require('./types/user')(socket);
-		require('./types/channel')(socket);
+		manager.registerHandlers(socket.id, {
+			user: new UserHandler(socket),
+			channel: new ChannelHandler(socket)
+		});
 	});
 
 	return io;

@@ -2,7 +2,7 @@
 import expect from 'expect';
 import jsdomReact from '../jsdomReact';
 import React from 'react/addons';
-import Channel from '../../../web/src/components/channel';
+import Channel from '../../../client/components/channel';
 
 const {TestUtils} = React.addons;
 

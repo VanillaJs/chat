@@ -2,7 +2,7 @@
 import expect from 'expect';
 import jsdomReact from '../jsdomReact';
 import React from 'react/addons';
-import ChannelFilter from '../../../web/src/components/channel-filter';
+import ChannelFilter from '../../../client/components/channel-filter';
 
 const {TestUtils} = React.addons;
 

@@ -2,7 +2,7 @@
 import expect from 'expect';
 import jsdomReact from '../jsdomReact';
 import React from 'react/addons';
-import UserPic from '../../../web/src/components/user-pic';
+import UserPic from '../../../client/components/user-pic';
 
 const {TestUtils} = React.addons;
 

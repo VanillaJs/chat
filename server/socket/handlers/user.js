@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 var models = mongoose.models;
 var inherit = require('inherit');
-var userTypes = require('../constants/user');
-var config = require('../../../config');
+var userTypes = require('./constants/user');
+var config = require('../../config');
 var checkDataByParams = require('./helper');
-var manager = require('../../manager');
+var manager = require('../manager');
 
 var User = inherit({
 	/**
@@ -13,6 +13,8 @@ var User = inherit({
 	__constructor: function(socket) {
 		this._socket = socket;
 		this._user = manager.users.getById(socket.handshake.user._id);
+		this.bindSocketEvents();
+		socket.emit('s.user.set_user_id', socket.handshake.user._id);
 	},
 	/*
 	 * Обработчики для данного типа событий
@@ -37,7 +39,7 @@ var User = inherit({
 					})
 					.then(user => {
 						Object.assign(this._user.userData, user);
-						manager.joinAllSocket('s.user.update_data', this._user, user);
+						manager.broadcastToUserSockets('s.user.update_data', this._user, user);
 					})
 					.catch(function(err) {
 						console.log(err);
@@ -71,11 +73,9 @@ var User = inherit({
 			// обработчик для отправки сообщения
 			name: userTypes.SEND_MESSAGE,
 			callback: function(message) {
-				// var status = false;
-				// save to database
 				if (message !== undefined) {
 					message.userId = this._socket.handshake.user._id;
-					if (this._data.channel === config.get('DEFAULT_CHANNEL_ID')) {
+					if (this._user.channel === config.get('DEFAULT_CHANNEL_ID')) {
 						message._id = mongoose.Types.ObjectId(); /* eslint new-cap: 0 */
 						message.message = message.text;
 						message.userId = this._socket.handshake.user.username;
@@ -120,18 +120,17 @@ var User = inherit({
 	},
 	_sendMessage: function(status, channelId, message) {
 		var sendData;
-		var toUser = this._data.contacts[channelId];
+		var toUser = this._user.contacts[channelId];
 		// Проверяем пользователь онлайн или нет
-		if (toUser !== undefined && this._users.hasOwnProperty(toUser.user)) {
+		if (toUser && manager.users.has(toUser.user)) {
 			// проверяем, что он не находится в этом канале
-			if (this._users[toUser.user].channel.toString() !== channelId.toString()) {
+			if (manager.users.get(toUser.user).channel.toString() !== channelId.toString()) {
 				// отправляем ему сообщение
-				manager.sendStatus('s.user.send_private', this._socket.handshake.user._id, this._users, toUser, {message_count: 1});
+				manager.sendStatus('s.user.send_private', this._socket.handshake.user._id, toUser, {message_count: 1});
 			} else {
-				models.Message.update({_id: message._id}, { $push: { read: toUser.user } }, function(err, message) {
-					console.log(err);
-					console.log(message);
-				});
+				models.Message.update({_id: message._id}, { $push: { read: toUser.user } })
+					.then(message => console.log(message))
+					.catch(err => console.log(err));
 			}
 		}
 

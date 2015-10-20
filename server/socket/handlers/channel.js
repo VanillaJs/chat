@@ -1,9 +1,9 @@
 var inherit = require('inherit');
 var models = require('mongoose').models;
-var channelTypes = require('../constants/channel');
-var sessionStore = require('../../../lib/database/sessionStore');
+var channelTypes = require('./constants/channel');
+var sessionStore = require('../../lib/database/sessionStore');
 var checkDataByParams = require('./helper');
-var manager = require('../../manager');
+var manager = require('../manager');
 
 var Channels = inherit({
 	/**
@@ -11,9 +11,15 @@ var Channels = inherit({
 	 * @param {Object} Users.
 	 */
 	__constructor: function(socket) {
+		var userId = socket.handshake.user._id;
 		this._socket = socket;
-		this._user = manager.users.getById(socket.handshake.user._id);
+		this._user = manager.users.getById(userId);
 		this._session = socket.handshake.session;
+		this.bindSocketEvents();
+
+		socket.join(this._user.channel);
+		socket.emit('s.channel.join', {channel: this._user.channel});
+		manager.sendStatus('s.channel.online', userId);
 	},
 	_handlers: [
 		{
@@ -62,7 +68,7 @@ var Channels = inherit({
 				this._socket.leave(this._user.channel);
 				this._user.channel = channelTo.id;
 				this._updateChannel(this._session.id, channelTo.id);
-				manager.joinAllSocket('s.channel.join', this._user, {channel: channelTo.id});
+				manager.broadcastToUserSockets('s.channel.join', this._user, {channel: channelTo.id});
 			}
 		},
 		{
