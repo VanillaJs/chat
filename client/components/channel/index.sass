@@ -1,0 +1,65 @@
+@import '~styles/vars'
+
+.channel
+	position: relative
+	display: flex
+	padding: 10px
+	text-decoration: none
+	color: $base-font-color
+
+	&-wrap
+		position: relative
+		list-style: none
+		cursor: pointer
+
+	&-wrap--active
+		list-style: none
+		position: relative
+		background: transparentize(#000, 0.2)
+
+	&__image-wrap
+		overflow: hidden
+		min-width: 50px
+		max-width: 50px
+		height: 50px
+		margin-right: 15px
+		background: #FFF
+		border-radius: 50%
+
+	&__image
+		width: 50px
+		height: 50px
+		background: #ff494b
+
+	&__message
+		width: 220px
+		overflow: hidden
+
+		&-header
+			font-weight: bold
+			text-align: left
+
+		&-content
+			position: relative
+			margin-top: 5px
+			font-size: 10px
+			text-align: left
+
+		&-unread
+			position: absolute
+			right: 15px
+			bottom: 20px
+			width: 20px
+			height: 20px
+			background-color: #7da7d9
+			border-radius: 50%
+			font-size: 10px
+			line-height: 20px
+			color: #eee
+
+	&__time
+		position: absolute
+		top: 10px
+		right: 10px
+		color: #888
+		font-size: 12px

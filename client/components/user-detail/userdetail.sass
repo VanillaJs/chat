@@ -1,0 +1,35 @@
+@import '~styles/vars';
+
+.user-detail
+	display: flex
+	align-items: center;
+	justify-content: center;
+	position: relative
+	color: $base-font-color
+
+	&__item
+		display: flex
+		align-items: center;
+		flex-direction: column
+		justify-content: center;
+		width: 20%
+		font-size: 0.8rem
+		vertical-align: middle
+
+		&:hover
+			background: #ddd
+
+	&__number
+		display: block
+		font-size: 2rem
+
+	&__menu
+		display: flex
+		width: 25px
+		height: 25px
+		font-size: 16px
+		align-items: center;
+		justify-content: center;
+
+	&__disabled
+		display: none
