@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "npm run clean -s",
+    "prestart": "npm run build",
     "start": "npm run server:prod",
     "server:prod": "NODE_ENV=production node index.js",
     "server:dev": "NODE_ENV=develop DEBUG=socket.io* node index.js",
